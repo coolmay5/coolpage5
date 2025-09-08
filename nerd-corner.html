@@ -1,0 +1,907 @@
+<html lang="en">
+  <head>
+    <title>cool page 5</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+        font-family: Arial, sans-serif;
+        background-color: black;
+        color: white;
+        overflow: hidden;
+      }
+      
+      .container {
+        margin-left: 450px;
+        display: flex;
+        height: 100%;
+      }
+      
+      .sidebar {
+        position: fixed;
+        width: 450px;
+        height: calc(100vh - 40px);
+        margin-bottom: 40px;
+        top: 0;
+        left: 0;
+        padding: 0;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+        z-index: 2;
+        background: #fff;
+        border: solid #0059fb;
+      }
+      
+      .swiper {
+        width: 100%;
+        height: 100%;
+      }
+      
+      .swiper-wrapper {
+        cursor: grab;
+        background: #f0f0f0;
+        border: 3px solid #0059fb;
+        margin-top: calc(6em + 32px)
+        margin-bottom: 40px;
+      }
+      
+      .swiper-wrapper:active {
+        cursor: grabbing;  
+      }
+      
+      .swiper-slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 0 0 calc(100% / 3);
+        max-width: calc(100% / 3);
+      }
+      
+      .swiper-slide img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        cursor: pointer;
+      }
+      
+      @font-face {
+        font-family: undertaleFont;
+        src: url(PixelOperator-Bold.ttf);
+      }
+      
+      #top {
+        position: sticky;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 8px;
+        padding: 10px;
+        font-size: 1.2em;
+        background: linear-gradient(#39a8f7, #0059fb 33%);
+        color: white;
+        height: auto;
+        top: 0;
+        width: 430px;
+        height: 30px;
+        z-index: 10;
+      }
+
+      #infor{
+        top: 62.4px;
+        left: 7px;
+        display: block;
+        overflow: visible;
+        padding: 10px;
+        position: absolute;
+        font-size: 1.5em;
+        border: solid #0059fb;
+        border-radius: 2px;
+        background-color: #f6f6f6;
+        color: #000;
+        text-align: left;
+        font-family: 'Tahoma';
+        white-space: pre-wrap;
+        transition: width 0.6s ease, opacity 0.1s ease-in-out;
+        padding: 10px 10px 0px 10px;
+        width: 410px;
+        min-height: 6em;
+        z-index: 3;
+      }
+
+      #window1, #window {
+        position: absolute;
+        top: -5px;
+        left: -2px;
+        right: -2px;
+        background: linear-gradient(#39a8f7, #0059fb 33%);
+        color: white;
+        padding: 6px 10px;
+        font-weight: bold;
+        height: auto;
+        border-bottom: 1px solid #003bb5;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        font-size: 0.7em;
+        z-index: 50000;
+        display:flex;
+        align-items: center;
+      }
+      
+      #window {
+        gap: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        max-width: calc(100% + 40px);;
+        margin-top: -20px;
+        padding: 10px;
+        margin-right: -1px;
+        transition: all 0.4s ease-in-out;
+        font-family: 'Trebuchet MS'
+      }
+      
+      #window2 {
+        display: none;  
+      }
+      
+      .main-content {
+        flex: 1;
+        height: calc(100vh - 40px);
+        margin-bottom: 40px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url('images/defaultbg.png');
+        transition: all 0.4s ease-in-out;
+        overflow-y: auto;
+        box-sizing: border-box;
+      }
+      
+      #taskbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        z-index: 9999;
+        display: flex;
+        padding: 0 10px;
+        background-image: url('images/taskbar1.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        font-family: 'Tahoma';
+        font-size: 1.2em;
+        white-space: nowrap;
+        transition: height 0.3s ease;
+        height: 40px;
+        align-items: center;
+      }
+      
+      #taskbar img {
+        position: absolute;
+        height: 100%;
+        width: auto;
+      }
+      
+      #time {
+        position: absolute;
+        font-size: 0.9em;
+        right: 0;
+        padding: 6px;
+        padding-right: 24px;
+        z-index: 100;
+      }
+      
+      #window h2, #window p {
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+      }
+      
+      #manga-title {
+        font-size: 2em;  
+      }
+      
+      #artist {
+        padding: 0 10px;
+        font-size: 1.5em;
+        line-height: 1.2;
+        display: flex;
+        align-items: center;
+      }
+      
+      #manga-details {
+        position: absolute;
+        display: none;
+        width: 700px;
+        max-width: 700px;
+        justify-content: flex-start;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px 20px 10px 20px;
+        border-radius: 2px;
+        border-style: solid;
+        border-color: #0059fb;
+        backdrop-filter: blur(5px);
+        transition: opacity 0.1s ease-in-out;
+      }
+    
+      #manga-image {
+        max-width: 100%;
+        border-radius: 8px;
+        display: none;
+        margin-top: 15px;
+      }
+
+    </style>
+    <style type="text/css" id="operaUserStyle"></style>
+    <style type="text/css">:root img[width="728"][height="90"], :root [href="https://adstub.net/cina777/"], :root [href="https://adstub.net/arab777/"], :root [href="https://adstub.net/ratu89/"], :root [href="https://adstub.net/judi89/"], :root [href^="//mage98rquewz.com/"], :root [href^="//x4pollyxxpush.com/"], :root span[id^="ezoic-pub-ad-placeholder-"], :root ins.adsbygoogle[data-ad-slot], :root ins.adsbygoogle[data-ad-client], :root img[src^="https://s-img.adskeeper.com/"], :root guj-ad, :root gpt-ad, :root div[id^="zergnet-widget"], :root div[id^="vuukle-ad-"], :root div[id^="taboola-stream-"], :root div[id^="sticky_ad_"], :root div[id^="st"][style^="z-index: 999999999;"], :root div[id^="gpt_ad_"], :root div[id^="ezoic-pub-ad-"], :root div[id^="dfp-ad-"], :root div[id^="crt-"][style], :root div[id^="adspot-"], :root div[id^="adrotate_widgets-"], :root ps-connatix-module, :root div[id^="ad_position_"], :root div[id^="ad-div-"], :root div[id*="ScriptRoot"], :root div[id*="MarketGid"], :root [href="https://adstub.net/rusia777/"], :root div[data-id-advertdfpconf], :root div[data-dfp-id], :root hl-adsense, :root div[data-contentexchange-widget], :root div[data-alias="300x250 Ad 2"], :root div[data-adzone], :root div[data-adunit-path], :root div[data-adname], :root div[data-ad-targeting], :root div[data-ad-region], :root div[data-ad-placeholder], :root div[aria-label="Ads"], :root display-ads, :root display-ad-component, :root atf-ad-slot, :root aside[id^="adrotate_widgets-"], :root amp-fx-flying-carpet, :root amp-embed[type="taboola"], :root amp-connatix-player, :root amp-ad-custom, :root amp-ad, :root div[id^="google_dfp_"], :root ad-slot, :root ad-shield-ads, :root a[style="width:100%;height:100%;z-index:10000000000000000;position:absolute;top:0;left:0;"], :root a[onmousedown^="this.href='https://paid.outbrain.com/network/redir?"] + .ob_source, :root a[href^="https://xbet-4.com/"], :root div[id^="ad-position-"], :root a[href^="https://www.toprevenuegate.com/"], :root a[href^="https://www.purevpn.com/"][href*="&utm_source=aff-"], :root a[href^="https://www.privateinternetaccess.com/"] > img, :root a[href^="https://www.onlineusershielder.com/"], :root a[href^="https://financeads.net/tc.php?"], :root a[href^="https://www.mrskin.com/tour"], :root a[href^="https://www.infowarsstore.com/"] > img, :root a[href^="https://www.highperformancecpmgate.com/"], :root a[href^="https://www.highcpmrevenuenetwork.com/"], :root a[href^="https://www.get-express-vpn.com/offer/"], :root a[href^="https://lnkxt.bannerator.com/"], :root a[href^="https://www.geekbuying.com/dynamic-ads/"], :root a[href^="https://www.financeads.net/tc.php?"], :root a[href^="https://www.effectiveratecpm.com/"], :root [href^="https://www.herbanomic.com/"] > img, :root a[href^="https://maymooth-stopic.com/"], :root a[href^="https://www.dql2clk.com/"], :root a[href^="https://www.nutaku.net/signup/landing/"], :root a[href^="https://www.dating-finder.com/signup/?ai_d="], :root a[href^="https://explore-site.com/"], :root a[href^="https://www.brazzersnetwork.com/landing/"], :root a[href^="https://www.adxsrve.com/"], :root [data-template-type="nativead"], :root a[href^="https://www.endorico.com/Smartlink/"], :root a[href^="https://www.adultempire.com/"][href*="?partner_id="], :root a[href^="https://voluum.prom-xcams.com/"], :root a[href^="https://twinrdsyte.com/"], :root a[href^="https://twinrdsrv.com/"], :root a[href^="https://trk.nfl-online-streams.club/"], :root a[href^="https://tracking.avapartner.com/"], :root a[href^="https://track.wg-aff.com"], :root a[href^="https://track.ultravpn.com/"], :root a[href^="https://track.afcpatrk.com/"], :root a[href^="https://torguard.net/aff.php"] > img, :root [data-identity="adhesive-ad"], :root a[href^="https://tc.tradetracker.net/"] > img, :root a[href^="https://tatrck.com/"], :root a[href^="https://click.candyoffers.com/"], :root [href^="https://zstacklife.com/"] img, :root a[href^="https://t.aslnk.link/"], :root a[href^="https://t.adating.link/"], :root a[href^="https://go.trackitalltheway.com/"], :root [href^="https://track.fiverr.com/visit/"] > img, :root a[href^="https://syndication.exoclick.com/"], :root a[href^="https://syndication.dynsrvtbg.com/"], :root div[data-alias="300x250 Ad 1"], :root a[href^="https://syndicate.contentsserved.com/"], :root a[href^="https://svb-analytics.trackerrr.com/"], :root [href="https://adstub.net/gaza88/"], :root a[href^="https://ad.doubleclick.net/"], :root a[href^="https://static.fleshlight.com/images/banners/"], :root a[href^="https://slkmis.com/"], :root bottomadblock, :root a[href^="https://s.zlinkd.com/"], :root a[href^="https://s.zlink3.com/"], :root a[href^="https://www.mrskin.com/account/"], :root a[href^="https://s.optzsrv.com/"], :root a[href^="https://s.ma3ion.com/"], :root a[href^="https://s.eunow4u.com/"], :root #kt_player > div[style$="display: block;"][style*="inset: 0px;"], :root [href$="/sexdating.php"], :root a[href^="https://quotationfirearmrevision.com/"], :root a[href^="https://pubads.g.doubleclick.net/"], :root a[href^="https://prf.hn/click/"][href*="/camref:"] > img, :root a[href^="https://www.dating-finder.com/?ai_d="], :root a[href^="https://serve.awmdelivery.com/"], :root a[href^="https://prf.hn/click/"][href*="/adref:"] > img, :root app-ad, :root [href^="https://ap.octopuspop.com/click/"] > img, :root a[href^="https://postback1win.com/"], :root a[href^="https://mmwebhandler.aff-online.com/"], :root a[href^="https://www.bet365.com/"][href*="affiliate="], :root a[href^="https://pb-track.com/"], :root a[href^="https://pb-front.com/"], :root a[href^="https://paid.outbrain.com/network/redir?"], :root a[href^="https://streamate.com/landing/click/"], :root div[class^="Adstyled__AdWrapper-"], :root a[href^="https://osfultrbriolenai.info/"], :root a[href^="https://upsups.click/"], :root a[href^="https://ndt5.net/"], :root a[href^="https://natour.naughtyamerica.com/track/"], :root a[href^="https://mediaserver.entainpartners.com/renderBanner.do?"], :root a[href^="https://m.do.co/c/"] > img, :root a[href^="https://lead1.pl/"], :root a[href^="https://landing.brazzersnetwork.com/"], :root a[href^="https://join.virtuallust3d.com/"], :root a[href^="https://kiksajex.com/"], :root a[href^="https://juicyads.in/"], :root a[href^="https://snowdayonline.xyz/"], :root a[href^="https://mediaserver.gvcaffiliates.com/renderBanner.do?"], :root a[href^="https://join.dreamsexworld.com/"], :root a[href^="https://jaxofuna.com/"], :root a[href^="https://italarizege.xyz/"], :root a[href^="https://iqbroker.com/"][href*="?aff="], :root a[href^="https://identicaldrench.com/"], :root a[href^="https://hot-growngames.life/"], :root a[href^="https://helmethomicidal.com/"], :root a[href^="https://golinks.work/"], :root ark-top-ad, :root a[href^="https://s.zlinkn.com/"], :root a[href^="https://go.xxxvjmp.com/"], :root [class^="tile-picker__CitrusBannerContainer-sc-"], :root a[href^="https://go.xxxiijmp.com"], :root a[href^="https://go.xtbaffiliates.com/"], :root [data-role="tile-ads-module"], :root a[href^="https://go.xlviirdr.com"], :root div[class$="-adlabel"], :root a[href^="https://go.xlviiirdr.com"], :root a[href^="https://ismlks.com/"], :root [href^="https://www.mypillow.com/"] > img, :root a[href^="https://go.xlirdr.com"], :root [data-css-class="dfp-inarticle"], :root a[href^="https://l.hyenadata.com/"], :root a[href^="https://go.tmrjmp.com"], :root a[href^="https://zirdough.net/"], :root a[href^="https://s.deltraff.com/"], :root a[href^="https://go.markets.com/visit/?bta="], :root a[href^="https://billing.purevpn.com/aff.php"] > img, :root a[href^="https://go.hpyrdr.com/"], :root a[href^="https://lijavaxa.com/"], :root a[href^="https://go.goaserv.com/"], :root a[href^="https://t.hrtye.com/"], :root a[href^="https://go.etoro.com/"] > img, :root a[href^="https://go.dmzjmp.com"], :root a[href^="https://www.bang.com/?aff="], :root #mgb-container > #mgb, :root a[href^="https://go.admjmp.com"], :root a[href^="https://ak.stikroltiltoowi.net/"], :root a[href^="https://get.surfshark.net/aff_c?"][href*="&aff_id="] > img, :root a[href^="https://www.adskeeper.com"], :root a[data-redirect^="https://paid.outbrain.com/network/redir?"], :root [href^="https://clicks.affstrack.com/"] > img, :root a[href^="https://ak.hauchiwu.com/"], :root a[href^="https://engine.phn.doublepimp.com/"], :root a[href^="https://engine.blueistheneworanges.com/"], :root a[href^="https://drumskilxoa.click/"], :root a[href^="https://dl-protect.net/"], :root a[href*=".foxqck.com/"], :root a[href^="https://ctosrd.com/"], :root a[href^="https://clixtrac.com/"], :root [href^="https://noqreport.com/"] > img, :root a[href^="https://clicks.pipaffiliates.com/"], :root app-advertisement, :root a[href^="https://getmatchedlocally.com/"], :root a[href^="https://clickins.slixa.com/"], :root a[href^="https://datewhisper.life/"], :root a[href^="https://get-link.xyz/"], :root a[href^="https://click.linksynergy.com/fs-bin/"] > img, :root a[href^="https://combodef.com/"], :root a[href^="https://click.hoolig.app/"], :root a[href^="https://click.ggpickaff.com/"], :root a[href^="https://track.totalav.com/"], :root a[href^="https://ctrdwm.com/"], :root img[src^="https://images.purevpnaffiliates.com"], :root a[href^="https://porntubemate.com/"], :root a[href^="https://clickadilla.com/"], :root a[href^="https://click.dtiserv2.com/"], :root a[href^="https://go.xlvirdr.com"], :root a[href^="http://www.iyalc.com/"], :root a[href^="https://claring-loccelkin.com/"], :root a[href^="https://bongacams2.com/track?"], :root a[href^="https://t.ajrkm1.com/"], :root a[href^="https://bongacams10.com/track?"], :root a[href^="https://www.sheetmusicplus.com/"][href*="?aff_id="], :root a[href^="https://bngpt.com/"], :root a[href^="https://black77854.com/"], :root a[href^="https://rixofa.com/"], :root #ads[style^="position: absolute; z-index: 30; width: 100%; height"], :root a[href^="https://disobediencecalculatormaiden.com/"], :root a[href^="https://best-experience-cool.com/"], :root a[href^="https://banners.livepartners.com/"], :root a[href^="https://myclick-2.com/"], :root a[href^="https://sexynearme.com/"], :root a[href^="https://baipahanoop.net/"], :root a[href^="http://revolvemockerycopper.com/"], :root a[href^="https://awptjmp.com/"], :root a[href^="https://join.sexworld3d.com/track/"], :root a[href^="https://aweptjmp.com/"], :root a[href^="https://ausoafab.net/"], :root a[href^="https://adclick.g.doubleclick.net/"], :root a[href^="https://aj1070.online/"], :root a[href^="https://bc.game/"], :root a[href^="https://ak.oalsauwy.net/"], :root a[href^="https://a.bestcontentoperation.top/"], :root a[href^="https://adultfriendfinder.com/go/"], :root a[href^="https://ads.planetwin365affiliate.com/"], :root a[href^="https://ads.leovegas.com/"], :root .nya-slot[style], :root a[href^="https://a.bestcontentweb.top/"], :root a[href^="https://a2.adform.net/"], :root a[href^="https://a.candyai.love/"], :root a[href^="https://playnano.online/offerwalls/?ref="], :root a[href^="https://a.adtng.com/"], :root .banner-img > .pbl, :root [data-m-ad-id], :root a[href^="https://a-ads.com/"], :root [id^="ad_slider"], :root a[href^="https://click.ggpickyaff.com/"], :root broadstreet-zone-container, :root a[href^="https://ak.psaltauw.net/"], :root a[href^="https://1winpb.com/"], :root div[id^="rc-widget-"], :root a[href^="http://eslp34af.click/"], :root a[href^="https://turnstileunavailablesite.com/"], :root a[href^="https://chaturbate.com/in/?"], :root a[href^="https://prf.hn/click/"][href*="/creativeref:"] > img, :root a[href*="&maxads="], :root a[href^="http://www.adultempire.com/unlimited/promo?"][href*="&partner_id="], :root a[href^="https://1betandgonow.com/"], :root a[href^="https://eergortu.net/"], :root div[id^="optidigital-adslot"], :root a[href^="https://123-stream.org/"], :root a[href^="https://in.rabbtrk.com/"], :root a[href^="http://www.h4trck.com/"], :root a[href^="http://www.friendlyduck.com/AF_"], :root a[href^="https://go.rmhfrtnd.com"], :root a[href^="https://allhost.shop/aff.php?"], :root [data-dynamic-ads], :root a[href^="http://vnte9urn.click/"], :root a[href^="http://troopsassistedstupidity.com/"], :root a[href^="http://trk.globwo.online/"], :root a[href^="https://random-affiliate.atimaze.com/"], :root a-ad, :root a[href^="https://offhandpump.com/"], :root a[href^="http://stickingrepute.com/"], :root #slashboxes > .deals-rail, :root a[href^="http://roadcontagion.com/"], :root a[href^="http://premonitioninventdisagree.com/"], :root a[href^="http://cam4com.go2cloud.org/aff_c?"], :root a[href^="https://ads.betfair.com/redirect.aspx?"], :root [href^="https://www.mypatriotsupply.com/"] > img, :root a[href^="https://trk.softonixs.xyz/"], :root [data-advadstrackid], :root a[href^="http://muzzlematrix.com/"], :root a[href^="https://track.adform.net/"], :root a[href^="http://avthelkp.net/"], :root a[href^="https://a.medfoodhome.com/"], :root a[href^="https://engine.flixtrial.com/"], :root [data-type="ad-vertical"], :root [data-taboola-options], :root a[href^="http://annulmentequitycereals.com/"], :root a[href^="//startgaming.net/tienda/" i], :root a[href^="https://join.virtualtaboo.com/track/"], :root [id^="ad_sky"], :root a[href^="http://coefficienttolerategravel.com/"], :root a[href^="https://a.medfoodsafety.com/"], :root a[href^="//go.eabids.com/"], :root a[href^="//ejitsirdosha.net/"], :root a[href^=" https://www.friendlyduck.com/AF_"], :root [data-cl-spot-id], :root a[href*="/jump/next.php?r="], :root a[href^="https://go.rmishe.com/"], :root [href^="https://ilovemyfreedoms.com/landing-"], :root a[href^="https://syndication.optimizesrv.com/"], :root a[href*="//daichoho.com/"], :root a[href^="https://go.nordvpn.net/aff"] > img, :root .\[\&_\.gdprAdTransparencyCogWheelButton\]\:\!pjra-z-\[5\], :root [href^="http://clicks.totemcash.com/"], :root a[href^="https://ad.zanox.com/ppc/"] > img, :root a[href^="https://lone-pack.com/"], :root [data-d-ad-id], :root a[href*=".engine.adglare.net/"], :root a[href^="https://t.ajrkm3.com/"], :root [href^="https://aads.com/campaigns/"], :root a[href^="//stighoazon.com/"], :root [href^="https://www.profitablegatecpm.com/"], :root div[id^="lazyad-"], :root a[href^="http://com-1.pro/"], :root a[href*=".cfm?domain="][href*="&fp="], :root [data-ad-name], :root a[href^="https://loboclick.com/"], :root a[data-url^="https://vulpix.bet/?ref="], :root a[href^="https://ab.advertiserurl.com/aff/"], :root a[data-oburl^="https://paid.outbrain.com/network/redir?"], :root a[href^="https://go.xlivrdr.com"], :root [onclick^="location.href='https://1337x.vpnonly.site/"], :root [name^="google_ads_iframe"], :root [id^="section-ad-banner"], :root a[href^="https://www.goldenfrog.com/vyprvpn?offer_id="][href*="&aff_id="], :root a[href*="//jjgirls.com/sex/Chaturbate"], :root [id^="ad-wrap-"], :root [href^="https://zone.gotrackier.com/"], :root a[href^="http://sarcasmadvisor.com/"], :root [href^="https://www.restoro.com/"], :root [href^="https://www.targetingpartner.com/"], :root .section-subheader > .section-hotel-prices-header, :root [href^="https://www.hostg.xyz/"] > img, :root a[href^="http://adultfriendfinder.com/go/"], :root a[href^="https://fastestvpn.com/lifetime-special-deal?a_aid="], :root a[href^="https://tour.mrskin.com/"], :root [href^="https://www.brighteonstore.com/products/"] img, :root citrus-ad-wrapper, :root a[href^="https://go.grinsbest.com/"], :root a[href^="https://vo2.qrlsx.com/"], :root [href^="https://www.avantlink.com/click.php"] img, :root a[href^="https://t.acam.link/"], :root a[href^="https://go.strpjmp.com/"], :root [href^="https://url.totaladblock.com/"], :root div[id^="div-ads-"], :root [href^="https://rapidgator.net/article/premium/ref/"], :root [href^="https://join.girlsoutwest.com/"], :root a[href^="https://activate-game.com/"], :root .scroll-fixable.rail-right > .deals-rail, :root [data-wpas-zoneid], :root a[href^="https://track.aftrk3.com/"], :root [href^="https://join3.bannedsextapes.com"], :root a[href^="https://bodelen.com/"], :root a[href*=".g2afse.com/"], :root div[id^="adngin-"], :root [data-rc-widget], :root span[data-ez-ph-id], :root [href^="https://track.aftrk1.com/"], :root [href^="https://join.playboyplus.com/track/"], :root a[href^="https://go.xxxijmp.com"], :root [href^="https://istlnkcl.com/"], :root a[href^="https://tm-offers.gamingadult.com/"], :root [href^="https://charmingdatings.life/"], :root [href="https://adstub.net/indo666/"], :root [href^="https://glersakr.com/"], :root a[href^="https://a.bestcontentfood.top/"], :root [href^="https://cpa.10kfreesilver.com/"], :root [data-id^="div-gpt-ad"], :root a[href^="https://tracker.loropartners.com/"], :root [href^="https://awbbjmp.com/"], :root div[ow-ad-unit-wrapper], :root a[data-href^="http://ads.trafficjunky.net/"], :root a[href^="http://partners.etoro.com/"], :root a[href^="https://www.friendlyduck.com/AF_"], :root [href^="https://ad1.adfarm1.adition.com/"], :root a[href^="https://bngprm.com/"], :root [href^="https://shiftnetwork.infusionsoft.com/go/"] > img, :root a[href^="https://go.bushheel.com/"], :root a[href^="https://ctjdwm.com/"], :root a[href^="https://camfapr.com/landing/click/"], :root div[data-ad-wrapper], :root .gnt_em_vp_c[data-g-s="vp_dk"], :root [href="//sexcams.plus/"], :root [href^="http://www.mypillow.com/"] > img, :root a[href^="https://promerycergerful.com/"], :root #kt_player > a[target="_blank"], :root a[href^="http://bongacams.com/track?"], :root [href^="http://mypillow.com/"] > img, :root [href="https://ourgoldguy.com/contact/"] img, :root .ob_container .item-container-obpd, :root [id^="div-gpt-ad"], :root a[href^="https://go.rmhfrtnd.com/"], :root [href="https://jdrucker.com/gold"] > img, :root a[href^="https://www.liquidfire.mobi/"], :root .grid > .container > #aside-promotion, :root DFP-AD, :root [href^="https://go.xlrdr.com"], :root a[href^="https://s.cant3am.com/"], :root [data-testid^="taboola-"], :root a[href^="https://track.1234sd123.com/"], :root zeus-ad, :root [data-testid="prism-ad-wrapper"], :root [href^="https://ad.admitad.com/"], :root [href^="https://mypillow.com/"] > img, :root [data-testid="ad_testID"], :root [href^="https://antiagingbed.com/discount/"] > img, :root a[href*=".adsrv.eacdn.com/"], :root [href^="https://optimizedelite.com/"] > img, :root [data-name="adaptiveConstructorAd"], :root a[href^="https://go.cmtaffiliates.com/"], :root [data-testid="adBanner-wrapper"], :root [href^="https://mylead.global/stl/"] > img, :root [href^="https://mypatriotsupply.com/"] > img, :root a[href^="https://go.hpyjmp.com"], :root iframe[scrolling="no"][sandbox*="allow-popups allow-modals"][style^="width: 100%; height: 100%; border: none;"], :root [href^="https://mystore.com/"] > img, :root a[href^="https://81ac.xyz/"], :root [href^="https://wct.link/click?"], :root div[data-adunit], :root app-large-ad, :root [href^="https://turtlebids.irauctions.com/"] img, :root a[href^="https://believessway.com/"], :root a[href^="https://witnessjacket.com/"], :root [data-mobile-ad-id], :root [class^="amp-ad-"], :root a[href^="http://handgripvegetationhols.com/"], :root a[href^="https://go.bbrdbr.com"], :root a[href^="https://fc.lc/ref/"], :root [data-adshim], :root topadblock, :root a[href^="//s.zlinkd.com/"], :root #teaser1[style^="width:autopx;"], :root [href^="https://www.cloudways.com/en/?id"], :root [data-asg-ins], :root a[href^="https://gamingadlt.com/?offer="], :root [data-desktop-ad-id], :root [data-adbridg-ad-class], :root #teaser3[style^="width:autopx;"], :root [data-adblockkey], :root [data-block-type="ad"], :root [data-ad-width], :root [onclick*="content.ad/"], :root [data-ad-manager-id], :root AMP-AD, :root [data-ad-cls], :root [data-ez-name], :root a[href^="https://go.mnaspm.com/"], :root a[href^="https://service.bv-aff-trx.com/"], :root a[href^="https://6-partner.com/"], :root [class^="s2nPlayer"], :root a[href^="https://traffdaq.com/"], :root [data-testid="commercial-label-taboola"], :root [class^="div-gpt-ad"], :root a[href^="http://tc.tradetracker.net/"] > img, :root a[href^="https://www8.smartadserver.com/"], :root a[href^="https://pb-imc.com/"], :root [href^="https://affiliate.fastcomet.com/"] > img, :root [class^="adDisplay-module"], :root [data-freestar-ad][id], :root AD-SLOT, :root a[href^="https://www.googleadservices.com/pagead/aclk?"] > img, :root [data-ad-module], :root a[href^="https://go.skinstrip.net"][href*="?campaignId="], :root #teaser2[style^="width:autopx;"], :root [data-revive-zoneid], :root a[href^="https://losingoldfry.com/"], :root div[id^="div-gpt-"], :root a[href^="https://gml-grp.com/"], :root .ob_dual_right > .ob_ads_header ~ .odb_div, :root a[href^="https://cam4com.go2cloud.org/"], :root a[href^="http://li.blogtrottr.com/click?"], :root a[onmousedown^="this.href='https://paid.outbrain.com/network/redir?"], :root a[href^="https://t.ajump1.com/"], :root a[href^="https://go.xxxjmp.com"], :root #leader-companion > a[href], :root a[href^="https://wittered-mainging.com/"], :root #teaser3[style="width: 100%;text-align: center;display: scroll;position:fixed;bottom: 0;margin: 0 auto;z-index: 103;"], :root [href^="https://wwp.hoqodd.com/redirect-zone/"] { display: none !important; }</style>
+  </head>
+<body>
+  <div class="movetab" id="infor"><div class="tabtop" id="window1">INFO<img class="close-button" style="width: 20px; margin-left: auto;" src="images/X.png" onmouseover="this.src='images/Xhover.png';" onmouseout="this.src='images/X.png';" /></div><p id="info"></p></div>
+  <div class="sidebar">
+    <div id="top"><a href="../about-coolmay.html"><img src="images/avatar.png" style="border-radius: 2px;
+        border-style: solid;
+        border-color: white;
+        width: 32px;
+        height: auto;"></a><span>coolmay5's Cool Page 5</span></div>
+    <div style="display: block;
+        overflow: visible;
+        position: relative;
+        margin: 12px 0 12px 0;
+        padding: 10px;
+        font-size: 1.5em;
+        white-space: pre-wrap;
+        transition: width 0.6s ease;
+        padding: 10px 10px 0px 10px;
+        width: 410px;
+        min-height: 6em;"></div>
+    <div class="swiper">
+      <div class="swiper-wrapper" id="swiper-wrapper-ced89bbb95f133b5" aria-live="off" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px); width: 1484px;">
+      
+        <div class="swiper-slide swiper-slide-active" style="width: 120px;" role="group" data-swiper-slide-index="1">
+          <img src="images/glt.png" alt="Girls' Last Tour" class="manga" data-manga-id="glt" data-info="this one's sad : (">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="2">
+          <img src="images/shimejisimulation.png" alt="Shimeji Simulation" class="manga" data-manga-id="shimsim" data-info="this one's weird : @">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="3">
+          <img src="images/chainsawman1.png" alt="Chainsaw Man Part 1" class="manga" data-manga-id="csm1" data-info="chainsaw man is the coolest design in fiction">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="4">
+          <img src="images/chainsawman2.png" alt="Chainsaw Man Part 2" class="manga" data-manga-id="csm2" data-info="we're so back - it's so over - we're so back - it's so over - we're so back - i">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="5">
+          <img src="images/mobpsycho100.png" alt="Mob Psycho 100" class="manga" data-manga-id="mob" data-info="NINETY. NINE-POINT-NINE!">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="6">
+          <img src="images/onepunchman.png" alt="One Punch Man" class="manga" data-manga-id="opm" data-info="why is he called ONE if he made two manga?">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="7">
+          <img src="images/flcl.png" alt="FLCL" class="manga" data-manga-id="flcl" data-info="haruko haruhara i ask for your hand in marriage. will oyu accept. please">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="8">
+          <img src="images/op.png" alt="One Piece" class="manga" data-manga-id="op" data-info="a little longer than the usual">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="9">
+          <img src="images/dandadan.png" alt="Dandadan" class="manga" data-manga-id="ddd" data-info="the freaking Loch Ness monster is in the school">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="10">
+          <img src="images/killlakill.png" alt="Kill La Kill" class="manga" data-manga-id="klk" data-info="DON'T LOSE YOUR WAY!!!!!!!">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="11">
+          <img src="images/thesummerhikarudied.png" alt="The Summer Hikaru Died" class="manga" data-manga-id="tshd" data-info="friend of theseus">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="12">
+          <img src="images/frieren.png" alt="Frieren: Beyond Journey's End" class="manga" data-manga-id="frieren" data-info="terrible granny representation">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="13">
+          <img src="images/citytheanimation.png" alt="City: The Animation" class="manga" data-manga-id="city" data-info="hello, dear, my friend">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="14">
+          <img src="images/tgswiiwagaa.png" alt="The Guy She Was Interested In Wasn't A Guy At All" class="manga" data-manga-id="tgswiiwagaa" data-info="this one made me a lesbian">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="15">
+          <img src="images/notsoshoujolovestory.png" alt="Not So Shoujo Love Story" class="manga" data-manga-id="nssls" data-info="it is a CRIME how underrated this one is">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="16">
+          <img src="images/bocchitherock.png" alt="Bocchi the Rock" class="manga" data-manga-id="btr" data-info="i love pronouncing j-rock as one word. jrock. why isn't american rock arock">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="17">
+          <img src="images/yourlight.png" alt="Your Light: Kase-san and Morning Glories" class="manga" data-manga-id="yourlight" data-info="<img style='width: 100px; height:auto; vertical-align: top' src='images/yayaya.gif'>">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="18">
+          <img src="images/makeine.png" alt="Makeine: Too Many Losing Heroines" class="manga" data-manga-id="makeine" data-info="what even is a makeine">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="19">
+          <img src="images/iloveamy.png" alt="I Love Amy" class="manga" data-manga-id="amy" data-info="'in a world where neither happiness nor sadness is eternal, i'm glad to have met you.'">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="20">
+          <img src="images/murimuri.png" alt="There's No Freaking Way I'll Be Your Lover! Unless..." class="manga" data-manga-id="murimuri" data-info="they're all lesbians. all of them.">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="21">
+          <img src="images/idkwil.png" alt="I Don't Know Which Is Love" class="manga" data-manga-id="idkwil" data-info="lewd. so incredibly lewd. wow">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="22">
+          <img src="images/ipickedupabunnygirl.png" alt="I Picked Up A Bunny Girl" class="manga" data-manga-id="bunnygirl" data-info="GOD I HAVE SEEN WHAT YOU HAVE DONE FOR OTHERS. MY SOUL IS LIGHT AND FREE OF SIN. PLEASE">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="23">
+          <img src="images/loveanddreams.png" alt="Love and Dreams Don't Mix" class="manga" data-manga-id="laddm" data-info="love and dreams. like undertale.">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="24">
+          <img src="images/newfriend.png" alt="My New Friend Wasn't What I Expected" class="manga" data-manga-id="newfriend" data-info="oh my god">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="25">
+          <img src="images/lonelygirl.png" alt="Can't Say No To The Lonely Girl" class="manga" data-manga-id="lonelygirl" data-info="they kiss So much">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="26">
+          <img src="images/villainess.png" alt="I'm In Love With The Villainess" class="manga" data-manga-id="villainess" data-info="if i reincarnate into my favorite game it's over. i am NOT dating The Lord Of The Moon">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="27">
+          <img src="images/shygirl.png" alt="I Want To Be Liked By That Shy Girl" class="manga" data-manga-id="shygirl" data-info="shy girl. like mario">
+        </div>
+        
+        <div class="swiper-slide swiper-slide-next" style="width: 120px;" role="group" data-swiper-slide-index="28">
+          <img src="images/lovesong.png" alt="Whisper Me A Love Song" class="manga" data-manga-id="lovesong" data-info="i really like this one's title">
+        </div>
+        
+      </div>
+      
+      <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-ced89bbb95f133b5"></div>
+      <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-ced89bbb95f133b5"></div>
+      <div class="swiper-scrollbar"></div>
+
+    </div>
+    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+    </div>
+  
+  <div class="container">
+    <div class="main-content">
+      <div class="movetab" id="manga-details">
+        <div class="tabtop" id="window"><h2 id="manga-title"></h2><p id="artist"></p><img id="close-button" style="width: 20px; margin-left: auto;" src="images/X.png" onmouseover="this.src='images/Xhover.png';" onmouseout="this.src='images/X.png';" /></div>
+        <p style="color: #000;" id="manga-description"></p>
+      </div>
+      <div id="taskbar"><a href="../"><img style="left: 0; top: 0;" src="images/start.png"></a><img style="justify-content: flex-end; right: 0;" src="images/systemtray.png"><span id="time"></span></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script>
+  
+  const closeButtons = document.querySelectorAll('.close-button');
+
+  closeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const movetab = button.closest('.movetab');
+      if (movetab) {
+        movetab.style.opacity = '0';
+        if (movetab === document.getElementById('infor')) {
+          setTimeout(() =>{
+            movetab.style.top = '62.4px';
+            movetab.style.left = '7px';
+            setTimeout(() =>{
+              movetab.style.opacity = '1';
+            }, 150)
+          }, 150)
+        };
+        if (movetab === document.getElementById('infor2')) {
+          setTimeout(() =>{
+            movetab.style.top = '523.2px';
+            movetab.style.left = '7px';
+            setTimeout(() =>{
+              movetab.style.opacity = '1';
+            }, 150)
+          }, 150)
+        };
+      }
+    });
+  });
+  
+  const moveablepart = document.querySelectorAll('.tabtop')
+  const wholetab = document.querySelectorAll('.movetab')
+  
+  moveablepart.forEach(part => {
+  const tab = part.closest('.movetab');
+  
+  part.addEventListener('mousedown', function (e) {
+    const shiftX = e.clientX - tab.getBoundingClientRect().left;
+    const shiftY = e.clientY - tab.getBoundingClientRect().top;
+
+    const container = document.querySelector('.main-content');
+    const containerRect = container.getBoundingClientRect();
+
+    function moveAt(pageX, pageY) {
+      let newLeft = pageX - shiftX;
+      let newTop = pageY - shiftY;
+    
+      if (tab !== infor){
+        newLeft = Math.max(container.offsetLeft, Math.min(newLeft, container.offsetLeft + container.clientWidth - tab.offsetWidth));
+        newTop = Math.max(container.offsetTop, Math.min(newTop, container.offsetTop + container.clientHeight - tab.offsetHeight));
+        
+        tab.style.left = newLeft - container.offsetLeft + 'px';
+        tab.style.top = newTop - container.offsetTop + 'px';
+      };
+      
+      if (tab == infor){
+        newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - tab.offsetWidth));
+        newTop = Math.max(0, Math.min(newTop, window.innerHeight - tab.offsetHeight));
+        
+        tab.style.left = newLeft + 'px';
+        tab.style.top = newTop + 'px';
+      };
+      
+    };
+
+    function onMouseMove(e) {
+      moveAt(e.pageX, e.pageY);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+
+    function onMouseUp() {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mouseup', onMouseUp);
+    
+    });
+
+    tab.ondragstart = () => false;
+  });
+    
+    const swiper = new Swiper('.swiper', {
+      scrollbar: {
+        el: ".swiper-scrollbar",
+        hide: false,
+      },
+      grid: {
+        rows: 3,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      slidesPerView: 3,
+    });
+    
+    function updateClock() {
+      const topElement = document.getElementById("time");
+      const now = new Date();
+
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+  
+      const formattedTime = now.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+      topElement.textContent = formattedTime;
+    }
+updateClock();
+
+setInterval(updateClock, 10000);
+
+    const textBox = document.getElementById('info');
+    const mangas = document.querySelectorAll('.manga');
+    const mainContent = document.querySelector('.main-content');
+
+    const mangaTitle = document.getElementById('manga-title');
+    const mangaArtist = document.getElementById('artist');
+    const mangaDesc = document.getElementById('manga-description');
+    const mangaImg = document.getElementById('manga-image');
+    const mangaDetails = document.getElementById('manga-details');
+    
+    document.querySelectorAll('img').forEach(img => {
+      img.onerror = () => {
+        img.src = 'images/tree.png';
+      };
+    });
+    
+    window.addEventListener('DOMContentLoaded', () => {
+      let mangaId = "glt";
+      let mangaInfo = "this is the place where i write about the things i like. this includes: Yuri";
+      let data = mangaContentData[mangaId];
+      mangaTitle.innerHTML = data.title;
+      mangaArtist.innerHTML = data.artist;
+      mangaDesc.innerHTML = data.description;
+      startTyping(mangaInfo)     
+    });
+    
+    function centerTab() {
+      const tab = document.getElementById('manga-details');
+      const container = document.querySelector('.main-content');
+      
+      const containerRect = container.getBoundingClientRect();
+      const tabRect = tab.getBoundingClientRect();
+      
+      const centerLeft = (container.clientWidth - tab.offsetWidth) / 2;
+      const centerTop = (container.clientHeight - tab.offsetHeight) / 2;
+      
+      tab.style.left = centerLeft + 'px';
+      tab.style.top = centerTop + 'px';
+    }
+    
+    document.querySelectorAll('.manga').forEach(img => {
+      img.addEventListener('click', () => {
+        mangaDetails.style.opacity = '1';
+        mangaDetails.style.display = 'block';
+        const mangaId = img.dataset.mangaId;
+        const mangaInfo = img.dataset.info;
+        const data = mangaContentData[mangaId];
+        mangaTitle.innerHTML = data.title;
+        mangaArtist.innerHTML = data.artist;
+        mangaDesc.innerHTML = data.description;
+        startTyping(mangaInfo);
+        centerTab();
+
+        const urlMatch = data.background.match(/url\(['"]?(.*?)['"]?\)/);//strait up have no idea what this means but it works ;p
+        const imageUrl = urlMatch ? urlMatch[1] : null;
+        const fallback = "url('images/treelarge.png') no-repeat center center / cover";
+    
+        if (imageUrl) {
+          const preload = new Image();
+          preload.src = imageUrl;
+    
+          preload.onload = () => {
+            document.querySelector('.main-content').style.background = data.background;
+          };
+    
+          preload.onerror = () => {
+            document.querySelector('.main-content').style.background = fallback;
+          };
+        } else {
+          document.querySelector('.main-content').style.background = fallback;
+        }
+      });
+    });
+    
+    const closeButton = document.getElementById('close-button')
+    
+    closeButton.addEventListener('click', () => {
+        mangaDetails.style.opacity = '0';
+    });
+
+//
+//    code below was used to render all the main info one letter at a time but that looked weird so it is gone
+//
+//   document.querySelectorAll('.manga').forEach(img => {
+//      img.addEventListener('click', () => {
+//      const mangaId = img.dataset.mangaId;
+//      const data = mangaContentData[mangaId];
+//
+//      document.getElementById('manga-details').style.maxWidth = "430px";
+//      document.body.style.background = data.background;
+//
+//      mangaTitle.textContent = '';
+//      mangaArtist.textContent = '';
+//      mangaDesc.textContent = '';
+//
+//      const delay = (text, speed) => text.length * speed;
+//    
+//      startTyping4(mangaTitle, data.title, 10, 'title');
+//        setTimeout(() => {
+//          startTyping4(mangaArtist, data.artist, 10, 'artist');
+//            setTimeout(() => {
+//              startTyping4(mangaDesc, data.description, 30, 'desc');
+//            }, delay(data.artist, 10));
+//        }, delay(data.title, 10));
+//      });
+//    });
+//
+    
+    let startTypingIntervals = {};
+    
+    function startTyping4(element, text, speed = 20, key) {
+      if (startTypingIntervals[key]) {
+        clearInterval(startTypingIntervals[key]);
+      }
+
+      let i = 0;
+      element.textContent = '';
+      const interval = setInterval(() => {
+      element.textContent += text.charAt(i);
+      i++;
+      if (i >= text.length) {
+        clearInterval(interval);
+        delete startTypingIntervals[key];
+      }
+    }, speed);
+
+  startTypingIntervals[key] = interval;
+}
+
+    const mangaContentData = {
+      "glt": {
+        background: "url('images/gltbg.png') no-repeat center center / cover",
+        title: "Girls Last Tour",
+        artist: "by Tsukumizu",
+        description: "Chito and Yuuri are two of the last survivors after a huge fucked up world-wide war covers the world in an eternal, apocalyptic winter. the story follows their day to day life seeking food and supplies within a town devoid of life using their limited resources. they also have a cool as hell military bike (apparently called a Kettenkrad). one of my favorite mangas ever and one of the only that has made me cry. unbelievable that they would make me get attached to the freaking Kettenkrad. <br>10/10 they are NEVER getting a season two :((."
+      },
+      "shimsim": {
+        background: "url('images/shimejisimulationbg.png') no-repeat center center / cover",
+        title: "Shimeji Simulation",
+        artist: "by Tsukumizu",
+        description: "after being a shut-in for two years, Shijima decides to leave her room and start going to school again. when she leaves her closet and looks in the mirror she realizes there are little Shimeji mushrooms sprouting out of her head. this might be my favorite manga ever. it is so surrealist and weird and wacky and it's SO COOL!!!!!! AND SO LITTLE PEOPLE KNOW ABOUT IT!!!!!!!!!!!!!!!!!!!!! Majime is one of my favorite characters ever (she's the icon you see on the top left of this very website). and Shijima is me. the ending made me cry. <br>100000/10 PLEASE READ THIS ONE"
+      },
+      "csm1": {
+        background: "url('images/chainsawman1bg.png') no-repeat center center / cover",
+        title: "Chainsaw Man Part 1",
+        artist: "by Tatsuki Fujimoto",
+        description: "Denji is a teenager living in extreme poverty, who works as a devil hunter together with his only companion, Pochita (the Chainsaw Devil) to pay off the debt to the yakuza passed down to him by his late father. after being killed by the Zombie Devil, Denji makes a contract with Pochita to come back to life as Chainsaw Man, under the condition that Denji gets to live out his dream of living a (mostly) normal life. this one is really good but it's a little hard to get attached to characters because Any One Could Just Die. i love Power a lot she's great. <br>10/10 part 1 is awesome <br><br>MANGA ONLY SPOILERS >> i'll try to write in order of least recent spoilers (mid-late part 1) to Today spoilers (All of Part 2). i looooove the reze arc a lot, still is one of my favorite arcs. i freaking looooooooooove the Bomb Devil and the way she uses her powers. i really like all of Fujimoto's designs for devils (or like. just Everything) in general. Quanxi is hot no further comment (further comment > she's cool as hell and i love her little poly group. it's a shame they All Freaking Die. the title The First Devil Hunter is cool as hell too). Chainsaw Man has one of the coolest depictions of hell, like, Ever. i freaking looove the visual of an empty field with thousands of doors in the sky. Darkness Devil is cool as freak. Makima is hot no further comment (further comment > the reveal that Makima's actually the Control Devil and wants to control Chainsaw Man and that Chainsaw Man is actually one of the strongest devils ever is So Freaking Cool Godddddddddd. King of Hell (also cool ass title) CSM's design is freaking sick too i love the two forearm chainsaws on either arms and i love the scarf thing). will write more about csm later but this is already Quite Expansive. might separate it into csm part 1 / part 2"
+      },
+      "csm2": {
+        background: "url('images/chainsawman2bg.png') no-repeat center center / cover",
+        title: "Chainsaw Man Part 2",
+        artist: "also by Tatsuki Fujimoto",
+        description: "separated it into csm part 1 / part 2. i will not hold back spoilers i do not GAF (give a freak). after Denji kills and eats Makima, the Control Devil reincarnates as a little chinese girl called Nayuta, whom Denji adopts as his sister. new kinda-protagonist is introduced!! Asa Mitaka, after being killed by her classmate with the help of a contract with the Fire Devil, is brought back to life by the War Devil, Yoru, on the condition that Yoru gets to live in her as a split personality thing. kinda like Sukuna-Yuuji. yeah wow i have no idea what Fujimoto is doing. nothing good ever happens to Denji and it's just really sad always. Nayuta dies, his dogs (previously Makima's) die, his house burns down, "
+      },
+      "mob": {
+        background: "url('images/mobpsycho100bg.png') no-repeat center center / cover",
+        title: "Mob Psycho 100",
+        artist: "by ONE",
+        description: "ever since he was born, Mob has had extremely powerful psychic powers, which are kept in control by his emotions. after an accident involving his little brother, Mob decides he would rather never use psychic powers and try to live life as a normal person. that is, until he meets The Greatest Psychic of the 21st Century, Reigen Arataka, who helps Mob control his powers. ONE is so good at writing stories with the main character being 'The Most Powerful' it's insane. i will say this about most of the things in this website but this is One Of My Favorites Ever too. 100/100"
+      },
+      "opm": {
+        background: "url('images/onepunchmanbg.png') no-repeat center center / cover",
+        title: "One Punch Man",
+        artist: "by ONE",
+        description: "Saitama is a C-Tier hero that lives in City Z. despite his low hero ranking, he is The Strongest, capable of defeating any opponent with One Punch. his unmatched strength leaves him longing for any opponent capable of matching his own strength. once again ONE is The Strongest at writing stories about 'The Strongest' character. all the other heroes are also great and i love the writing and King is my favorite character he's So Damn Cool. <br>9/10 i think it got weaker after the Hero Hunter arc finished. to be fair like how do you ever top that"
+      },
+      "flcl": {
+        background: "url('images/flclbg.gif') no-repeat center center / cover",
+        title: "FLCL",
+        artist: "by Kazuya Tsurumaki",
+        description: "Naota is a 12 year old who lives a relatively normal life with his father. until he gets run over by the Cool and Awesome and Pretty and Beautiful Haruko Haruhara, who worms her way into his life, becoming a live-in maid for the family. everything is blurry from here on something about this cool ass robot called Canti coming out of Naota's forehead, but oh my GOD this anime is FREAKING AWESOME!!!!!! THE VISUALS ARE SO WELL MADE AND THE MUSIC IS ALL SO GOOD (god bless The Pillows) AND I LOVE HARUKO SO MUCH. AND HER VESPA TOO. 15/10 "
+      },
+      "op": {
+        background: "url('images/opbg.png') no-repeat center center / cover",
+        title: "One Piece",
+        artist: "by Eiichiro Oda",
+        description: "Luffy is a pirate that ate the Gum Gum fruit, which turned his body into rubber. the story follows his adventure on becoming the King of the Pirates, the crew he assembles and the Friends he Makes On the Way. this was my first introduction to anime, and i wouldn't have it any other way. even though it has had its bad moments and was Really Really Long i Don't Regret A Thing. one of the best i've watched 10/10 i wish Eiichiro Oda didn't hate women ;("
+      },
+      "ddd": {
+        background: "url('images/dandadanbg.png') no-repeat center center / cover",
+        title: "Dandadan",
+        artist: "by Yukinobu Tatsu",
+        description: "Takakura Ken is a friendless introvert (so rude wow) who believes in and is fascinated by the occult. one day he meets Ayase Momo, an extrovert who believes in spirits. they make a bet to try to disprove each other, Ken having to explore an old tunnel said to house a powerful spirit, and Momo an abandoned building said to have been a hotspot for UAP spottings. turns out, they were both right! this is also one of my favorites lolll oh my GOD I LOVE WEIRD STUFF I LOVE THE OCCULT I LOVE GHOSTS I LOVE ROMANCE THIS ANIME/MANGA HAS IT ALL and the first opening was made by Creepy Nuts which is just. absurd. cosmically comical. 12/10"
+      },
+      "klk": {
+        background: "url('images/killlakillbg.gif') no-repeat center center / cover",
+        title: "Kill la Kill",
+        artist: "by Studio Trigger",
+        description: "after moving into Honno City to investigate the murder of her father, Ryuuko transfers into Honnouji Academy, whose president, Kiryuin Satsuki, rules over with an iron fist. her soldiers being the students from the academy. these students are given special uniforms called Goku Uniforms (like Dragon Ball (not like Dragon Ball)), which give the wearer superhuman strength via the Life Fibers sewn into them. after failing to defeat Satsuki, Ryuuko escapes to the ruins of her father's house. below said ruins she finds a sentient sailor uniform (his name is Senketsu) who helps Ryuuko not freaking die i'm tired of writing this one. Mankanshoku Mako is there too and she's my favorite. 10/10 weird at first but it's good i swear"
+      },
+      "tshd": {
+        background: "url('images/thesummerhikarudiedbg.gif') no-repeat center center / cover",
+        title: "The Summer Hikaru Died",
+        artist: "by Mokumokuren",
+        description: "if your best friend disappears and is replaced by an exact replica of him, having all the same memories, experiences and feelings your friend had, could you still call it the same person as the one you once knew? would you even notice the difference? after going missing while hiking in the mountains, Hikaru comes back home as if nothing happened. as if everything was the same as it ever was. and nothing was off. if something was off, you wouldn't tell anyone, would you? i wouldn't want to hurt you, Yoshiki. this is my attempt at writing scary i hope you liked it (it sucks ass). this is one of the best ones i've watched recently I LOVE THE SUPERNATURAL!!!!! and the visuals are SO GOOD!!!!!!!!!!!!! one of the first times i have cared about a bl story. 10/10 there's definitely a metaphor about the ostracism of homosexuality in here but that's an exercise for the reader."
+      },
+      "frieren": {
+        background: "url('images/frierenbg.png') no-repeat center center / cover",
+        title: "Frieren: Beyond Journey's End",
+        artist: "by Kanehito Yamada and Tsukasa Abe",
+        description: "i swear i'll write about this one sometime. i cannot be bothered right now though i have Yuri to Read"
+      },
+      "city": {
+        background: "url('images/citytheanimationbg.png') no-repeat center center / cover",
+        title: "City: The Animation",
+        artist: "by Arawi Keiichi, adapted by Kyoto Animation",
+        description: "this anime is about the joys of everyday life and how everyone's story is a little connected somehow, be it passing by a familiar face on the street to finding an item someone else lost to hanging out with a friend. it is also absolutely my favorite anime i've watched to recent memory. the artstyle is such good eye candy and the animation is so lovely and everything and everyone is so connected and all the characters are so good and IT HAS GOOD HUMOR!!!!! <br>100000/10 i would love to live in City"
+      },
+      "tgswiiwagaa": {
+        background: "url('images/tgswiiwagaabg.png') no-repeat center center / cover",
+        title: "The Guy She Was Interested In Wasn't A Guy At All",
+        artist: "by Sumiko Arai",
+        description: "title is extremely self explanatory. Oosawa Aya enters a cd store and falls for the guy working there. little does she know, but The Guy She Was Interested In. Was not. A Guy At All. and is actually her classmate, Koga Mitsuki. this is one of the first yuri manga i've read and also what made me realize i like women and also what got me into rock and just music in general. hoollyyyyyy slowburn though. Sumiko draws 4 panels every sunday so progress is a little slow but it's okay. i will always be waiting for Green Yuri. <br>100/10 unironically changed my life "
+      },
+      "nssls": {
+        background: "url('images/notsoshoujolovestorybg.png') no-repeat center center / cover",
+        title: "Not So Shoujo Love Story",
+        artist: "by Curryuku",
+        description: "will reread after rewatching makeine and the morning glories one. this one is plenty long so like expect it done within 1-2 business weeks << a fool wrote this and she will be shot dead by today. I Make My Own Choices And i Choose To Keep Pushing This Back Until I Feel Like Read Ing It"
+      },
+      "btr": {
+        background: "url('images/bocchitherockbg.gif') no-repeat center center / cover",
+        title: "Bocchi the Rock",
+        artist: "by Aki Hamazi",
+        description: "Goto Hitori (or Bocchi) is an extremely anxious and socially awkward introvert who wants to join a band and become a rock musician. her crippling social anxiety, however, forbids her from trying to make friends with any of her classmates. that is, until she is approached by Ijichi Nijika and is asked to join her band after the main guitarist left. this is one of the first animes i've watched as far as memory serves and it is also One Of My Favorites Ever. it is one of the main reasons i started to get into music (together with The Guy She Was Interested In Wasn't A Guy At All). i plan on reading the manga At Some Point but also i'm so attached to the anime that it might be difficult to start. Bocchi is me. <br>11/10 i wish Yamada Ryo was real"
+      },
+      "yourlight": {
+        background: "url('images/yourlightbg.png') no-repeat center center / cover",
+        title: "Your Light: Kase-san and Morning Glories",
+        artist: "by Hiromi Takashima",
+        description: "will rewartch after makeine if i freaking remember to. 5 business days"
+      },
+      "makeine": {
+        background: "url('images/makeinebg.png') no-repeat center center / cover",
+        title: "Makeine: Too Many Losing Heroines",
+        artist: "by Masahiro Yokotani",
+        description: "self proclaimed background character Nukumizu Kazuhiko accidentally gets involved with not so self proclaimed losing heroine Yanami Anna after witnessing her rejection. this guy witnesses like 5 different rejections throughout the series it's messed up. i don't actually have a lot to write about this one, the characters are pretty fun and i like that the titular Losing Heroines don't just move on from the ones they fell for but still remain friends with them. the animation is really good too, i really like specifically the hair movement. i love Lemon 10/10 character she is SO PRETTY GRAHHHHHH. 10/10 anime Though I'm Not Sure Why Episode 2 Is Like That"
+      },
+      "amy": {
+        background: "url('images/iloveamybg.png') no-repeat center center / cover",
+        title: "I Love Amy",
+        artist: "by Unni",
+        description: "Amy Lee is a shy, introverted and awkward girl. one day, Beatrice Reden (calling her Bibi from now), whom i could only describe as a Psychopathic Devil, notices Amy and her crush, Peter talking. Bibi tries to become friends with Amy to get closer to Peter, but Amy actually ends up helping out Bibi to confess to Peter. typing this like the moment i finished rereading this one. artstyle is really cute, every single character looks pretty. i love Bibi's heart eyes. despite the artstyle, this manhwa is like pretty dark, actually. and Bibi is Really Freaked Up. <br>10/10 this was my second GL ever as far as memory serves (first one was The Guy She Was Interested In Wasn't A Guy At All. of course it was). and i reeeeeally liked the kiss"
+      },
+      "murimuri": {
+        background: "url('images/murimuribg.png') no-repeat center center / cover",
+        title: "There's No Freaking Way I'll Be Your Lover! Unless...",
+        artist: "by Teren Mikami",
+        description: "after have been a social recluse introvert her whole life, Amaori Renako decides to reform herself in her first year of highschool. she approaches the most popular girl in school, Oduka Mai, and becomes her friend, joining her friend group. one day, Renako leaves during lunch to breathe (trying to keep up with extroverts is Hard), Mai misreads the situation and thinks she's going to jump off the school roof, this miscommunication ends up in them both opening up to one another. the next day, Mai confesses her love to Renako. wow this one moves fast. one of my favorite anime opening songs it's really fun i enjoy it lots. my favorite kind of character is the loser that sucks at social interaction because i point to my screen and say THAT'S ME!!!! and then i do a little dance. Renako is me. god bless Losers all around the World. 10/10 i'm not sure why there's so many bath scenes though.<br><br>UPDATE (MANGA ONLY SPOILERS) >> i could not wait for the anime to have more episodes so i read the entire manga. it is a huge understatement to say Renako is Literally Me. might be one of my favorite romances ever but it's not finished yet and i don't really care about the cram school friend reveal or Koyanagi Kaho's character as a whole. the entire arc where Renako and Ajisai ran away was really good though a lot of scenes made my Faint, Fragile little heart flutter. i heavily relate to Renako's feelings of self worthlessness. not understanding why so many nice and kind people are always around me. i don't think i am deserving of the kindness given to me by these amazing people, and i don't think i could ever hope to pay it back. i can also relate to the feeling of being too scared to be kind or to be myself in case these people hate me for it (which i know they won't, but it's a feeling i couldn't hope to shake off). i built a maze of a persona and got too lost within its walls to even hope to know who i really am other than funny internet user ''may''. oops got A Little personal shoutout to the 3 people that read this<br>manga is 12/10 quickly became one of my favorites"
+      },
+      "idkwil": {
+        background: "url('images/idkwilbg.png') no-repeat center center / cover",
+        title: "I Don't Know Which Is Love",
+        artist: "by Oku Tamamushi",
+        description: "after failing to confess her love to her crush in highschool, Soraike Mei decides that her first goal in college is to get a girlfriend, which is convenient for her, because So Many Women Want Her. i don't read tags when i start reading manga because i like the ''surprise'' of learning about the story as i read. wow i did not expect this one to be as lewd as it is<br>favorite characters from the main six:<ol><li>Minato</li> <li>Kaoru</li> <li>Karin</li> <li>Mei</li> <li>Maria</li> <li>Riri</li></ol>to be honest i had to look up the character's names for this list there's just Way Too Many Girls and, perhaps of my own fault, i could not memorize allat Lol. story is still ongoing and my personal guess is that Mei will either end up Alone (unlikely) or with her highschool crush (likely). my personal Wish is that they all join a big poly relationship together (not happening).<br>10/10 Minato is So Pretty it's Unreal ^}{{~:>>><>>>}"
+      },
+      "bunnygirl": {
+        background: "url('images/ipickedupabunnygirlbg.png') no-repeat center center / cover",
+        title: "I Picked Up A Bunny Girl",
+        artist: "by Takeshima Eku",
+        description: "Kano's life was stuck in a monotone, endless loop of working at a job that was draining her of all joy in life. 'please, God. i don't care what it is. just give me some kind of present that will make my pathetic heart skip', pleaded Kano. and God giveth, in the form of a bunnygirl in front of her doorstep. the bunnygirl being the student council president back in highschool and Kano's first love, Hodaka. i read this one because of an out of context panel i saw on Twitter and it did not disappoint it is like reaally fun. i love the art and i love Bunny. <br>10/10 it's only 60 pages long so it's pretty short"
+      },
+      "laddm": {
+        background: "url('images/loveanddreamsbg.png') no-repeat center center / cover",
+        title: "Love and Dreams Don't Mix",
+        artist: "by Torii Shiduku",
+        description: "after being at the top of the entrance exams, Kurata Hikaru's grades begin to fall rapidly after falling in love at first sight with Kira Kairi. to fix the situation, Kurata decides she needs to get her heart broken at soon as possible, so she tells Kira she loves her, and that Kira should reject her. this one is pretty short, you can read it all in about the length of a Constant Companions (Deluxe Edition) (I Checked). reeeeally good nonetheless. Kurata is me. <br>10/10 i wish theme parks were real ; ("
+      },
+      "newfriend": {
+        background: "url('images/newfriendbg.png') no-repeat center center / cover",
+        title: "My New Friend Wasn't What I Expected",
+        artist: "by Kai Bashira",
+        description: "title is self explanatory. Nakamura Hinata, on her first day of school, decides to have lunch the cute girl that sits next to her, Mishima Yuzuki. after talking for a while, they agree to go to an event together. little does Hinata know, but her New Friend. Wasn't What she. Expected. Yuzuki's whole vibe is completely different outside school, her clothes being way more <a href='https://x.com/bashira0777/status/1752306859061440840/photo/1'>Edgy and Street</a>. massively envious of the way Yuzu looks she is so pretty it Pisses Me Off (/pos). 9/10 kinda short and not enough yuri ;( really pretty artstyle though"
+      },
+      "lonelygirl": {
+        background: "url('images/lonelygirlbg.png') no-repeat center center / cover",
+        title: "Can't Say No to the Lonely Girl",
+        artist: "by Kashikaze",
+        description: "Sakurai Ayaka is a top student in her classes. despite that, she is really bad at taking exams and failed getting into the university she wanted to go to. her teacher (Can't Remember Her Name Lol) told her she would give her a recommendation to any school of her choice, if she manages to get absent student Honda Sora to start coming to school. Sora finds out about this agreement, however, and only agrees to continue coming back to school if Ayaka fulfills one favor for her every day. i lost count of how many times they make out throughout this one. one character gets introduced halfway through and i thought i was going to hate her but she's my Favorite outside the two main characters. 10/10 <br><br>addendum: <a href='https://x.com/Cat2Sora/status/1625444002261786624/photo/2'>oh my. dear god.</a>"
+      },
+      "villainess": {
+        background: "url('images/villainessbg.png') no-repeat center center / cover",
+        title: "I'm In Love With The Villainess",
+        artist: "by Inori and Aono Shimo",
+        description: "office worker Ohashi Rei, after working herself to death, finds herself in the world of her favorite otome (story based romance game with a female protagonist targeted towards women) videogame in the body of Taylor Rae, the game's main character. in the game, there are originally three princes to choose from to try and get together with. unfortunately for them, Rei is a <span style='color: #e90001'>L</span><span style='color: #ff6c01'>E</span><span style='color: #ff9446'>S</span><span style='color: #ffffff'>B</span><span style='color: #e45aa8'>I</span><span style='color: #c44e93'>A</span><span style='color: #b40063'>N</span>!!! and only has eyes for the game's main villainess, François Claire. Rei also wants to save Claire from her terribly ill fate with her vast knowledge of the game's world, characters and general plot. this one is one of my recent favorites Ever i love Rei's and Claire's relationship at the beginning a lot. <br>light spoilers ahead i'll try to be Kinda Vague >> i reaaally like the way transgenderism is portrayed as 'being born with one sex but being cursed to live as the other', i honestly did not care about [Character] until that storyline and now she is one of my favorites it's reeeally awesome. Rei has a really good way with words, i liked the way she argued against one of the nuns at church over the rightness of homosexuality (my goat ❤️❤️).<br>12/10 chapter 55 ;( yuri denierd"
+      },
+      "shygirl": {
+        background: "url('images/shygirlbg.png') no-repeat center center / cover",
+        title: "I Want to be Liked By That Shy Girl",
+        artist: "by Chiba Laki",
+        description: "while out shopping, shy introvert Shiraishi Konomi stumbles upon pretty, athletic and popular classmate Akaogi Ayame working at the cash register. Konomi agonizes over the small talk she would have to make at the cashier (same), but it all goes smoothly after Ayame recognizes and calls out to Konomi. looking at this interaction from the opposite point of view, Ayame really wants to be <del>Liked by that Shy Girl</del> Konomi's friend, and is overjoyed to have talked to her for the first time. after a seat change in their class, they both end up sitting right next to each other. this leads to them talking more often and becoming friends. this one is Reeeeeally short (for some reason i put off reading it for like a week lol). relative to its length it's pretty slow-burn. i kinda wish there was More but that is a purely selfish ask. Konomi is me. <br>9/10 i felt like it moved really fast and really slow at the same time"
+      },
+      "lovesong": {
+        background: "url('images/lovesongbg.png') no-repeat center center / cover",
+        title: "Whisper Me A Love Song",
+        artist: "by Takeshima Eku",
+        description: "on her first day of highschool, Kino Himari attends her school's freshman welcoming party and falls in love (as a fan) with the singer of one of the bands, Asanagi Yori. after the concert is over, Himari runs into Yori again and tells her feelings. Yori however, interprets these feelings as romantic and comes to fall in love with Himari, and promises to make Himari fall for her for real. i expected this one to be short because of how quickly the main characters confess but i started reading this one at around 11pm-12am and finished reading at 4am Lol. i really like how the story doesn't only focus on the two main characters and instead focuses on every character's different experiences and perspectives over love. i also like the web of connections that ties everyone together. i'm kind of really bad at remembering names so it was a little difficult to keep track of who knows who knows who but As Of Catching Up i remember most of the character's relations to one another!! (still don't remember all their names though HaHa). <br>11/10 communication is key always!!"
+      },
+      
+    };  
+  
+    let isTyping = false;
+    let typingIndex = 0;
+    let typingTimeout = null;
+    let scheduledMessageTimeout = null;
+    let typingTimeouts = [];
+
+function startTyping(htmlString, containerId = "info", speed = 50) {
+  if (isTyping) return;
+
+  isTyping = true;
+  const container = document.getElementById(containerId);
+  typingTimeouts.forEach(clearTimeout);
+  typingTimeouts = [];
+  container.innerHTML = "* ";
+
+  const temp = document.createElement("div");
+  temp.innerHTML = htmlString;
+
+  const nodes = [];
+
+  function extractNodes(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      nodes.push({ type: "text", content: node.textContent });
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      if (node.tagName === "IMG") {
+        nodes.push({ type: "element", content: node.outerHTML });
+      } else {
+        for (const child of node.childNodes) {
+          extractNodes(child);
+        }
+      }
+    }
+  }
+
+  for (const child of temp.childNodes) {
+    extractNodes(child);
+  }
+
+  let i = 0;
+
+  function typeNext() {
+    if (i >= nodes.length) {
+      isTyping = false;
+      return;
+    }
+
+    const { type, content } = nodes[i];
+
+    if (type === "text") {
+      let charIndex = 0;
+
+      function typeChar() {
+        if (charIndex >= content.length) {
+          i++;
+          typeNext();
+          return;
+        }
+
+        container.innerHTML += content[charIndex];
+
+        charIndex++;
+        const timeout = setTimeout(typeChar, speed);
+        typingTimeouts.push(timeout);
+      }
+
+      typeChar();
+    } else if (type === "element") {
+      container.innerHTML += content;
+      i++;
+      typeNext();
+    }
+  }
+
+  typeNext();
+}
+
+  </script>
+</body>
+</html>

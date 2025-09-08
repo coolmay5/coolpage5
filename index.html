@@ -1,0 +1,1133 @@
+<html lang="en">
+  <head>
+    <title>cool page 5</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <script src="https://unpkg.com/tone"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+        font-family: Arial, sans-serif;
+        background-color: black;
+        color: white;
+        overflow: hidden;
+      }
+      
+      .container {
+        margin-left: 450px;
+        display: flex;
+        height: 100%;
+      }
+      
+      .sidebar {
+        position: fixed;
+        width: 450px;
+        height: 0vh;
+        bottom: 0;
+        left: 0;
+        padding: 0;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+        z-index: 2;
+        background: #fff;
+        border: solid #0059fb;
+        transition: height 0.6s ease;
+      }
+      
+      .swiper {
+        width: 100%;
+        height: 150px;
+      }
+      
+      .swiper-slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 0 0 calc(100% / 3);
+        max-width: calc(100% / 3);
+      }
+      
+      .swiper-slide img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        cursor: pointer;
+      }
+      
+      @font-face {
+        font-family: undertaleFont;
+        src: url(PixelOperator-Bold.ttf);
+      }
+      
+      #top {
+        position: sticky;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 8px;
+        padding: 10px;
+        font-size: 1.2em;
+        background: linear-gradient(#39a8f7, #0059fb 33%);
+        color: white;
+        height: auto;
+        top: 0;
+        width: 430px;
+        height: 30px;
+        z-index: 10;
+      }
+
+      #infor, #infor2, #points {
+        display: none;
+        overflow: visible;
+        padding: 10px;
+        position: absolute;
+        font-size: 1.5em;
+        border: solid #0059fb;
+        border-radius: 2px;
+        background-color: #f6f6f6;
+        color: #000;
+        text-align: left;
+        font-family: 'Tahoma';
+        white-space: pre-wrap;
+        transition: width 0.6s ease, opacity 0.1s ease-in-out;
+        padding: 10px 10px 0px 10px;
+        width: 0;
+        min-height: 6em;
+        z-index: 3;
+      }
+      
+      #infor {
+        top: 62.4px;
+        left: 7px;
+      }
+      
+      #infor2 {
+        top: 523.2px;
+        left: 7px;
+      }
+      
+      #points {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: normal;
+        width: 100%;
+        border: 0;
+        padding: 0;
+        text-align: center;
+      }
+      
+      #wrrrr {
+        padding-top: 20px;  
+      }
+      
+      #window1, #window2 {
+        position: absolute;
+        top: -5px;
+        left: -2px;
+        right: -2px;
+        background: linear-gradient(#39a8f7, #0059fb 33%);
+        color: white;
+        padding: 6px 10px;
+        font-weight: bold;
+        height: auto;
+        border-bottom: 1px solid #003bb5;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        font-size: 0.7em;
+        z-index: 50000;
+        display:flex;
+        align-items: center;
+      }
+      
+      #window2 {
+        display: none;  
+      }
+      
+      #taskbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        z-index: 9999;
+        display: flex;
+        padding: 0 10px;
+        background-image: url('images/taskbar1.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        font-family: 'Tahoma';
+        font-size: 1.2em;
+        white-space: nowrap;
+        transition: height 0.3s ease;
+        height: 40px;
+        align-items: center;
+      }
+      
+      #taskbar img {
+        position: absolute;
+        height: 100%;
+        width: auto;
+      }
+      
+      .sortable-ghost {
+        opacity: 0.4;
+      }
+      
+      #time {
+        position: absolute;
+        font-size: 0.9em;
+        right: 0;
+        padding: 6px;
+        padding-right: 24px;
+        z-index: 100;
+      }
+
+      #window h2, #window p {
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+      }
+      
+      #window {
+        margin-left: -22.5px;
+        margin-right: -22.5px;
+        gap: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: none;
+        align-items: center;
+        justify-content: flex-start;
+        max-width: calc(100% + 40px);;
+        margin-top: -20px;
+        padding: 5px 10px;
+        border-radius: 4px 4px 0 0;
+        background: linear-gradient(#39a8f7, #0059fb 33%);
+        height: auto;
+        transition: all 0.4s ease-in-out;
+        font-family: 'Trebuchet MS'
+      }
+      
+      .main-content {
+        flex: 1;
+        height: calc(100vh - 40px);
+        margin-bottom: 40px;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 20px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url('images/defaultbg.png');
+        transition: all 0.4s ease-in-out;
+        box-sizing: border-box;
+      }
+      
+      .main-content img {
+        width: 4vw;
+        height: 4vw;
+        display: block;
+        margin: 0 auto;
+      }
+      
+      .main-content p {
+        text-align: center;
+        max-width: 6vw;
+        margin-top: 0.5vh;
+        font-size: 1vw;
+        color: white;
+        text-shadow: 1px 1px 2px black;
+        white-space: wrap;
+        text-overflow: ellipsis;
+      }
+      
+      #scored {
+        position: absolute;
+        display: block;
+        opacity: 0;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 2px;
+        border-style: solid;
+        border-color: #0059fb;
+        backdrop-filter: blur(5px);
+        transition: opacity 0.1s ease-in-out;  
+        left: 5000px;
+        z-index: 3548353480508; 
+      }
+      
+      #score {
+        font-size: 1em;
+        position: absolute;
+        top: -5px;
+        left: -2px;
+        right: -2px;
+        background: linear-gradient(#39a8f7, #0059fb 33%);
+        color: white;
+        padding: 6px 10px;
+        font-weight: bold;
+        height: auto;
+        border-bottom: 1px solid #003bb5;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        z-index: 50000;
+        display:flex;
+        align-items: center;
+      }
+      
+      .desktopicon {
+        display: flex;
+        position: absolute;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 10px;
+        cursor: pointer;
+        width: 6vw;
+        border: 1px solid transparent;
+        z-index: 5;
+      }
+            
+      .desktopicon:hover {
+        background-color: rgba(0, 120, 215, 0.2);
+        border: 1px solid rgba(0, 120, 215, 0.6);
+      }
+      
+      .desktopicon:focus {
+        background-color: rgba(0, 120, 215, 0.4);
+        border: 1px solid rgba(0, 120, 215, 0.8);
+      }
+      
+      #animeg {
+        top: 20vh;  
+      }
+      
+      #carg {
+        top: 276px;
+      }
+      
+      #crazyg {
+        top: 393px;
+      }
+      
+      #trashg {
+        top: 75vh; 
+        right: 20px;
+      }
+      
+    </style>
+    <style type="text/css" id="operaUserStyle"></style>
+    <style type="text/css">:root img[width="728"][height="90"], :root [href="https://adstub.net/cina777/"], :root [href="https://adstub.net/arab777/"], :root [href="https://adstub.net/ratu89/"], :root [href="https://adstub.net/judi89/"], :root [href^="//mage98rquewz.com/"], :root [href^="//x4pollyxxpush.com/"], :root span[id^="ezoic-pub-ad-placeholder-"], :root ins.adsbygoogle[data-ad-slot], :root ins.adsbygoogle[data-ad-client], :root img[src^="https://s-img.adskeeper.com/"], :root guj-ad, :root gpt-ad, :root div[id^="zergnet-widget"], :root div[id^="vuukle-ad-"], :root div[id^="taboola-stream-"], :root div[id^="sticky_ad_"], :root div[id^="st"][style^="z-index: 999999999;"], :root div[id^="gpt_ad_"], :root div[id^="ezoic-pub-ad-"], :root div[id^="dfp-ad-"], :root div[id^="crt-"][style], :root div[id^="adspot-"], :root div[id^="adrotate_widgets-"], :root ps-connatix-module, :root div[id^="ad_position_"], :root div[id^="ad-div-"], :root div[id*="ScriptRoot"], :root div[id*="MarketGid"], :root [href="https://adstub.net/rusia777/"], :root div[data-id-advertdfpconf], :root div[data-dfp-id], :root hl-adsense, :root div[data-contentexchange-widget], :root div[data-alias="300x250 Ad 2"], :root div[data-adzone], :root div[data-adunit-path], :root div[data-adname], :root div[data-ad-targeting], :root div[data-ad-region], :root div[data-ad-placeholder], :root div[aria-label="Ads"], :root display-ads, :root display-ad-component, :root atf-ad-slot, :root aside[id^="adrotate_widgets-"], :root amp-fx-flying-carpet, :root amp-embed[type="taboola"], :root amp-connatix-player, :root amp-ad-custom, :root amp-ad, :root div[id^="google_dfp_"], :root ad-slot, :root ad-shield-ads, :root a[style="width:100%;height:100%;z-index:10000000000000000;position:absolute;top:0;left:0;"], :root a[onmousedown^="this.href='https://paid.outbrain.com/network/redir?"] + .ob_source, :root a[href^="https://xbet-4.com/"], :root div[id^="ad-position-"], :root a[href^="https://www.toprevenuegate.com/"], :root a[href^="https://www.purevpn.com/"][href*="&utm_source=aff-"], :root a[href^="https://www.privateinternetaccess.com/"] > img, :root a[href^="https://www.onlineusershielder.com/"], :root a[href^="https://financeads.net/tc.php?"], :root a[href^="https://www.mrskin.com/tour"], :root a[href^="https://www.infowarsstore.com/"] > img, :root a[href^="https://www.highperformancecpmgate.com/"], :root a[href^="https://www.highcpmrevenuenetwork.com/"], :root a[href^="https://www.get-express-vpn.com/offer/"], :root a[href^="https://lnkxt.bannerator.com/"], :root a[href^="https://www.geekbuying.com/dynamic-ads/"], :root a[href^="https://www.financeads.net/tc.php?"], :root a[href^="https://www.effectiveratecpm.com/"], :root [href^="https://www.herbanomic.com/"] > img, :root a[href^="https://maymooth-stopic.com/"], :root a[href^="https://www.dql2clk.com/"], :root a[href^="https://www.nutaku.net/signup/landing/"], :root a[href^="https://www.dating-finder.com/signup/?ai_d="], :root a[href^="https://explore-site.com/"], :root a[href^="https://www.brazzersnetwork.com/landing/"], :root a[href^="https://www.adxsrve.com/"], :root [data-template-type="nativead"], :root a[href^="https://www.endorico.com/Smartlink/"], :root a[href^="https://www.adultempire.com/"][href*="?partner_id="], :root a[href^="https://voluum.prom-xcams.com/"], :root a[href^="https://twinrdsyte.com/"], :root a[href^="https://twinrdsrv.com/"], :root a[href^="https://trk.nfl-online-streams.club/"], :root a[href^="https://tracking.avapartner.com/"], :root a[href^="https://track.wg-aff.com"], :root a[href^="https://track.ultravpn.com/"], :root a[href^="https://track.afcpatrk.com/"], :root a[href^="https://torguard.net/aff.php"] > img, :root [data-identity="adhesive-ad"], :root a[href^="https://tc.tradetracker.net/"] > img, :root a[href^="https://tatrck.com/"], :root a[href^="https://click.candyoffers.com/"], :root [href^="https://zstacklife.com/"] img, :root a[href^="https://t.aslnk.link/"], :root a[href^="https://t.adating.link/"], :root a[href^="https://go.trackitalltheway.com/"], :root [href^="https://track.fiverr.com/visit/"] > img, :root a[href^="https://syndication.exoclick.com/"], :root a[href^="https://syndication.dynsrvtbg.com/"], :root div[data-alias="300x250 Ad 1"], :root a[href^="https://syndicate.contentsserved.com/"], :root a[href^="https://svb-analytics.trackerrr.com/"], :root [href="https://adstub.net/gaza88/"], :root a[href^="https://ad.doubleclick.net/"], :root a[href^="https://static.fleshlight.com/images/banners/"], :root a[href^="https://slkmis.com/"], :root bottomadblock, :root a[href^="https://s.zlinkd.com/"], :root a[href^="https://s.zlink3.com/"], :root a[href^="https://www.mrskin.com/account/"], :root a[href^="https://s.optzsrv.com/"], :root a[href^="https://s.ma3ion.com/"], :root a[href^="https://s.eunow4u.com/"], :root #kt_player > div[style$="display: block;"][style*="inset: 0px;"], :root [href$="/sexdating.php"], :root a[href^="https://quotationfirearmrevision.com/"], :root a[href^="https://pubads.g.doubleclick.net/"], :root a[href^="https://prf.hn/click/"][href*="/camref:"] > img, :root a[href^="https://www.dating-finder.com/?ai_d="], :root a[href^="https://serve.awmdelivery.com/"], :root a[href^="https://prf.hn/click/"][href*="/adref:"] > img, :root app-ad, :root [href^="https://ap.octopuspop.com/click/"] > img, :root a[href^="https://postback1win.com/"], :root a[href^="https://mmwebhandler.aff-online.com/"], :root a[href^="https://www.bet365.com/"][href*="affiliate="], :root a[href^="https://pb-track.com/"], :root a[href^="https://pb-front.com/"], :root a[href^="https://paid.outbrain.com/network/redir?"], :root a[href^="https://streamate.com/landing/click/"], :root div[class^="Adstyled__AdWrapper-"], :root a[href^="https://osfultrbriolenai.info/"], :root a[href^="https://upsups.click/"], :root a[href^="https://ndt5.net/"], :root a[href^="https://natour.naughtyamerica.com/track/"], :root a[href^="https://mediaserver.entainpartners.com/renderBanner.do?"], :root a[href^="https://m.do.co/c/"] > img, :root a[href^="https://lead1.pl/"], :root a[href^="https://landing.brazzersnetwork.com/"], :root a[href^="https://join.virtuallust3d.com/"], :root a[href^="https://kiksajex.com/"], :root a[href^="https://juicyads.in/"], :root a[href^="https://snowdayonline.xyz/"], :root a[href^="https://mediaserver.gvcaffiliates.com/renderBanner.do?"], :root a[href^="https://join.dreamsexworld.com/"], :root a[href^="https://jaxofuna.com/"], :root a[href^="https://italarizege.xyz/"], :root a[href^="https://iqbroker.com/"][href*="?aff="], :root a[href^="https://identicaldrench.com/"], :root a[href^="https://hot-growngames.life/"], :root a[href^="https://helmethomicidal.com/"], :root a[href^="https://golinks.work/"], :root ark-top-ad, :root a[href^="https://s.zlinkn.com/"], :root a[href^="https://go.xxxvjmp.com/"], :root [class^="tile-picker__CitrusBannerContainer-sc-"], :root a[href^="https://go.xxxiijmp.com"], :root a[href^="https://go.xtbaffiliates.com/"], :root [data-role="tile-ads-module"], :root a[href^="https://go.xlviirdr.com"], :root div[class$="-adlabel"], :root a[href^="https://go.xlviiirdr.com"], :root a[href^="https://ismlks.com/"], :root [href^="https://www.mypillow.com/"] > img, :root a[href^="https://go.xlirdr.com"], :root [data-css-class="dfp-inarticle"], :root a[href^="https://l.hyenadata.com/"], :root a[href^="https://go.tmrjmp.com"], :root a[href^="https://zirdough.net/"], :root a[href^="https://s.deltraff.com/"], :root a[href^="https://go.markets.com/visit/?bta="], :root a[href^="https://billing.purevpn.com/aff.php"] > img, :root a[href^="https://go.hpyrdr.com/"], :root a[href^="https://lijavaxa.com/"], :root a[href^="https://go.goaserv.com/"], :root a[href^="https://t.hrtye.com/"], :root a[href^="https://go.etoro.com/"] > img, :root a[href^="https://go.dmzjmp.com"], :root a[href^="https://www.bang.com/?aff="], :root #mgb-container > #mgb, :root a[href^="https://go.admjmp.com"], :root a[href^="https://ak.stikroltiltoowi.net/"], :root a[href^="https://get.surfshark.net/aff_c?"][href*="&aff_id="] > img, :root a[href^="https://www.adskeeper.com"], :root a[data-redirect^="https://paid.outbrain.com/network/redir?"], :root [href^="https://clicks.affstrack.com/"] > img, :root a[href^="https://ak.hauchiwu.com/"], :root a[href^="https://engine.phn.doublepimp.com/"], :root a[href^="https://engine.blueistheneworanges.com/"], :root a[href^="https://drumskilxoa.click/"], :root a[href^="https://dl-protect.net/"], :root a[href*=".foxqck.com/"], :root a[href^="https://ctosrd.com/"], :root a[href^="https://clixtrac.com/"], :root [href^="https://noqreport.com/"] > img, :root a[href^="https://clicks.pipaffiliates.com/"], :root app-advertisement, :root a[href^="https://getmatchedlocally.com/"], :root a[href^="https://clickins.slixa.com/"], :root a[href^="https://datewhisper.life/"], :root a[href^="https://get-link.xyz/"], :root a[href^="https://click.linksynergy.com/fs-bin/"] > img, :root a[href^="https://combodef.com/"], :root a[href^="https://click.hoolig.app/"], :root a[href^="https://click.ggpickaff.com/"], :root a[href^="https://track.totalav.com/"], :root a[href^="https://ctrdwm.com/"], :root img[src^="https://images.purevpnaffiliates.com"], :root a[href^="https://porntubemate.com/"], :root a[href^="https://clickadilla.com/"], :root a[href^="https://click.dtiserv2.com/"], :root a[href^="https://go.xlvirdr.com"], :root a[href^="http://www.iyalc.com/"], :root a[href^="https://claring-loccelkin.com/"], :root a[href^="https://bongacams2.com/track?"], :root a[href^="https://t.ajrkm1.com/"], :root a[href^="https://bongacams10.com/track?"], :root a[href^="https://www.sheetmusicplus.com/"][href*="?aff_id="], :root a[href^="https://bngpt.com/"], :root a[href^="https://black77854.com/"], :root a[href^="https://rixofa.com/"], :root #ads[style^="position: absolute; z-index: 30; width: 100%; height"], :root a[href^="https://disobediencecalculatormaiden.com/"], :root a[href^="https://best-experience-cool.com/"], :root a[href^="https://banners.livepartners.com/"], :root a[href^="https://myclick-2.com/"], :root a[href^="https://sexynearme.com/"], :root a[href^="https://baipahanoop.net/"], :root a[href^="http://revolvemockerycopper.com/"], :root a[href^="https://awptjmp.com/"], :root a[href^="https://join.sexworld3d.com/track/"], :root a[href^="https://aweptjmp.com/"], :root a[href^="https://ausoafab.net/"], :root a[href^="https://adclick.g.doubleclick.net/"], :root a[href^="https://aj1070.online/"], :root a[href^="https://bc.game/"], :root a[href^="https://ak.oalsauwy.net/"], :root a[href^="https://a.bestcontentoperation.top/"], :root a[href^="https://adultfriendfinder.com/go/"], :root a[href^="https://ads.planetwin365affiliate.com/"], :root a[href^="https://ads.leovegas.com/"], :root .nya-slot[style], :root a[href^="https://a.bestcontentweb.top/"], :root a[href^="https://a2.adform.net/"], :root a[href^="https://a.candyai.love/"], :root a[href^="https://playnano.online/offerwalls/?ref="], :root a[href^="https://a.adtng.com/"], :root .banner-img > .pbl, :root [data-m-ad-id], :root a[href^="https://a-ads.com/"], :root [id^="ad_slider"], :root a[href^="https://click.ggpickyaff.com/"], :root broadstreet-zone-container, :root a[href^="https://ak.psaltauw.net/"], :root a[href^="https://1winpb.com/"], :root div[id^="rc-widget-"], :root a[href^="http://eslp34af.click/"], :root a[href^="https://turnstileunavailablesite.com/"], :root a[href^="https://chaturbate.com/in/?"], :root a[href^="https://prf.hn/click/"][href*="/creativeref:"] > img, :root a[href*="&maxads="], :root a[href^="http://www.adultempire.com/unlimited/promo?"][href*="&partner_id="], :root a[href^="https://1betandgonow.com/"], :root a[href^="https://eergortu.net/"], :root div[id^="optidigital-adslot"], :root a[href^="https://123-stream.org/"], :root a[href^="https://in.rabbtrk.com/"], :root a[href^="http://www.h4trck.com/"], :root a[href^="http://www.friendlyduck.com/AF_"], :root a[href^="https://go.rmhfrtnd.com"], :root a[href^="https://allhost.shop/aff.php?"], :root [data-dynamic-ads], :root a[href^="http://vnte9urn.click/"], :root a[href^="http://troopsassistedstupidity.com/"], :root a[href^="http://trk.globwo.online/"], :root a[href^="https://random-affiliate.atimaze.com/"], :root a-ad, :root a[href^="https://offhandpump.com/"], :root a[href^="http://stickingrepute.com/"], :root #slashboxes > .deals-rail, :root a[href^="http://roadcontagion.com/"], :root a[href^="http://premonitioninventdisagree.com/"], :root a[href^="http://cam4com.go2cloud.org/aff_c?"], :root a[href^="https://ads.betfair.com/redirect.aspx?"], :root [href^="https://www.mypatriotsupply.com/"] > img, :root a[href^="https://trk.softonixs.xyz/"], :root [data-advadstrackid], :root a[href^="http://muzzlematrix.com/"], :root a[href^="https://track.adform.net/"], :root a[href^="http://avthelkp.net/"], :root a[href^="https://a.medfoodhome.com/"], :root a[href^="https://engine.flixtrial.com/"], :root [data-type="ad-vertical"], :root [data-taboola-options], :root a[href^="http://annulmentequitycereals.com/"], :root a[href^="//startgaming.net/tienda/" i], :root a[href^="https://join.virtualtaboo.com/track/"], :root [id^="ad_sky"], :root a[href^="http://coefficienttolerategravel.com/"], :root a[href^="https://a.medfoodsafety.com/"], :root a[href^="//go.eabids.com/"], :root a[href^="//ejitsirdosha.net/"], :root a[href^=" https://www.friendlyduck.com/AF_"], :root [data-cl-spot-id], :root a[href*="/jump/next.php?r="], :root a[href^="https://go.rmishe.com/"], :root [href^="https://ilovemyfreedoms.com/landing-"], :root a[href^="https://syndication.optimizesrv.com/"], :root a[href*="//daichoho.com/"], :root a[href^="https://go.nordvpn.net/aff"] > img, :root .\[\&_\.gdprAdTransparencyCogWheelButton\]\:\!pjra-z-\[5\], :root [href^="http://clicks.totemcash.com/"], :root a[href^="https://ad.zanox.com/ppc/"] > img, :root a[href^="https://lone-pack.com/"], :root [data-d-ad-id], :root a[href*=".engine.adglare.net/"], :root a[href^="https://t.ajrkm3.com/"], :root [href^="https://aads.com/campaigns/"], :root a[href^="//stighoazon.com/"], :root [href^="https://www.profitablegatecpm.com/"], :root div[id^="lazyad-"], :root a[href^="http://com-1.pro/"], :root a[href*=".cfm?domain="][href*="&fp="], :root [data-ad-name], :root a[href^="https://loboclick.com/"], :root a[data-url^="https://vulpix.bet/?ref="], :root a[href^="https://ab.advertiserurl.com/aff/"], :root a[data-oburl^="https://paid.outbrain.com/network/redir?"], :root a[href^="https://go.xlivrdr.com"], :root [onclick^="location.href='https://1337x.vpnonly.site/"], :root [name^="google_ads_iframe"], :root [id^="section-ad-banner"], :root a[href^="https://www.goldenfrog.com/vyprvpn?offer_id="][href*="&aff_id="], :root a[href*="//jjgirls.com/sex/Chaturbate"], :root [id^="ad-wrap-"], :root [href^="https://zone.gotrackier.com/"], :root a[href^="http://sarcasmadvisor.com/"], :root [href^="https://www.restoro.com/"], :root [href^="https://www.targetingpartner.com/"], :root .section-subheader > .section-hotel-prices-header, :root [href^="https://www.hostg.xyz/"] > img, :root a[href^="http://adultfriendfinder.com/go/"], :root a[href^="https://fastestvpn.com/lifetime-special-deal?a_aid="], :root a[href^="https://tour.mrskin.com/"], :root [href^="https://www.brighteonstore.com/products/"] img, :root citrus-ad-wrapper, :root a[href^="https://go.grinsbest.com/"], :root a[href^="https://vo2.qrlsx.com/"], :root [href^="https://www.avantlink.com/click.php"] img, :root a[href^="https://t.acam.link/"], :root a[href^="https://go.strpjmp.com/"], :root [href^="https://url.totaladblock.com/"], :root div[id^="div-ads-"], :root [href^="https://rapidgator.net/article/premium/ref/"], :root [href^="https://join.girlsoutwest.com/"], :root a[href^="https://activate-game.com/"], :root .scroll-fixable.rail-right > .deals-rail, :root [data-wpas-zoneid], :root a[href^="https://track.aftrk3.com/"], :root [href^="https://join3.bannedsextapes.com"], :root a[href^="https://bodelen.com/"], :root a[href*=".g2afse.com/"], :root div[id^="adngin-"], :root [data-rc-widget], :root span[data-ez-ph-id], :root [href^="https://track.aftrk1.com/"], :root [href^="https://join.playboyplus.com/track/"], :root a[href^="https://go.xxxijmp.com"], :root [href^="https://istlnkcl.com/"], :root a[href^="https://tm-offers.gamingadult.com/"], :root [href^="https://charmingdatings.life/"], :root [href="https://adstub.net/indo666/"], :root [href^="https://glersakr.com/"], :root a[href^="https://a.bestcontentfood.top/"], :root [href^="https://cpa.10kfreesilver.com/"], :root [data-id^="div-gpt-ad"], :root a[href^="https://tracker.loropartners.com/"], :root [href^="https://awbbjmp.com/"], :root div[ow-ad-unit-wrapper], :root a[data-href^="http://ads.trafficjunky.net/"], :root a[href^="http://partners.etoro.com/"], :root a[href^="https://www.friendlyduck.com/AF_"], :root [href^="https://ad1.adfarm1.adition.com/"], :root a[href^="https://bngprm.com/"], :root [href^="https://shiftnetwork.infusionsoft.com/go/"] > img, :root a[href^="https://go.bushheel.com/"], :root a[href^="https://ctjdwm.com/"], :root a[href^="https://camfapr.com/landing/click/"], :root div[data-ad-wrapper], :root .gnt_em_vp_c[data-g-s="vp_dk"], :root [href="//sexcams.plus/"], :root [href^="http://www.mypillow.com/"] > img, :root a[href^="https://promerycergerful.com/"], :root #kt_player > a[target="_blank"], :root a[href^="http://bongacams.com/track?"], :root [href^="http://mypillow.com/"] > img, :root [href="https://ourgoldguy.com/contact/"] img, :root .ob_container .item-container-obpd, :root [id^="div-gpt-ad"], :root a[href^="https://go.rmhfrtnd.com/"], :root [href="https://jdrucker.com/gold"] > img, :root a[href^="https://www.liquidfire.mobi/"], :root .grid > .container > #aside-promotion, :root DFP-AD, :root [href^="https://go.xlrdr.com"], :root a[href^="https://s.cant3am.com/"], :root [data-testid^="taboola-"], :root a[href^="https://track.1234sd123.com/"], :root zeus-ad, :root [data-testid="prism-ad-wrapper"], :root [href^="https://ad.admitad.com/"], :root [href^="https://mypillow.com/"] > img, :root [data-testid="ad_testID"], :root [href^="https://antiagingbed.com/discount/"] > img, :root a[href*=".adsrv.eacdn.com/"], :root [href^="https://optimizedelite.com/"] > img, :root [data-name="adaptiveConstructorAd"], :root a[href^="https://go.cmtaffiliates.com/"], :root [data-testid="adBanner-wrapper"], :root [href^="https://mylead.global/stl/"] > img, :root [href^="https://mypatriotsupply.com/"] > img, :root a[href^="https://go.hpyjmp.com"], :root iframe[scrolling="no"][sandbox*="allow-popups allow-modals"][style^="width: 100%; height: 100%; border: none;"], :root [href^="https://mystore.com/"] > img, :root a[href^="https://81ac.xyz/"], :root [href^="https://wct.link/click?"], :root div[data-adunit], :root app-large-ad, :root [href^="https://turtlebids.irauctions.com/"] img, :root a[href^="https://believessway.com/"], :root a[href^="https://witnessjacket.com/"], :root [data-mobile-ad-id], :root [class^="amp-ad-"], :root a[href^="http://handgripvegetationhols.com/"], :root a[href^="https://go.bbrdbr.com"], :root a[href^="https://fc.lc/ref/"], :root [data-adshim], :root topadblock, :root a[href^="//s.zlinkd.com/"], :root #teaser1[style^="width:autopx;"], :root [href^="https://www.cloudways.com/en/?id"], :root [data-asg-ins], :root a[href^="https://gamingadlt.com/?offer="], :root [data-desktop-ad-id], :root [data-adbridg-ad-class], :root #teaser3[style^="width:autopx;"], :root [data-adblockkey], :root [data-block-type="ad"], :root [data-ad-width], :root [onclick*="content.ad/"], :root [data-ad-manager-id], :root AMP-AD, :root [data-ad-cls], :root [data-ez-name], :root a[href^="https://go.mnaspm.com/"], :root a[href^="https://service.bv-aff-trx.com/"], :root a[href^="https://6-partner.com/"], :root [class^="s2nPlayer"], :root a[href^="https://traffdaq.com/"], :root [data-testid="commercial-label-taboola"], :root [class^="div-gpt-ad"], :root a[href^="http://tc.tradetracker.net/"] > img, :root a[href^="https://www8.smartadserver.com/"], :root a[href^="https://pb-imc.com/"], :root [href^="https://affiliate.fastcomet.com/"] > img, :root [class^="adDisplay-module"], :root [data-freestar-ad][id], :root AD-SLOT, :root a[href^="https://www.googleadservices.com/pagead/aclk?"] > img, :root [data-ad-module], :root a[href^="https://go.skinstrip.net"][href*="?campaignId="], :root #teaser2[style^="width:autopx;"], :root [data-revive-zoneid], :root a[href^="https://losingoldfry.com/"], :root div[id^="div-gpt-"], :root a[href^="https://gml-grp.com/"], :root .ob_dual_right > .ob_ads_header ~ .odb_div, :root a[href^="https://cam4com.go2cloud.org/"], :root a[href^="http://li.blogtrottr.com/click?"], :root a[onmousedown^="this.href='https://paid.outbrain.com/network/redir?"], :root a[href^="https://t.ajump1.com/"], :root a[href^="https://go.xxxjmp.com"], :root #leader-companion > a[href], :root a[href^="https://wittered-mainging.com/"], :root #teaser3[style="width: 100%;text-align: center;display: scroll;position:fixed;bottom: 0;margin: 0 auto;z-index: 103;"], :root [href^="https://wwp.hoqodd.com/redirect-zone/"] { display: none !important; }</style>
+  </head>
+<body>
+  <div class="movetab" id="infor"><div class="tabtop" id="window1">INFO<img class="close-button" style="width: 20px; margin-left: auto;" src="images/X.png" onmouseover="this.src='images/Xhover.png';" onmouseout="this.src='images/X.png';" /></div><p id="info"></p></div>
+  <div class="movetab" id="infor2"><div class="tabtop" id="window2">QUOTE OF THE NOW<img class="close-button" style="width: 20px; margin-left: auto;" src="images/X.png" onmouseover="this.src='images/Xhover.png';" onmouseout="this.src='images/X.png';" /></div><p id="info2"></p></div>
+  <div class="sidebar">
+    <div id="top"><a href="../about-coolmay.html"><img src="images/avatar.png" style="border-radius: 2px;
+        border-style: solid;
+        border-color: white;
+        width: 32px;
+        height: auto;"></a><span>coolmay5's Cool Page 5</span></div>
+    <div style="display: block;
+        overflow: visible;
+        position: relative;
+        margin: 12px 0 12px 0;
+        padding: 10px;
+        font-size: 1.5em;
+        white-space: pre-wrap;
+        transition: width 0.6s ease;
+        padding: 10px 10px 0px 10px;
+        width: 410px;
+        min-height: 6em;"></div>
+    </div>
+  
+  <div class="container">
+    <div class="main-content">
+      <div class="desktopicon" id="aboutg" tabindex="1"><img src="images/about.png"><p>about coolmay5</p></div>
+      <div class="desktopicon" id="animeg" tabindex="1"><img src="images/anime.png"><p>nerd corner</p></div>
+      <div class="desktopicon" id="carg" tabindex="1"><img src="images/car.png"><p>car</p></div>
+      <div class="desktopicon" id="crazyg" tabindex="1"><img src="images/g.png"><p>worm in progress</p></div>
+      <div class="desktopicon" id="trashg" tabindex="1"><img id="trashimage" src="images/recycle-bin.png"><p>trash</p></div>
+      <div class="movetab" id="scored"><div class="tabtop" id="score"><div id='scorer'>score</div><img class="close-button" style="width: 20px; height: 20px; margin: 0; margin-left: auto;" src="images/X.png" onmouseover="this.src='images/Xhover.png';" onmouseout="this.src='images/X.png';"></div>
+          <div id="gameContainer" style="width: 600px; height: 300px; margin-top: 23px;"></div></div>
+      <div id="taskbar"><a href="../"><img style="left: 0; top: 0;" src="images/start.png"></a><img style="justify-content: flex-end; right: 0;" src="images/systemtray.png"><span id="time"></span></div>
+      <div id="ufo" style="top: 2vh; left: 100vw; width: 64px; height: 64px; position: absolute;"><img src="https://static.vecteezy.com/system/resources/previews/048/759/365/non_2x/ufo-alien-ship-free-png.png"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+  <script>
+  
+  document.addEventListener('click', (event) => {
+    const button = event.target.closest('.close-button');
+    if (!button) return;
+  
+    const movetab = button.closest('.movetab');
+    if (!movetab) return;
+  
+    movetab.style.opacity = '0';
+  
+    if (movetab.id === 'infor') {
+      setTimeout(() => {
+        movetab.style.top = '62.4px';
+        movetab.style.left = '7px';
+        setTimeout(() => {
+          movetab.style.opacity = '1';
+        }, 150);
+      }, 150);
+    }
+  
+    if (movetab.id === 'infor2') {
+      setTimeout(() => {
+        movetab.style.top = '523.2px';
+        movetab.style.left = '7px';
+        setTimeout(() => {
+          movetab.style.opacity = '1';
+          document.getElementById("info2").innerText =
+            '* ' + randomQuotes[Math.floor(Math.random() * randomQuotes.length)];
+        }, 150);
+      }, 150);
+    }
+  
+    if (movetab.id === 'scored') {
+      gameOver = true;
+      renderer.domElement.remove();
+      document.getElementById('scored').style.left = '5000px';
+    }
+  });
+  
+  document.querySelectorAll('.desktopicon').forEach(icon => {
+  icon.addEventListener('mousedown', function (e) {
+    const shiftX = e.clientX - icon.getBoundingClientRect().left;
+    const shiftY = e.clientY - icon.getBoundingClientRect().top;
+
+    const container = document.querySelector('.main-content');
+    const containerRect = container.getBoundingClientRect();
+
+    function moveAt(pageX, pageY) {
+      let newLeft = pageX - shiftX;
+      let newTop = pageY - shiftY;
+    
+      newLeft = Math.max(container.offsetLeft, Math.min(newLeft, container.offsetLeft + container.clientWidth - icon.offsetWidth));
+      newTop = Math.max(container.offsetTop, Math.min(newTop, container.offsetTop + container.clientHeight - icon.offsetHeight));
+    
+      icon.style.left = newLeft - container.offsetLeft + 'px';
+      icon.style.top = newTop - container.offsetTop + 'px';
+    }
+
+    function onMouseMove(e) {
+      moveAt(e.pageX, e.pageY);
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+
+    function onMouseUp() {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      
+      if (icon === trashg) return
+      
+      const iconRect = icon.getBoundingClientRect();
+      const trashRect = trashg.getBoundingClientRect();
+      const trash = document.getElementById('trashimage')
+
+      if (
+        iconRect.top < trashRect.bottom &&
+        iconRect.bottom > trashRect.top &&
+        iconRect.left < trashRect.right &&
+        iconRect.right > trashRect.left
+      ) {
+        icon.style.display = 'none';
+        trash.src = 'images/recycle-bin-full.png'
+      }
+    }
+
+    document.addEventListener('mouseup', onMouseUp);
+    
+  });
+
+  icon.ondragstart = () => false;
+});
+
+  const moveablepart = document.querySelectorAll('.tabtop')
+  const wholetab = document.querySelectorAll('.movetab')
+  
+  moveablepart.forEach(part => {
+  const tab = part.closest('.movetab');
+  
+  part.addEventListener('mousedown', function (e) {
+    const shiftX = e.clientX - tab.getBoundingClientRect().left;
+    const shiftY = e.clientY - tab.getBoundingClientRect().top;
+
+    const container = document.querySelector('.main-content');
+    const containerRect = container.getBoundingClientRect();
+
+    function moveAt(pageX, pageY) {
+      let newLeft = pageX - shiftX;
+      let newTop = pageY - shiftY;
+      
+      if (tab == infor || tab == infor2){
+        newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - tab.offsetWidth));
+        newTop = Math.max(0, Math.min(newTop, window.innerHeight - tab.offsetHeight));
+        
+        tab.style.left = newLeft + 'px';
+        tab.style.top = newTop + 'px';
+      }
+      
+      else {
+        newLeft = Math.max(container.offsetLeft, Math.min(newLeft, container.offsetLeft + container.clientWidth - tab.offsetWidth));
+        newTop = Math.max(container.offsetTop, Math.min(newTop, container.offsetTop + container.clientHeight - tab.offsetHeight));
+        
+        tab.style.left = newLeft - container.offsetLeft + 'px';
+        tab.style.top = newTop - container.offsetTop + 'px';
+      };
+      
+    };
+
+    function onMouseMove(e) {
+      moveAt(e.pageX, e.pageY);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+
+    function onMouseUp() {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      
+      const tabRect = tab.getBoundingClientRect();
+      const trashRect = trashg.getBoundingClientRect();
+      const trash = document.getElementById('trashimage')
+
+      if (
+        tabRect.top < trashRect.bottom &&
+        tabRect.bottom > trashRect.top &&
+        tabRect.left < trashRect.right &&
+        tabRect.right > trashRect.left
+      ) {
+        if (tab.id ='scored') {gameOver = true; renderer.domElement.remove(); document.getElementById('scored').style.left = '5000px';}
+        tab.style.display = 'none';
+        trash.src = 'images/recycle-bin-full.png'
+      }
+    };
+
+    document.addEventListener('mouseup', onMouseUp);
+    
+    });
+
+    tab.ondragstart = () => false;
+  });
+
+
+    function updateClock() {
+      const topElement = document.getElementById("time");
+      const now = new Date();
+
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+  
+      const formattedTime = now.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+      topElement.textContent = formattedTime;
+    }
+updateClock();
+
+setInterval(updateClock, 10000);
+
+    document.querySelectorAll('img').forEach(img => {
+      img.onerror = () => {
+        img.src = 'images/tree.png';
+      };
+    });
+    
+    let startTypingIntervals = {};
+    
+    function startTyping4(element, text, speed = 20, key) {
+      if (startTypingIntervals[key]) {
+        clearInterval(startTypingIntervals[key]);
+      }
+
+      let i = 0;
+      element.textContent = '';
+      const interval = setInterval(() => {
+      element.textContent += text.charAt(i);
+      i++;
+      if (i >= text.length) {
+        clearInterval(interval);
+        delete startTypingIntervals[key];
+      }
+    }, speed);
+
+  startTypingIntervals[key] = interval;
+}
+    
+    const randomQuotes = [
+      "don't forget, i'm with you in the dark",
+      "i forgot",
+      "sponsored by the Pharaoh",
+      "oh to be your Constant Companion!",
+      "if you ever frame your mind and see it all, in Another Light",
+      "gone too far, with your Visions and Afterthoughts",
+      "oh, won't you stay for the ride?",
+      "shoutout Gorillamonday",
+      "this is the rarest message (lie)",
+      "why didn't Isaac just get out of the chest? is he stupid?",
+      "I'm So Fucking Scared",
+      "I LOVE YOU KASANE TETO",
+      "I LOVE YOU HATSUNE MIKU",
+      "shoutout Akita Neru",
+      "don't tap the glass",
+      "é primavera todo ano!",
+      "shoutout neocities",
+      "oh, queen of venus, hear my plea!",
+      "i was misled, by your sweet ways that i just misread",
+      "now's your chance to be a BIG SHOT!!",
+      "Dance Delightful the whole damn night!!!",
+      "zero, cross the great divide...",
+      "can we wander for a spell, and live in parallel?",
+      "じゃ~~!",
+      "i am the disaster of passion!!!",
+      "oh we can fuck until the sun burns out, we can Rot for Clout!!",
+      "and when i Water the Roses, i can't trust you to stay",
+      "our 炜ward romance dyes the town loud, spellbound just for you and me!",
+      "grab a plate, have a taste, 這口味讓我陶醉, i'm still preying on a butcher's vein",
+      "didn't you see the news today? i heard they said it looked like rain",
+      "stupid cupid, you're a real mean guy!",
+      "roll the Katamari!",
+      "push ur t3mprr!!",
+      "cuz this is MY United States of Whatever!!!",
+      "i could douse fires, pluck at strings, simmer black salt with blazing heat, yet here i sing... about nothing",
+      "oh when i saw your face, felt my heart feel that spark once again",
+      "you gotta learn to Forgive and Forget",
+      "there she goes in the morning!!!!",
+      "site's haunted",
+      "☹︎☜︎💧︎👌︎✋︎✌︎☠︎💧︎ ☟︎💣︎🕆",
+      "is it really true? that a bird like me could never think like you",
+      "do you have a clue? how desperately i love -- when spring comes!",
+      "baby, do you know what you wanna hear? 'cause you can say the word, make it oh so clear",
+      "a BIRDBRAIN, baby, i don't know when i'm supposed to stop",
+      "there's over 50 of these btw. keep resetting that page",
+      "all couples are fake and don't actually love eachother and are made by the government to ragebait me",
+      "i never learned the alphabet. i couldn't get past P because it was too funny",
+      "i like when animals are named after the thing they do like flies and horse",
+      "'let's match pfps' 'let's match bios' let's match last names",
+      "panic! in static! out-manic! don't you find it all romantic, the way things used to be?",
+      "i am a girlboss i am a warcriminal i am a lunatic. i am the next virgin mary & i am never going to die",
+      "hitting on my cute debate opponent with the 'you're appealing to me' fallacy",
+      "cupid hit me and missed you (seeing roses wherever) need you here, want you near (loving you from a distance)",
+      "i didn't miss the cold weather, i just missed you. i didn't miss the sweater weather, i just missed you",
+      "'but that’s neither here nor there' is a terrifying thing to say. where is it",
+      "maybe you could stay here just a little longer, make the time pass slower",
+      "maybe you could make this last forever, and you could be my lover",
+      "feel the warmth and the breeze on your face, ain't it a sweet sensation?",
+      "oh, it's a great big grand restoration, all love and adoration",
+      "i hope you know that i'll keep writing songs about you 'till the day you see the things i'm feeling for you",
+      "everyone you see passing on the streets plays a part in a tragedy",
+      "thoughts on women? yeah always",
+      "i've got insomnia, my bloodshot eyes have you to thank. you're in my thoughts all day and, still, at night you're in my head",
+      "the universe is yours!!! eat it!!",
+      "world is a vampire",
+      "the People Posture, Play Pretend",
+      "you're the Object of Affection, hold me tight",
+      "it's this Newly Human Feeling, oh, i wanna share it with you!",
+      "the first and only girlsuccess",
+      "the first and only girldisaster",
+      "perfect little packages, wrapped up in contradiction",
+      "do you feel the things i feel? i am definite and real!",
+      "all the revolutionaries!! all the jihadis too!!",
+      "round' the world, i'm holy! (holy, holy, holy!, holy!)",
+      "a billion stars out there, somehow, we both wound up on this one!",
+      "queen of the night, you drag me away with your gloom!",
+      "they should invent a day where it all makes sense",
+      "is brain development at 25 worth the wait",
+      "you fell for obvious laughbait bro. i love you",
+      "pov u are nice to me and we are haivng fun and we are friends if thats ok",
+      "they had to call animal control on me",
+      "the stars are calling",
+      "love the website? tell me at coolmay5 on Discord",
+      "hate the website? yell me at coolmay5 on Discord",
+      "any opinion on the website? tell me at coolmay5 on Discord",
+      "have any Girls' Love novels to recommend? tell me at coolmay5 on Discord",
+      "have any Boys' Love novels to recommend? do not tell me at coolmay5 on Discord",
+      "pans out camera to a larger coin jar labeled 'Hawk Tuah Jar'. it is filled to the brim",
+      "am i a homosexual? who knows!!",
+      "shoutout Sappho",
+      "🌹what'",
+      "It's Good To Know How Afraid You Are Of Me",
+      "🐙🐚🤍🦑🔮 look at these",
+      "press U for UFOs!!",
+      "'can a quote be “ fuck you”, would be really funny' — Nuke Krabulon",
+      "i will die alone for the ethical reasons",
+      "Do horses know they’re Vehicle",
+      ]
+  
+    let isTyping = false;
+    let typingIndex = 0;
+    let typingTimeout = null;
+    let scheduledMessageTimeout = null;
+    let typingTimeouts = [];
+
+function startTyping(htmlString, containerId = "info", speed = 50) {
+  if (isTyping) return;
+
+  isTyping = true;
+  const container = document.getElementById(containerId);
+  const ggrg = document.getElementById("infor");
+  ggrg.style.display = "block";
+  setTimeout(() => {
+    ggrg.style.width = "410px";
+  }, 50);
+  typingTimeouts.forEach(clearTimeout);
+  typingTimeouts = [];
+  container.innerHTML = "* ";
+
+  const temp = document.createElement("div");
+  temp.innerHTML = htmlString;
+
+  const nodes = [];
+
+  function extractNodes(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      nodes.push({ type: "text", content: node.textContent });
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      if (node.tagName === "IMG") {
+        nodes.push({ type: "element", content: node.outerHTML });
+      } else {
+        for (const child of node.childNodes) {
+          extractNodes(child);
+        }
+      }
+    }
+  }
+
+  for (const child of temp.childNodes) {
+    extractNodes(child);
+  }
+
+  let i = 0;
+
+  function typeNext() {
+    if (i >= nodes.length) {
+      isTyping = false;
+      return;
+    }
+
+    const { type, content } = nodes[i];
+
+    if (type === "text") {
+      let charIndex = 0;
+
+      function typeChar() {
+        if (charIndex >= content.length) {
+          i++;
+          typeNext();
+          return;
+        }
+
+        container.innerHTML += content[charIndex];
+
+        charIndex++;
+        const timeout = setTimeout(typeChar, speed);
+        typingTimeouts.push(timeout);
+      }
+
+      typeChar();
+    } else if (type === "element") {
+      container.innerHTML += content;
+      i++;
+      typeNext();
+    }
+  }
+
+  typeNext();
+}
+
+let charIndex2 = 0;
+let isTyping2 = false;
+
+function startTyping2(htmlString2, containerId2 = "info2") {
+  const container2 = document.getElementById(containerId2);
+  const ggrgr = document.getElementById("infor2");
+  const window3 = document.getElementById("window2");
+  ggrgr.style.display = "block";
+  window3.style.display = "flex";
+  container2.innerHTML = "* ";
+  setTimeout(() => {
+    ggrgr.style.width = "410px";
+  }, 50);
+
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = htmlString2;
+
+  let nodes = Array.from(tempDiv.childNodes);
+  let nodeIndex = 0;
+
+  function typeNode() {
+    if (nodeIndex >= nodes.length) return;
+
+    const node = nodes[nodeIndex];
+    if (node.nodeType === Node.TEXT_NODE) {
+      let text = node.textContent;
+      let charIndex = 0;
+
+      function typeChar() {
+        if (charIndex < text.length) {
+          container2.innerHTML += text.charAt(charIndex);
+          charIndex++;
+          setTimeout(typeChar, 50);
+        } else {
+          nodeIndex++;
+          typeNode();
+        }
+      }
+
+      typeChar();
+    } else {
+      container2.appendChild(node.cloneNode(true));
+      nodeIndex++;
+      setTimeout(typeNode, 50);
+    }
+  }
+
+  typeNode();
+}
+
+const quote = randomQuotes[Math.floor(Math.random() * randomQuotes.length)];
+  
+const animeg = document.getElementById('animeg');
+animeg.addEventListener('dblclick', () => {
+    window.open("nerd-corner.html","_self");
+  });
+  
+const aboutg = document.getElementById('aboutg');
+aboutg.addEventListener('dblclick', () => {
+    window.open("about-coolmay.html","_self");
+  });
+  
+const carg = document.getElementById('carg');
+carg.addEventListener('dblclick', () => {
+    if (document.querySelector('canvas')) {return;}
+    setTimeout(() => {
+      startGame();
+      const scored = document.getElementById('scored');
+      scored.style.opacity = '1';
+      scored.style.left = '233.6px';
+      scored.style.top = '204px';
+      scored.style.display = 'flex';
+    }, 50);
+  });
+  
+const crazyg = document.getElementById('crazyg');
+crazyg.addEventListener('dblclick', () => {
+    window.open("https://www.shutterstock.com/shutterstock/videos/26414675/preview/stock-footage-close-up-of-worms-moving-over-dirt.webm","_self");
+  });
+
+const trashg = document.getElementById('trashg');
+trashg.addEventListener('dblclick', () => {
+    window.open("the-trash.html","_self");
+  });
+  
+const sidebar = document.querySelector('.sidebar');
+
+function callUFO(){
+  const uwon = document.createElement("img");
+  uwon.src = 'https://static.vecteezy.com/system/resources/previews/048/759/365/non_2x/ufo-alien-ship-free-png.png';
+  randomSize = Math.floor(Math.random()* 32);
+  uwon.id = 'ufo';
+  uwon.setAttribute('draggable', false);
+  uwon.style.position = 'absolute';
+  uwon.style.top = Math.floor(Math.random() * 40) + 'vh';
+  uwon.style.left = '100vw';
+  uwon.style.transition = 'all 6s linear';
+  uwon.style.height = randomSize + 48 + 'px';
+  uwon.style.width = randomSize + 48 + 'px';
+  uwon.style.padding = '8px';
+  
+  document.querySelector('.main-content').appendChild(uwon);
+  
+  function uwonDestroy() {
+    uwon.src = 'https://media.tenor.com/-pMfQcryj3cAAAAi/explosion-boom.gif';
+    uwon.id = 'nolongerufo';
+    uwon.style.left = uwon.getBoundingClientRect().left + 'px';
+    uwon.style.position = 'fixed';
+    uwon.style.transition = 'all 0s linear';
+    uwon.style.height = randomSize + 64 + 'px';
+    uwon.style.width = randomSize + 64 + 'px';
+    setTimeout(() =>{uwon.remove()}, 560);
+    const boom = new Audio('https://www.myinstants.com/media/sounds/deltarune-explosion.mp3');
+    boom.playbackRate = 0.7 + (Math.abs(randomSize - 33))/32;
+    boom.volume = 0.2;
+    boom.play();
+  }
+  
+  uwon.addEventListener('click', () =>{
+    uwonDestroy();
+  })
+  
+  setTimeout(() => {
+    uwon.style.left = '-10vw';
+    uwon.style.top = Math.floor(Math.random() * 40) + 'vh';
+    setTimeout(() => {
+      uwon.remove();
+    }, 6050);
+  }, 50);
+  
+  function checkCollision() {
+    const uwonRect = uwon.getBoundingClientRect();
+    const trashRect = trashg.getBoundingClientRect();
+  
+    const isOverlapping =
+      uwonRect.top < trashRect.bottom &&
+      uwonRect.bottom > trashRect.top &&
+      uwonRect.left < trashRect.right &&
+      uwonRect.right > trashRect.left;
+  
+    if (isOverlapping) {
+      uwon.remove();
+      document.getElementById('trashimage').src = 'images/recycle-bin-full.png';
+      return;
+    }
+  
+    requestAnimationFrame(checkCollision);
+  }
+  
+  requestAnimationFrame(checkCollision);
+}
+
+window.addEventListener('keypress', (key) => {
+  if (key.key == 'u'){
+    callUFO();  
+  }  
+})
+
+randomTimer = Math.floor(Math.random() * 30)
+
+setTimeout(() => {
+  callUFO()
+}, randomTimer * 10000);
+
+
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    sidebar.style.height = "100vh";
+    setTimeout(() => {
+        sidebar.style.top = "0";
+        sidebar.style.height = "calc(100vh - 40px)"
+    }, 600);
+  }, 50);
+  setTimeout(() => {
+    startTyping("welcome to my self indulgent little corner");
+  }, 800);
+  scheduledMessageTimeout = setTimeout(() => {
+    startTyping2(quote, "info2");;
+  }, 5700);
+});
+  const renderer = new THREE.WebGLRenderer();
+  function startGame() {
+    if (document.getElementById('points')) {document.getElementById('points').remove();}
+    const container = document.getElementById("gameContainer");
+    if (!container) return;
+    
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0x2465ec );
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      container.clientWidth / container.clientHeight,
+      0.1,
+      1000
+    );
+    
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(0, 1, 1).normalize();
+    scene.add(light);
+    
+    const groundGeometry = new THREE.PlaneGeometry(500, 100);
+    const groundMaterial = new THREE.MeshBasicMaterial({ color: 0xffe600 });
+    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.z = -50;
+    ground.position.y = -1;
+    scene.add(ground);
+    
+    const roadGeometry = new THREE.PlaneGeometry(10, 100);
+    const roadMaterial = new THREE.MeshBasicMaterial({ color: 0x444444 });
+    const road = new THREE.Mesh(roadGeometry, roadMaterial);
+    road.rotation.x = -Math.PI / 2;
+    road.position.z = -50;
+    scene.add(road);
+    
+    const roadLineGeometry = new THREE.PlaneGeometry(0.2, 2);
+    const roadLineMaterial = new THREE.MeshBasicMaterial({ color: 0xfcfc00 });
+    const roadLine = new THREE.Mesh(roadLineGeometry, roadLineMaterial);
+    roadLine.rotation.x = -Math.PI / 2;
+    roadLine.position.y = 0.01;
+    
+    const cactusGeometry = new THREE.PlaneGeometry(1, 3);
+    const cactusMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const cactus = new THREE.Mesh(cactusGeometry, cactusMaterial);
+    cactus.position.x = 8;
+    cactus.position.y = 0.01;
+
+    const obstacles = [];
+    const obstacleGeometry = new THREE.BoxGeometry(1, 1, 2);
+    const obstacleMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+
+    function createObstacle() {
+      const ob = new THREE.Mesh(obstacleGeometry, obstacleMaterial);
+      ob.position.set((Math.floor(Math.random()*7))-3, 0.5, -100);
+      scene.add(ob);
+      obstacles.push(ob);
+    }
+
+    camera.position.y = 1.5;
+    camera.position.z = 0;
+    
+    let score = 0;
+    let gameOver = false;
+
+    function animate() {
+        if (gameOver) return;
+
+        requestAnimationFrame(animate);
+        score++;
+        document.getElementById("scorer").innerText = "SCORE: " + Math.floor(score/100)*100;
+
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+            const ob = obstacles[i];
+            ob.position.z += 0.5 + Math.floor(score / 100) / 100 + test / 5;
+
+            if (ob.position.z > 0 && Math.abs(ob.position.x - camera.position.x) < 1) {
+              gameOver = true;
+              startTyping('you got a score of ' + Math.floor(score / 100) * 100 + '!!!!!');
+              renderer.domElement.remove();
+              container.innerHTML = `<h1 id='points'>you got a score of ${Math.floor(score / 100) * 100}!!!!!</h1>`
+            }
+
+            if (ob.position.z > 0) {
+              scene.remove(ob);
+              obstacles.splice(i, 1);
+            }
+            
+        }
+
+        renderer.render(scene, camera);
+    }
+
+    function spawnLoop() {
+      if (!gameOver) {
+        createObstacle();
+        setTimeout(spawnLoop, Math.max(200, 1500 - Math.floor(score / 50) * (Math.floor(Math.random() * 10) + 1) - test * 300));
+      }
+    };
+    
+    function roadLineLoop() {
+      if (gameOver) return;
+    
+      const line = roadLine.clone();
+      line.position.z = -100;
+      scene.add(line);
+    
+      const moveLine = () => {
+        if (line.position.z <= 0) {
+          line.position.z += 0.7 + Math.floor(score / 100) / 100 + test / 5;
+          requestAnimationFrame(moveLine);
+        } else {
+          scene.remove(line);
+        }
+      };
+    
+      moveLine();
+    
+      setTimeout(roadLineLoop, 200 - test * 30);
+    }
+    
+    function cactusLoop() {
+      if (gameOver) return;
+    
+      const cac = cactus.clone();
+      cac.position.z = -100;
+      scene.add(cac);
+      cac.position.x = Math.floor(Math.random() * 50 - 25)
+      if ([-3, -2, -1, 0, 1, 2, 3].includes(cac.position.x)) {scene.remove(cac)}
+    
+      const moveCac = () => {
+        if (cac.position.z <= 0) {
+          cac.position.z += 0.7 + Math.floor(score / 100) / 100 + test / 5;
+          requestAnimationFrame(moveCac);
+        } else {
+          scene.remove(cac);
+        }
+      };
+    
+      moveCac();
+    
+      setTimeout(cactusLoop, Math.floor(Math.random() * 20) * 500 - test * 30);
+    }
+  
+    const keys = {
+      ArrowLeft: false,
+      ArrowRight: false,
+      ArrowUp: false
+    };
+    
+    document.addEventListener('keydown', e => {
+        if (e.key in keys) keys[e.key] = true;
+    });
+    
+    document.addEventListener('keyup', e => {
+        if (e.key in keys) keys[e.key] = false;
+    });
+    
+    let lastMoveTime = 0;
+    let test = 0;
+    function update(timestamp) {
+      if (timestamp - lastMoveTime > 50) {
+          
+        if (keys.ArrowLeft) {
+          if (camera.position.x > -3) {camera.position.x -= 1};
+        }
+          
+        if (keys.ArrowRight) {
+          if (camera.position.x < 3) {camera.position.x += 1};
+        }
+        
+        if (keys.ArrowUp) {test = 2; score += 2;} else {test = 0};
+          
+        lastMoveTime = timestamp;
+      }
+      
+      requestAnimationFrame(update);
+    }
+      
+    requestAnimationFrame(update);
+    
+    update();
+    animate();
+    spawnLoop();
+    roadLineLoop();
+    cactusLoop();
+  };
+  
+  </script>
+</body>
+</html>
