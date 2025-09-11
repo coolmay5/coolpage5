@@ -414,6 +414,9 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
   <script>
   
+  /*code for the X button*/
+  
+  
   const closeButtons = document.querySelectorAll('.close-button');
 
   closeButtons.forEach(button => {
@@ -442,6 +445,10 @@
       }
     });
   });
+  
+  
+ /*moveable tabs code */
+  
   
   const moveablepart = document.querySelectorAll('.tabtop')
   const wholetab = document.querySelectorAll('.movetab')
@@ -511,6 +518,10 @@
       slidesPerView: 3,
     });
     
+    
+    /*clock*/
+    
+    
     function updateClock() {
       const topElement = document.getElementById("time");
       const now = new Date();
@@ -525,9 +536,13 @@
       });
       topElement.textContent = formattedTime;
     }
-updateClock();
+  updateClock();
 
-setInterval(updateClock, 10000);
+  setInterval(updateClock, 10000);
+
+
+/*code for each manga appearing*/
+
 
     const textBox = document.getElementById('info');
     const mangas = document.querySelectorAll('.manga');
@@ -547,7 +562,7 @@ setInterval(updateClock, 10000);
     
     window.addEventListener('DOMContentLoaded', () => {
       let mangaId = "glt";
-      let mangaInfo = "this is the place where i write about the things i like. this includes: Yuri";
+      let mangaInfo = "this is the place where i write about the silly little things i like";
       let data = mangaContentData[mangaId];
       mangaTitle.innerHTML = data.title;
       mangaArtist.innerHTML = data.artist;
@@ -636,7 +651,11 @@ setInterval(updateClock, 10000);
 //      });
 //    });
 //
-    
+
+
+/*startTyping for the info tab*/
+
+
     let startTypingIntervals = {};
     
     function startTyping4(element, text, speed = 20, key) {
@@ -657,6 +676,10 @@ setInterval(updateClock, 10000);
 
   startTypingIntervals[key] = interval;
 }
+
+
+/*content within each manga*/
+
 
     const mangaContentData = {
       "glt": {
@@ -842,6 +865,10 @@ setInterval(updateClock, 10000);
     let scheduledMessageTimeout = null;
     let typingTimeouts = [];
 
+
+/*startTyping for the info tab*/
+
+
 function startTyping(htmlString, containerId = "info", speed = 50) {
   if (isTyping) return;
 
@@ -914,6 +941,4 @@ function startTyping(htmlString, containerId = "info", speed = 50) {
 
   </script>
 </body>
-
 </html>
-
