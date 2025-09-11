@@ -372,7 +372,10 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
   <script>
-  
+
+/*code for the X button*/
+
+
   document.addEventListener('click', (event) => {
     const button = event.target.closest('.close-button');
     if (!button) return;
@@ -411,126 +414,137 @@
     }
   });
   
+  
+/*moveable icons code */
+  
+  
   document.querySelectorAll('.desktopicon').forEach(icon => {
-  icon.addEventListener('mousedown', function (e) {
-    const shiftX = e.clientX - icon.getBoundingClientRect().left;
-    const shiftY = e.clientY - icon.getBoundingClientRect().top;
-
-    const container = document.querySelector('.main-content');
-    const containerRect = container.getBoundingClientRect();
-
-    function moveAt(pageX, pageY) {
-      let newLeft = pageX - shiftX;
-      let newTop = pageY - shiftY;
-    
-      newLeft = Math.max(container.offsetLeft, Math.min(newLeft, container.offsetLeft + container.clientWidth - icon.offsetWidth));
-      newTop = Math.max(container.offsetTop, Math.min(newTop, container.offsetTop + container.clientHeight - icon.offsetHeight));
-    
-      icon.style.left = newLeft - container.offsetLeft + 'px';
-      icon.style.top = newTop - container.offsetTop + 'px';
-    }
-
-    function onMouseMove(e) {
-      moveAt(e.pageX, e.pageY);
-    }
-
-    document.addEventListener('mousemove', onMouseMove);
-
-    function onMouseUp() {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+    icon.addEventListener('mousedown', function (e) {
+      const shiftX = e.clientX - icon.getBoundingClientRect().left;
+      const shiftY = e.clientY - icon.getBoundingClientRect().top;
+  
+      const container = document.querySelector('.main-content');
+      const containerRect = container.getBoundingClientRect();
+  
+      function moveAt(pageX, pageY) {
+        let newLeft = pageX - shiftX;
+        let newTop = pageY - shiftY;
       
-      if (icon === trashg) return
+        newLeft = Math.max(container.offsetLeft, Math.min(newLeft, container.offsetLeft + container.clientWidth - icon.offsetWidth));
+        newTop = Math.max(container.offsetTop, Math.min(newTop, container.offsetTop + container.clientHeight - icon.offsetHeight));
       
-      const iconRect = icon.getBoundingClientRect();
-      const trashRect = trashg.getBoundingClientRect();
-      const trash = document.getElementById('trashimage')
-
-      if (
-        iconRect.top < trashRect.bottom &&
-        iconRect.bottom > trashRect.top &&
-        iconRect.left < trashRect.right &&
-        iconRect.right > trashRect.left
-      ) {
-        icon.style.display = 'none';
-        trash.src = 'images/recycle-bin-full.png'
+        icon.style.left = newLeft - container.offsetLeft + 'px';
+        icon.style.top = newTop - container.offsetTop + 'px';
       }
-    }
+  
+      function onMouseMove(e) {
+        moveAt(e.pageX, e.pageY);
+      }
+  
+      document.addEventListener('mousemove', onMouseMove);
+  
+      function onMouseUp() {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        
+        if (icon === trashg) return
+        
+        const iconRect = icon.getBoundingClientRect();
+        const trashRect = trashg.getBoundingClientRect();
+        const trash = document.getElementById('trashimage')
+  
+        if (
+          iconRect.top < trashRect.bottom &&
+          iconRect.bottom > trashRect.top &&
+          iconRect.left < trashRect.right &&
+          iconRect.right > trashRect.left
+        ) {
+          icon.style.display = 'none';
+          trash.src = 'images/recycle-bin-full.png'
+        }
+      }
+  
+      document.addEventListener('mouseup', onMouseUp);
+      
+    });
 
-    document.addEventListener('mouseup', onMouseUp);
-    
+    icon.ondragstart = () => false;
   });
 
-  icon.ondragstart = () => false;
-});
+
+/*moveable tabs code */
+
 
   const moveablepart = document.querySelectorAll('.tabtop')
   const wholetab = document.querySelectorAll('.movetab')
   
   moveablepart.forEach(part => {
-  const tab = part.closest('.movetab');
-  
-  part.addEventListener('mousedown', function (e) {
-    const shiftX = e.clientX - tab.getBoundingClientRect().left;
-    const shiftY = e.clientY - tab.getBoundingClientRect().top;
-
-    const container = document.querySelector('.main-content');
-    const containerRect = container.getBoundingClientRect();
-
-    function moveAt(pageX, pageY) {
-      let newLeft = pageX - shiftX;
-      let newTop = pageY - shiftY;
-      
-      if (tab == infor || tab == infor2){
-        newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - tab.offsetWidth));
-        newTop = Math.max(0, Math.min(newTop, window.innerHeight - tab.offsetHeight));
-        
-        tab.style.left = newLeft + 'px';
-        tab.style.top = newTop + 'px';
-      }
-      
-      else {
-        newLeft = Math.max(container.offsetLeft, Math.min(newLeft, container.offsetLeft + container.clientWidth - tab.offsetWidth));
-        newTop = Math.max(container.offsetTop, Math.min(newTop, container.offsetTop + container.clientHeight - tab.offsetHeight));
-        
-        tab.style.left = newLeft - container.offsetLeft + 'px';
-        tab.style.top = newTop - container.offsetTop + 'px';
-      };
-      
-    };
-
-    function onMouseMove(e) {
-      moveAt(e.pageX, e.pageY);
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-
-    function onMouseUp() {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-      
-      const tabRect = tab.getBoundingClientRect();
-      const trashRect = trashg.getBoundingClientRect();
-      const trash = document.getElementById('trashimage')
-
-      if (
-        tabRect.top < trashRect.bottom &&
-        tabRect.bottom > trashRect.top &&
-        tabRect.left < trashRect.right &&
-        tabRect.right > trashRect.left
-      ) {
-        if (tab.id ='scored') {gameOver = true; renderer.domElement.remove(); document.getElementById('scored').style.left = '5000px';}
-        tab.style.display = 'none';
-        trash.src = 'images/recycle-bin-full.png'
-      }
-    };
-
-    document.addEventListener('mouseup', onMouseUp);
+    const tab = part.closest('.movetab');
     
+    part.addEventListener('mousedown', function (e) {
+      const shiftX = e.clientX - tab.getBoundingClientRect().left;
+      const shiftY = e.clientY - tab.getBoundingClientRect().top;
+  
+      const container = document.querySelector('.main-content');
+      const containerRect = container.getBoundingClientRect();
+  
+      function moveAt(pageX, pageY) {
+        let newLeft = pageX - shiftX;
+        let newTop = pageY - shiftY;
+        
+        if (tab == infor || tab == infor2){
+          newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - tab.offsetWidth));
+          newTop = Math.max(0, Math.min(newTop, window.innerHeight - tab.offsetHeight));
+          
+          tab.style.left = newLeft + 'px';
+          tab.style.top = newTop + 'px';
+        }
+        
+        else {
+          newLeft = Math.max(container.offsetLeft, Math.min(newLeft, container.offsetLeft + container.clientWidth - tab.offsetWidth));
+          newTop = Math.max(container.offsetTop, Math.min(newTop, container.offsetTop + container.clientHeight - tab.offsetHeight));
+          
+          tab.style.left = newLeft - container.offsetLeft + 'px';
+          tab.style.top = newTop - container.offsetTop + 'px';
+        };
+        
+      };
+  
+      function onMouseMove(e) {
+        moveAt(e.pageX, e.pageY);
+      };
+  
+      document.addEventListener('mousemove', onMouseMove);
+  
+      function onMouseUp() {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        
+        const tabRect = tab.getBoundingClientRect();
+        const trashRect = trashg.getBoundingClientRect();
+        const trash = document.getElementById('trashimage')
+  
+        if (
+          tabRect.top < trashRect.bottom &&
+          tabRect.bottom > trashRect.top &&
+          tabRect.left < trashRect.right &&
+          tabRect.right > trashRect.left
+        ) {
+          if (tab.id ='scored') {gameOver = true; renderer.domElement.remove(); document.getElementById('scored').style.left = '5000px';}
+          tab.style.display = 'none';
+          trash.src = 'images/recycle-bin-full.png'
+        }
+      };
+  
+      document.addEventListener('mouseup', onMouseUp);
+      
+      });
+  
+      tab.ondragstart = () => false;
     });
 
-    tab.ondragstart = () => false;
-  });
+
+/*clock*/
 
 
     function updateClock() {
@@ -678,268 +692,293 @@ setInterval(updateClock, 10000);
       "Do horses know they’re Vehicle",
       ]
   
-    let isTyping = false;
-    let typingIndex = 0;
-    let typingTimeout = null;
-    let scheduledMessageTimeout = null;
-    let typingTimeouts = [];
-
-function startTyping(htmlString, containerId = "info", speed = 50) {
-  if (isTyping) return;
-
-  isTyping = true;
-  const container = document.getElementById(containerId);
-  const ggrg = document.getElementById("infor");
-  ggrg.style.display = "block";
-  setTimeout(() => {
-    ggrg.style.width = "410px";
-  }, 50);
-  typingTimeouts.forEach(clearTimeout);
-  typingTimeouts = [];
-  container.innerHTML = "* ";
-
-  const temp = document.createElement("div");
-  temp.innerHTML = htmlString;
-
-  const nodes = [];
-
-  function extractNodes(node) {
-    if (node.nodeType === Node.TEXT_NODE) {
-      nodes.push({ type: "text", content: node.textContent });
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      if (node.tagName === "IMG") {
-        nodes.push({ type: "element", content: node.outerHTML });
-      } else {
-        for (const child of node.childNodes) {
-          extractNodes(child);
-        }
-      }
-    }
-  }
-
-  for (const child of temp.childNodes) {
-    extractNodes(child);
-  }
-
-  let i = 0;
-
-  function typeNext() {
-    if (i >= nodes.length) {
-      isTyping = false;
-      return;
-    }
-
-    const { type, content } = nodes[i];
-
-    if (type === "text") {
-      let charIndex = 0;
-
-      function typeChar() {
-        if (charIndex >= content.length) {
-          i++;
-          typeNext();
-          return;
-        }
-
-        container.innerHTML += content[charIndex];
-
-        charIndex++;
-        const timeout = setTimeout(typeChar, speed);
-        typingTimeouts.push(timeout);
-      }
-
-      typeChar();
-    } else if (type === "element") {
-      container.innerHTML += content;
-      i++;
-      typeNext();
-    }
-  }
-
-  typeNext();
-}
-
-let charIndex2 = 0;
-let isTyping2 = false;
-
-function startTyping2(htmlString2, containerId2 = "info2") {
-  const container2 = document.getElementById(containerId2);
-  const ggrgr = document.getElementById("infor2");
-  const window3 = document.getElementById("window2");
-  ggrgr.style.display = "block";
-  window3.style.display = "flex";
-  container2.innerHTML = "* ";
-  setTimeout(() => {
-    ggrgr.style.width = "410px";
-  }, 50);
-
-  const tempDiv = document.createElement("div");
-  tempDiv.innerHTML = htmlString2;
-
-  let nodes = Array.from(tempDiv.childNodes);
-  let nodeIndex = 0;
-
-  function typeNode() {
-    if (nodeIndex >= nodes.length) return;
-
-    const node = nodes[nodeIndex];
-    if (node.nodeType === Node.TEXT_NODE) {
-      let text = node.textContent;
-      let charIndex = 0;
-
-      function typeChar() {
-        if (charIndex < text.length) {
-          container2.innerHTML += text.charAt(charIndex);
-          charIndex++;
-          setTimeout(typeChar, 50);
-        } else {
-          nodeIndex++;
-          typeNode();
-        }
-      }
-
-      typeChar();
-    } else {
-      container2.appendChild(node.cloneNode(true));
-      nodeIndex++;
-      setTimeout(typeNode, 50);
-    }
-  }
-
-  typeNode();
-}
-
-const quote = randomQuotes[Math.floor(Math.random() * randomQuotes.length)];
   
-const animeg = document.getElementById('animeg');
-animeg.addEventListener('dblclick', () => {
-    window.open("nerd-corner.html","_self");
-  });
+/*startTyping for the info tab*/
   
-const aboutg = document.getElementById('aboutg');
-aboutg.addEventListener('dblclick', () => {
-    window.open("about-coolmay.html","_self");
-  });
   
-const carg = document.getElementById('carg');
-carg.addEventListener('dblclick', () => {
-    if (document.querySelector('canvas')) {return;}
+  let isTyping = false;
+  let typingIndex = 0;
+  let typingTimeout = null;
+  let scheduledMessageTimeout = null;
+  let typingTimeouts = [];
+  
+  function startTyping(htmlString, containerId = "info", speed = 50) {
+    if (isTyping) return;
+  
+    isTyping = true;
+    const container = document.getElementById(containerId);
+    const ggrg = document.getElementById("infor");
+    ggrg.style.display = "block";
     setTimeout(() => {
-      startGame();
-      const scored = document.getElementById('scored');
-      scored.style.opacity = '1';
-      scored.style.left = '233.6px';
-      scored.style.top = '204px';
-      scored.style.display = 'flex';
+      ggrg.style.width = "410px";
     }, 50);
-  });
+    typingTimeouts.forEach(clearTimeout);
+    typingTimeouts = [];
+    container.innerHTML = "* ";
   
-const crazyg = document.getElementById('crazyg');
-crazyg.addEventListener('dblclick', () => {
-    window.open("https://www.shutterstock.com/shutterstock/videos/26414675/preview/stock-footage-close-up-of-worms-moving-over-dirt.webm","_self");
-  });
-
-const trashg = document.getElementById('trashg');
-trashg.addEventListener('dblclick', () => {
-    window.open("the-trash.html","_self");
-  });
+    const temp = document.createElement("div");
+    temp.innerHTML = htmlString;
   
-const sidebar = document.querySelector('.sidebar');
-
-function callUFO(){
-  const uwon = document.createElement("img");
-  uwon.src = 'https://static.vecteezy.com/system/resources/previews/048/759/365/non_2x/ufo-alien-ship-free-png.png';
-  randomSize = Math.floor(Math.random()* 32);
-  uwon.id = 'ufo';
-  uwon.setAttribute('draggable', false);
-  uwon.style.position = 'absolute';
-  uwon.style.top = Math.floor(Math.random() * 40) + 'vh';
-  uwon.style.left = '100vw';
-  uwon.style.transition = 'all 6s linear';
-  uwon.style.height = randomSize + 48 + 'px';
-  uwon.style.width = randomSize + 48 + 'px';
-  uwon.style.padding = '8px';
+    const nodes = [];
   
-  document.querySelector('.main-content').appendChild(uwon);
-  
-  function uwonDestroy() {
-    uwon.src = 'https://media.tenor.com/-pMfQcryj3cAAAAi/explosion-boom.gif';
-    uwon.id = 'nolongerufo';
-    uwon.style.left = uwon.getBoundingClientRect().left + 'px';
-    uwon.style.position = 'fixed';
-    uwon.style.transition = 'all 0s linear';
-    uwon.style.height = randomSize + 64 + 'px';
-    uwon.style.width = randomSize + 64 + 'px';
-    setTimeout(() =>{uwon.remove()}, 560);
-    const boom = new Audio('https://www.myinstants.com/media/sounds/deltarune-explosion.mp3');
-    boom.playbackRate = 0.7 + (Math.abs(randomSize - 33))/32;
-    boom.volume = 0.2;
-    boom.play();
-  }
-  
-  uwon.addEventListener('click', () =>{
-    uwonDestroy();
-  })
-  
-  setTimeout(() => {
-    uwon.style.left = '-10vw';
-    uwon.style.top = Math.floor(Math.random() * 40) + 'vh';
-    setTimeout(() => {
-      uwon.remove();
-    }, 6050);
-  }, 50);
-  
-  function checkCollision() {
-    const uwonRect = uwon.getBoundingClientRect();
-    const trashRect = trashg.getBoundingClientRect();
-  
-    const isOverlapping =
-      uwonRect.top < trashRect.bottom &&
-      uwonRect.bottom > trashRect.top &&
-      uwonRect.left < trashRect.right &&
-      uwonRect.right > trashRect.left;
-  
-    if (isOverlapping) {
-      uwon.remove();
-      document.getElementById('trashimage').src = 'images/recycle-bin-full.png';
-      return;
+    function extractNodes(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        nodes.push({ type: "text", content: node.textContent });
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        if (node.tagName === "IMG") {
+          nodes.push({ type: "element", content: node.outerHTML });
+        } else {
+          for (const child of node.childNodes) {
+            extractNodes(child);
+          }
+        }
+      }
     }
   
+    for (const child of temp.childNodes) {
+      extractNodes(child);
+    }
+  
+    let i = 0;
+  
+    function typeNext() {
+      if (i >= nodes.length) {
+        isTyping = false;
+        return;
+      }
+  
+      const { type, content } = nodes[i];
+  
+      if (type === "text") {
+        let charIndex = 0;
+  
+        function typeChar() {
+          if (charIndex >= content.length) {
+            i++;
+            typeNext();
+            return;
+          }
+  
+          container.innerHTML += content[charIndex];
+  
+          charIndex++;
+          const timeout = setTimeout(typeChar, speed);
+          typingTimeouts.push(timeout);
+        }
+  
+        typeChar();
+      } else if (type === "element") {
+        container.innerHTML += content;
+        i++;
+        typeNext();
+      }
+    }
+  
+    typeNext();
+  }
+
+  let charIndex2 = 0;
+  let isTyping2 = false;
+
+
+/*startTyping for the qotn tab*/
+
+
+  function startTyping2(htmlString2, containerId2 = "info2") {
+    const container2 = document.getElementById(containerId2);
+    const ggrgr = document.getElementById("infor2");
+    const window3 = document.getElementById("window2");
+    ggrgr.style.display = "block";
+    window3.style.display = "flex";
+    container2.innerHTML = "* ";
+    setTimeout(() => {
+      ggrgr.style.width = "410px";
+    }, 50);
+  
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlString2;
+  
+    let nodes = Array.from(tempDiv.childNodes);
+    let nodeIndex = 0;
+  
+    function typeNode() {
+      if (nodeIndex >= nodes.length) return;
+  
+      const node = nodes[nodeIndex];
+      if (node.nodeType === Node.TEXT_NODE) {
+        let text = node.textContent;
+        let charIndex = 0;
+  
+        function typeChar() {
+          if (charIndex < text.length) {
+            container2.innerHTML += text.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeChar, 50);
+          } else {
+            nodeIndex++;
+            typeNode();
+          }
+        }
+  
+        typeChar();
+      } else {
+        container2.appendChild(node.cloneNode(true));
+        nodeIndex++;
+        setTimeout(typeNode, 50);
+      }
+    }
+  
+    typeNode();
+  }
+  
+  const quote = randomQuotes[Math.floor(Math.random() * randomQuotes.length)];
+
+
+/*code for icon double clicks*/
+
+
+  const animeg = document.getElementById('animeg');
+  animeg.addEventListener('dblclick', () => {
+      window.open("nerd-corner.html","_self");
+    });
+    
+  const aboutg = document.getElementById('aboutg');
+  aboutg.addEventListener('dblclick', () => {
+      window.open("about-coolmay.html","_self");
+    });
+    
+  const carg = document.getElementById('carg');
+  carg.addEventListener('dblclick', () => {
+      if (document.querySelector('canvas')) {return;}
+      setTimeout(() => {
+        startGame();
+        const scored = document.getElementById('scored');
+        scored.style.opacity = '1';
+        scored.style.left = '233.6px';
+        scored.style.top = '204px';
+        scored.style.display = 'flex';
+      }, 50);
+    });
+    
+  const crazyg = document.getElementById('crazyg');
+  crazyg.addEventListener('dblclick', () => {
+      window.open("https://www.shutterstock.com/shutterstock/videos/26414675/preview/stock-footage-close-up-of-worms-moving-over-dirt.webm","_self");
+    });
+  
+  const trashg = document.getElementById('trashg');
+  trashg.addEventListener('dblclick', () => {
+      window.open("the-trash.html","_self");
+    });
+    
+  const sidebar = document.querySelector('.sidebar');
+
+
+/*ufo code*/
+
+
+  function callUFO(){
+    const uwon = document.createElement("img");
+    uwon.src = 'https://static.vecteezy.com/system/resources/previews/048/759/365/non_2x/ufo-alien-ship-free-png.png';
+    randomSize = Math.floor(Math.random()* 32);
+    uwon.id = 'ufo';
+    uwon.setAttribute('draggable', false);
+    uwon.style.position = 'absolute';
+    uwon.style.top = Math.floor(Math.random() * 40) + 'vh';
+    uwon.style.left = '100vw';
+    uwon.style.transition = 'all 6s linear';
+    uwon.style.height = randomSize + 48 + 'px';
+    uwon.style.width = randomSize + 48 + 'px';
+    uwon.style.padding = '8px';
+    
+    document.querySelector('.main-content').appendChild(uwon);
+    
+    function uwonDestroy() {
+      uwon.src = 'https://media.tenor.com/-pMfQcryj3cAAAAi/explosion-boom.gif';
+      uwon.id = 'nolongerufo';
+      uwon.style.left = uwon.getBoundingClientRect().left + 'px';
+      uwon.style.position = 'fixed';
+      uwon.style.transition = 'all 0s linear';
+      uwon.style.height = randomSize + 64 + 'px';
+      uwon.style.width = randomSize + 64 + 'px';
+      setTimeout(() =>{uwon.remove()}, 560);
+      const boom = new Audio('https://www.myinstants.com/media/sounds/deltarune-explosion.mp3');
+      boom.playbackRate = 0.7 + (Math.abs(randomSize - 33))/32;
+      boom.volume = 0.2;
+      boom.play();
+    }
+    
+    uwon.addEventListener('click', () =>{
+      uwonDestroy();
+    })
+    
+    setTimeout(() => {
+      uwon.style.left = '-10vw';
+      uwon.style.top = Math.floor(Math.random() * 40) + 'vh';
+      setTimeout(() => {
+        uwon.remove();
+      }, 6050);
+    }, 50);
+    
+    function checkCollision() {
+      const uwonRect = uwon.getBoundingClientRect();
+      const trashRect = trashg.getBoundingClientRect();
+    
+      const isOverlapping =
+        uwonRect.top < trashRect.bottom &&
+        uwonRect.bottom > trashRect.top &&
+        uwonRect.left < trashRect.right &&
+        uwonRect.right > trashRect.left;
+    
+      if (isOverlapping) {
+        uwon.remove();
+        document.getElementById('trashimage').src = 'images/recycle-bin-full.png';
+        return;
+      }
+    
+      requestAnimationFrame(checkCollision);
+    }
+    
     requestAnimationFrame(checkCollision);
   }
   
-  requestAnimationFrame(checkCollision);
-}
-
-window.addEventListener('keypress', (key) => {
-  if (key.key == 'u'){
-    callUFO();  
-  }  
-})
-
-randomTimer = Math.floor(Math.random() * 30)
-
-setTimeout(() => {
-  callUFO()
-}, randomTimer * 10000);
-
-
-
-window.addEventListener('load', () => {
+  window.addEventListener('keypress', (key) => {
+    if (key.key == 'u'){
+      callUFO();  
+    }  
+  })
+  
+  randomTimer = Math.floor((Math.random() * 30) + 1)
+  
   setTimeout(() => {
-    sidebar.style.height = "100vh";
+    setInterval(() => {
+      callUFO();
+    }, randomTimer * 10000);
+  }, 20000); // after 20 seconds, one ufo every 10-300 seconds .hopefully
+
+
+/*typing and window animations*/
+
+
+  window.addEventListener('load', () => {
     setTimeout(() => {
-        sidebar.style.top = "0";
-        sidebar.style.height = "calc(100vh - 40px)"
-    }, 600);
-  }, 50);
-  setTimeout(() => {
-    startTyping("welcome to my self indulgent little corner");
-  }, 800);
-  scheduledMessageTimeout = setTimeout(() => {
-    startTyping2(quote, "info2");;
-  }, 5700);
-});
+      sidebar.style.height = "100vh";
+      setTimeout(() => {
+          sidebar.style.top = "0";
+          sidebar.style.height = "calc(100vh - 40px)"
+      }, 600);
+    }, 50);
+    setTimeout(() => {
+      startTyping("welcome to my self indulgent little corner");
+    }, 800);
+    scheduledMessageTimeout = setTimeout(() => {
+      startTyping2(quote, "info2");;
+    }, 5700);
+  });
+
+
+/*car game code below*/
+
+
   const renderer = new THREE.WebGLRenderer();
   function startGame() {
     if (document.getElementById('points')) {document.getElementById('points').remove();}
@@ -1130,5 +1169,4 @@ window.addEventListener('load', () => {
   
   </script>
 </body>
-
 </html>
