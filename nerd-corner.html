@@ -44,9 +44,10 @@
       .swiper {
         width: 100%;
         height: 100%;
-      }
+       }
       
       .swiper-wrapper {
+        left: -3px;
         cursor: grab;
         background: #f0f0f0;
         border: 3px solid #0059fb;
@@ -93,6 +94,7 @@
         width: 430px;
         height: 30px;
         z-index: 10;
+        user-select: none;
       }
 
       #infor{
@@ -127,12 +129,20 @@
         padding: 6px 10px;
         font-weight: bold;
         height: auto;
-        border-bottom: 1px solid #003bb5;
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
         font-size: 0.7em;
         z-index: 50000;
         display:flex;
+        align-items: center;
+        user-select: none;
+      }
+      
+      #window h2, #window p {
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+        display: flex;
         align-items: center;
       }
       
@@ -145,7 +155,7 @@
         max-width: calc(100% + 40px);;
         margin-top: -20px;
         padding: 10px;
-        margin-right: -1px;
+        margin-left: -1px;
         transition: all 0.4s ease-in-out;
         font-family: 'Trebuchet MS'
       }
@@ -166,53 +176,64 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        background-image: url('images/defaultbg.png');
+        background-image: url('images/clouds.png');
         transition: all 0.4s ease-in-out;
         overflow-y: auto;
         box-sizing: border-box;
       }
       
       #taskbar {
+        display: flex;
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100vw;
         z-index: 9999;
-        display: flex;
-        padding: 0 10px;
-        background-image: url('images/taskbar1.png');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        font-family: 'Tahoma';
+        background: linear-gradient(#26439d 2%, #3984e3 4% 10%, #2157d5 20%, #245fdc 90%, #1941a5 98% 100%);
+        font-family: 'Trebuchet MS';
         font-size: 1.2em;
         white-space: nowrap;
         transition: height 0.3s ease;
         height: 40px;
         align-items: center;
+        user-select: none;
       }
       
       #taskbar img {
-        position: absolute;
         height: 100%;
         width: auto;
       }
       
-      #time {
-        position: absolute;
-        font-size: 0.9em;
+      #systemtray {
+        position: fixed;
+        display: flex;
         right: 0;
-        padding: 6px;
-        padding-right: 24px;
-        z-index: 100;
+        justify-content: flex-end;
+        align-items: center;
+        font-size: 0.9em;
+        background: linear-gradient(#0d69c4 2%, #15a9ee 4% 10%, #0e8ee9 20%, #0e9ff0 96%, #0d74d5 98% 100%);
+        border-left: solid #16b5fd;
+        width: 200px;
+        height: 40px;
       }
       
-      #window h2, #window p {
-        margin: 0;
-        padding: 0;
-        line-height: 1;
+      #opentab {
+        position: fixed;
         display: flex;
+        justify-content: center;
         align-items: center;
+        font-size: 0.9em;
+        background: #114ec1;  
+        margin-left: 140px;
+        margin-bottom: 2px;
+        border: 2px solid #0141ab;
+        border-radius: 3px;
+        width: 180px;
+        height: 26px;
+      }
+      
+      #time {
+        padding-right: 6px;  
       }
       
       #manga-title {
@@ -242,11 +263,29 @@
         transition: opacity 0.1s ease-in-out;
       }
     
-      #manga-image {
-        max-width: 100%;
-        border-radius: 8px;
-        display: none;
-        margin-top: 15px;
+      .manga {
+        border: 3px solid;
+        border-image: linear-gradient(#39a8f7, #0059fb 33%); 
+        border-image-slice: 1;  
+      }
+      
+      .manga:hover {
+        animation: shake .3s; 
+        animation-iteration-count: infinite;  
+      }
+      
+      @keyframes shake {
+        0% { transform: translate(.4px, .4px) rotate(0deg); }
+        10% { transform: translate(-.4px, -.4px) rotate(-.4deg); }
+        20% { transform: translate(-.4px, 0px) rotate(.4deg); }
+        30% { transform: translate(.4px, .4px) rotate(0deg); }
+        40% { transform: translate(.4px, -.4px) rotate(.4deg); }
+        50% { transform: translate(-.4px, .4px) rotate(-.4deg); }
+        60% { transform: translate(-.4px, .4px) rotate(0deg); }
+        70% { transform: translate(.4px, .4px) rotate(-.4deg); }
+        80% { transform: translate(-.4px, -.4px) rotate(.4deg); }
+        90% { transform: translate(.4px, .4px) rotate(0deg); }
+        100% { transform: translate(.4px, -.4px) rotate(-.4deg); }
       }
 
     </style>
@@ -407,7 +446,10 @@
         <div class="tabtop" id="window"><h2 id="manga-title"></h2><p id="artist"></p><img id="close-button" style="width: 20px; margin-left: auto;" src="images/X.png" onmouseover="this.src='images/Xhover.png';" onmouseout="this.src='images/X.png';" /></div>
         <p style="color: #000;" id="manga-description"></p>
       </div>
-      <div id="taskbar"><a href="index.html"><img style="left: 0; top: 0;" src="images/start.png"></a><img style="justify-content: flex-end; right: 0;" src="images/systemtray.png"><span id="time"></span></div>
+      <div id="taskbar"><a href="index.html"><img src="images/start.png"></a>
+        <div id="opentab"><img style="width: 20px; height: 20px; padding-right: 4px;" src="images/anime.png">nerd corner</div>
+        <div id="systemtray"><span id="time"></span></div>
+      </div>
     </div>
   </div>
 
