@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <script src="https://unpkg.com/tone"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
       html, body {
@@ -20,7 +21,6 @@
       
       .container {
         margin-left: 450px;
-        position: relative;
         display: flex;
         height: 100%;
       }
@@ -28,8 +28,8 @@
       .sidebar {
         position: fixed;
         width: 450px;
-        height: calc(100vh - 40px);
-        top: 0;
+        height: 0vh;
+        bottom: 0;
         left: 0;
         padding: 0;
         box-sizing: border-box;
@@ -41,6 +41,26 @@
         background: #fff;
         border: solid #0059fb;
         transition: height 0.6s ease;
+      }
+      
+      .swiper {
+        width: 100%;
+        height: 150px;
+      }
+      
+      .swiper-slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 0 0 calc(100% / 3);
+        max-width: calc(100% / 3);
+      }
+      
+      .swiper-slide img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        cursor: pointer;
       }
       
       @font-face {
@@ -64,12 +84,10 @@
         height: 30px;
         z-index: 10;
         user-select: none;
-      }  
+      }
 
-      #infor{
-        top: 62.4px;
-        left: 7px;
-        display: block;
+      #infor, #infor2, #points {
+        display: none;
         overflow: visible;
         padding: 10px;
         position: absolute;
@@ -83,12 +101,37 @@
         white-space: pre-wrap;
         transition: width 0.6s ease, opacity 0.1s ease-in-out;
         padding: 10px 10px 0px 10px;
-        width: 410px;
+        width: 0;
         min-height: 6em;
-        z-index: 3;
+        z-index: 300;
       }
-
-      #window1 {
+      
+      #infor {
+        top: 62.4px;
+        left: 7px;
+      }
+      
+      #infor2 {
+        top: 523.2px;
+        left: 7px;
+      }
+      
+      #points {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: normal;
+        width: 100%;
+        border: 0;
+        padding: 0;
+        text-align: center;
+      }
+      
+      #wrrrr {
+        padding-top: 20px;  
+      }
+      
+      #window1, #window2 {
         position: absolute;
         top: -5px;
         left: -2px;
@@ -108,6 +151,10 @@
         user-select: none;
       }
       
+      #window2 {
+        display: none;  
+      }
+      
       #taskbar {
         display: flex;
         position: fixed;
@@ -116,13 +163,12 @@
         width: 100vw;
         z-index: 9999;
         background: linear-gradient(#26439d 2%, #3984e3 4% 10%, #2157d5 20%, #245fdc 90%, #1941a5 98% 100%);
-        font-family: 'Trebuchet MS';
+        font-family: 'Tahoma';
         font-size: 1.2em;
         white-space: nowrap;
         transition: height 0.3s ease;
         height: 40px;
         align-items: center;
-        user-select: none;
       }
       
       #taskbar img {
@@ -143,23 +189,40 @@
         height: 40px;
       }
       
-      #opentab {
-        position: fixed;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 0.9em;
-        background: #114ec1;  
-        margin-left: 140px;
-        margin-bottom: 2px;
-        border: 2px solid #0141ab;
-        border-radius: 3px;
-        width: 180px;
-        height: 26px;
-      }
-      
       #time {
         padding-right: 6px;  
+      }
+      
+      .sortable-ghost {
+        opacity: 0.4;
+      }
+
+      #window h2, #window p {
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+      }
+      
+      #window {
+        margin-left: -22.5px;
+        margin-right: -22.5px;
+        gap: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: none;
+        align-items: center;
+        justify-content: flex-start;
+        max-width: calc(100% + 40px);;
+        margin-top: -20px;
+        padding: 5px 10px;
+        border-radius: 4px 4px 0 0;
+        background: linear-gradient(#39a8f7, #0059fb 33%);
+        height: auto;
+        transition: all 0.4s ease-in-out;
+        font-family: 'Trebuchet MS'
       }
       
       .main-content {
@@ -169,100 +232,107 @@
         position: relative;
         display: flex;
         flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 20px;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        background-image: url('images/clouds.png');
-        overflow-y: auto;
+        background-image: url('images/defaultbg.png');
+        transition: all 0.4s ease-in-out;
+        box-sizing: border-box;
       }
       
-      .main-content p,
-      .main-content ul{
-        margin: 0.5vh 0;
+      .main-content img {
+        width: 4vw;
+        height: 4vw;
+        display: block;
+        margin: 0 auto;
+      }
+      
+      .main-content p {
         text-align: center;
+        max-width: 6vw;
         margin-top: 0.5vh;
-        font-size: 1em;
-        color: black;
-        overflow: hidden;
+        font-size: 1vw;
+        color: white;
+        text-shadow: 1px 1px 2px black;
+        white-space: wrap;
+        text-overflow: ellipsis;
       }
       
-      .content-container {
-        width: 100%;
-        border: 3px solid;
-        height: auto;
-        padding: 20px;
-        margin: 10px 60px 10px 60px;
-        background-color: rgb(240 240 240 / 90%);
-        border-image: linear-gradient(#39a8f7, #0059fb 33%); 
-        border-image-slice: 1;
-      }
-      
-      #bigavatararrows {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      #bigavatararrows img {
-        width: 128px;
-        height: 128px;
-      }
-      
-      #bigavatar {
-        border: 6px solid;
-        border-image: linear-gradient(#39a8f7, #0059fb 33%); 
-        border-image-slice: 1;
-        background-origin: border-box;
-        background-clip: content-box, border-box;
-      }
-      
-      #textleft {
-        justify-content: flex-start;
-        text-align: left;
-      }
-      
-      #divisive {
-        display: flex;
-        min-height: 128px;
-        padding: 10px;
-        background: #fff;
-        border-left: 3px solid;
-        border-image: linear-gradient(#39a8f7, #0059fb 33%); 
-        border-image-slice: 1;
-      }
-      
-      #divisive p, #divisive ul {
-        justify-content: flex-start;
-        text-align: left; 
-        margin: 0 10px 0 145px;
-      }
-      
-      #divisive img {
+      #scored {
         position: absolute;
-        height: 128px;
-        width: 128px;
-        border: 3px solid;
-        border-image: linear-gradient(#39a8f7, #0059fb 33%); 
-        border-image-slice: 1;
+        display: block;
+        opacity: 0;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 2px;
+        border-style: solid;
+        border-color: #0059fb;
+        backdrop-filter: blur(5px);
+        transition: opacity 0.1s ease-in-out;  
+        left: 5000px;
+        z-index: 3548353480508; 
       }
       
-      #divisive img:hover {
-        animation: shake .3s; 
-        animation-iteration-count: infinite;  
+      #score {
+        font-size: 1em;
+        position: absolute;
+        top: -5px;
+        left: -2px;
+        right: -2px;
+        background: linear-gradient(#39a8f7, #0059fb 33%);
+        color: white;
+        padding: 6px 10px;
+        font-weight: bold;
+        height: auto;
+        border-bottom: 1px solid #003bb5;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        z-index: 50000;
+        display:flex;
+        align-items: center;
+        user-select: none;
       }
       
-      @keyframes shake {
-        0% { transform: translate(.4px, .4px) rotate(0deg); }
-        10% { transform: translate(-.4px, -.4px) rotate(-.4deg); }
-        20% { transform: translate(-.4px, 0px) rotate(.4deg); }
-        30% { transform: translate(.4px, .4px) rotate(0deg); }
-        40% { transform: translate(.4px, -.4px) rotate(.4deg); }
-        50% { transform: translate(-.4px, .4px) rotate(-.4deg); }
-        60% { transform: translate(-.4px, .4px) rotate(0deg); }
-        70% { transform: translate(.4px, .4px) rotate(-.4deg); }
-        80% { transform: translate(-.4px, -.4px) rotate(.4deg); }
-        90% { transform: translate(.4px, .4px) rotate(0deg); }
-        100% { transform: translate(.4px, -.4px) rotate(-.4deg); }
+      .desktopicon {
+        display: flex;
+        position: absolute;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 10px;
+        cursor: pointer;
+        width: 6vw;
+        border: 1px solid transparent;
+        z-index: 5;
+      }
+            
+      .desktopicon:hover {
+        background-color: rgba(0, 120, 215, 0.2);
+        border: 1px solid rgba(0, 120, 215, 0.6);
+      }
+      
+      .desktopicon:focus {
+        background-color: rgba(0, 120, 215, 0.4);
+        border: 1px solid rgba(0, 120, 215, 0.8);
+      }
+      
+      #animeg {
+        top: 20vh;  
+      }
+      
+      #carg {
+        top: 276px;
+      }
+      
+      #crazyg {
+        top: 393px;
+      }
+      
+      #trashg {
+        top: 75vh; 
+        right: 20px;
       }
       
     </style>
@@ -271,230 +341,220 @@
   </head>
 <body>
   <div class="movetab" id="infor"><div class="tabtop" id="window1">INFO<img class="close-button" style="width: 20px; margin-left: auto;" src="images/X.png" onmouseover="this.src='images/Xhover.png';" onmouseout="this.src='images/X.png';" /></div><p id="info"></p></div>
+  <div class="movetab" id="infor2"><div class="tabtop" id="window2">QUOTE OF THE NOW<img class="close-button" style="width: 20px; margin-left: auto;" src="images/X.png" onmouseover="this.src='images/Xhover.png';" onmouseout="this.src='images/X.png';" /></div><p id="info2"></p></div>
   <div class="sidebar">
     <div id="top"><a href="about-coolmay.html"><img src="images/avatar.png" style="border-radius: 2px;
         border-style: solid;
         border-color: white;
         width: 32px;
-        height: auto; "></a><span>coolmay5's Cool Page 5</span></div>
+        height: auto;"></a><span>coolmay5's Cool Page 5</span></div>
+    <div style="display: block;
+        overflow: visible;
+        position: relative;
+        margin: 12px 0 12px 0;
+        padding: 10px;
+        font-size: 1.5em;
+        white-space: pre-wrap;
+        transition: width 0.6s ease;
+        padding: 10px 10px 0px 10px;
+        width: 410px;
+        min-height: 6em;"></div>
     </div>
   
   <div class="container">
-    
     <div class="main-content">
-      <div class="content-container">
-        <p style="font-size: 3em; padding: 5px 0 5px 0; color: white; text-shadow: 1px 1px 2px black; background-image: linear-gradient(#39a8f7, #0059fb 33%); border-radius: 20px;">hello!! i'm coolmay5!!</p>
-        <p style="font-size: 1.5em">welcome to my website!!</p>
-        <div id="bigavatararrows"><img style="width: 200; height: 160;" src="images/arrowg.gif"><img id="bigavatar" src="images/avatar.png" onmouseover="this.src='images/avatarhover.png';" onmouseout="this.src='images/avatar.png';" /><img style="transform: rotate(180deg); width: 200; height: 160;" src="images/arrowg.gif"></div>
-        <p>this is me ^</p>
-        <p style="margin-top: 20px;" id="textleft">hello!!!! as you may be tired of reading i am coolmay5 (or may) and this is the silly little website i made to try to improve my coding knowledge and to write about the silly things i like</p>
-        <div><p style="margin-top: 20px;" id="textleft">favorite puppy:</p>
-        <ul id="textleft">
-        <li>reading manga (mostly gl)</li>
-        <li>listening to music</li>
-        <li>my friedns ❤️</li>
-        <li>Women</li>
-        <li>coding this website</li>
-        <li>animals</li>
-        </ul></div>
-        <div><p style="margin-top: 20px;" id="textleft">least favorite puppy:</p>
-        <ul id="textleft">
-        <li>the current state of the world</li>
-        <li>Twitter (subsequently known as X — the Everything App)</li>
-        <li>my Enemies</li>
-        <li>Men</li>
-        <li>coding this website</li>
-        <li>remembering</li>
-        </ul></div>
-        <br>
-        <div style="display:flex; justify-content:flex-start;"><p class="funfact" id="textleft">fun fact:&nbsp;</p></div>
-        <br>
-        <div style="display:flex; justify-content: space-between"><div style="justify-content: flex-start;"><a href="https://coolmay5.neocities.org/"><img src="images/coolpage5blinky.gif"></a></div></div>
-      </div>
-      <div class="content-container">
-      <p style="font-size: 3em; padding: 5px 0 5px 0; color: white; text-shadow: 1px 1px 2px black; background-image: linear-gradient(#39a8f7, #0059fb 33%); border-radius: 20px;">Hall Of things i like</p>
-      <p style="font-size: 1.5em;">all the best things in the whole wide world's world wide web</p>
-      <p id="textleft">this section is less specific than /nerd-corner.html and i'll also write less here than there. i wanted an excuse to write about These things and This is my excuse. these are also going to be like mostly bands and artists i like Lol</p>
-      <br>
-      <div id="divisive"><a href="https://open.spotify.com/artist/4gHs8pWsgZpndQZKs6QVRH?si=cb4109a70254410a"><img src="images/glassbeach.png"></a>
-        <div style="display: block;">
-          <p style="font-size: 1.5em;">glass beach</p>
-          <p id="textleft">'i didn't miss the sweater weather, i just missed you' — sweater weather (glass beach)<br>one of the first bands i remember listening to, and i still listen to their music to this day. glass beach was the key to my Pandora's Box of listening to music. shoutout carlmarks and conar<br>favorite songs:</p><ul id="textleft"><li>cold weather</li><li>bedroom community</li></ul>
-        </div>
-      </div>
-      <br>
-      <div id="divisive"><a href="https://open.spotify.com/artist/3Zy9Sz7WPIetWqQbYq4UoK?si=fe77c088c25f48e0"><img src="images/redvox.png"></a>
-        <div style="display: block;">
-          <p style="font-size: 1.5em;">Red Vox</p>
-          <p id="textleft">'most of red vox's music comes off as, and this is gonna sound kinda disrespectful, but it comes off as kill yourself music' — IanFishooks<br>one of my favorite bands ever. to be fully honest they don't have a single miss, all their songs are So Good. shoutout ianfishooks<br>favorite songs:</p><ul id="textleft"><li>all of Another Light</li><li>all of What Could Go Wrong</li><li>all of Visions</li><li>all of Afterthoughts</li></ul>
-        </div>
-      </div>
-      <br>
-      <div id="divisive"><a href="https://open.spotify.com/artist/6ab8tnQvr8sXXIpSZCrbQs?si=d482980116c74d95"><img src="images/yunglixo.png"></a>
-        <div style="display: block;">
-          <p style="font-size: 1.5em;">Yung Lixo</p>
-          <p id="textleft">'se esse é o novo normal que bom que eu to morto, namoral' — Prefiro Morrer (Yung Lixo)<br>Yung Lixo is one of the only portuguese speaking artists i listen to and — for reasons unbeknownst to me — i'm portuguese speaking!! shoutout brazil<br>favorite songs:</p><ul id="textleft"><li>Prefiro Morrer</li><li>Oldschool</li><li>The Story</li></ul>
-        </div>
-      </div>
-      <br>
-      <div id="divisive"><a href="https://open.spotify.com/artist/2izgD6xMmNboivbb1A6PHE?si=9f5f127e706c47fc"><img src="images/jomm.png"></a>
-        <div style="display: block;">
-          <p style="font-size: 1.5em;">jomm</p>
-          <p id="textleft">'cuz when i saw your face, felt my heart feel that spark once again' — Radio Silent (jomm)<br>first found one of their songs (Radio Silent) through Spotify recommended. that is the only time Spotify has ever been helpful. Ever. lovely music about being lovesick, not a single miss in their entire discography. shoutout NO ONE ELSE I KNOW LIKES JOMM IT'S THE WORST<br>favorite songs:</p><ul id="textleft"><li>Misled</li><li>i started listing songs here and</li><li>realized i like all the other ones a similar amou</li><li>nt (they're all reeeeally good)</li></ul>
-        </div>
-      </div>
-      <br>
-      <div id="divisive"><a href="https://www.google.com/search?q=Kasane-Teto"><img src="images/kasaneteto.png"></a>
-        <div style="display: block;">
-          <p style="font-size: 1.5em;">重音テト (Kasane Teto)</p>
-          <p id="textleft">'can you teach me to be real?' — Machine Love (JamieP)<br>my diva. my idol. my oshi. created as an april fools joke and rising to stardom. this fictional character means so much to me i could never put it into the few words i am limiting myself to. shoutout Hatsune Miku<br>favorite songs:</p><ul id="textleft"><li>this is like asking "what's your favorite Bass song"</li><li>the answer is all of them</li><li>mostly Machine Love though</li><li>(foreshadowing)</li></ul>
-        </div>
-      </div>
-      <br>
-      <div id="divisive"><a href="https://open.spotify.com/artist/2f5AcZbndYPEd7W5EfsZjY?si=36ab8eea4d314ac5"><img src="images/flavorfoley.png"></a>
-        <div style="display: block;">
-          <p style="font-size: 1.5em;">Flavor Foley</p>
-          <p id="textleft">'and when I water the roses, i can't trust you to stay' — Water the Roses (Flavor Foley)<br>vocaloid music group consisting of JamieP, Vane Lily, and ricedeity. Butcher Vanity was one of the first vocaloid songs i Actually listened to and it's sooooooo good. all of Cardiac Contrepoint is great With The Exception Of One Song. I Hate That Song So Much. shoutout JamieP<br>favorite songs:</p><ul id="textleft"><li>BUTCHER VANITY</li><li>炜WARD ROMANCE</li><li>Queen of Venus</li></ul>
-        </div>
-      </div>
-      <br>
-      <div id="divisive"><a href="https://open.spotify.com/artist/790JtoMXsEVQqzkerV3xuf?si=e8ac76a8022447f6"><img src="images/jamiep.png"></a>
-        <div style="display: block;">
-          <p style="font-size: 1.5em;">JamieP</p>
-          <p id="textleft">'baby, do you know what you wanna hear?' — Dyad (JamieP)<br>the One. the Only. the Best. the GOAT. the P stands for PAbsurdly Good Music. Machine Love is maybe my favorite song of all time, Constant Companions is my favorite album of all time, every single song made by or made with the participation of JamieP are my favorites of all time. shoutout Kasane Teto<br>favorite songs:</p><ul id="textleft"><li>Machine Love</li><li>Dyad</li><li>all of Constant Companions really but those two are one step above for me</li><li>all of Bittersweet</li><li>all of everything JamieP has made</li></ul>
-        </div>
-      </div>
-      <br>
-      <div id="divisive"><a href="https://open.spotify.com/artist/5PbpKlxQE0Ktl5lcNABoFf?si=b21be3f0715d4d37"><img src="images/carseatheadrest.png"></a>
-        <div style="display: block;">
-          <p style="font-size: 1.5em;">Car Seat Headrest</p>
-          <p id="textleft">'you must be a gay furry loser? nice pick.' — Gorillamonday<br>this album is AWESOME!! Bodys was my favorite song for some period of time and it's still high up there in my favorites. shoutout carlmarks<br>favorite songs:</p><ul id="textleft"><li>Bodys</li><li>Beach Life-In-Death</li><li>Famous Prophets (Stars)</li></ul>
-        </div>
-      </div>
-      <br>
-      </div>
+      <div class="desktopicon" id="aboutg" tabindex="1"><img src="images/about.png"><p>about coolmay5</p></div>
+      <div class="desktopicon" id="animeg" tabindex="1"><img src="images/anime.png"><p>nerd corner</p></div>
+      <div class="desktopicon" id="carg" tabindex="1"><img src="images/car.png"><p>car</p></div>
+      <div class="desktopicon" id="crazyg" tabindex="1"><img src="images/g.png"><p>worm in progress</p></div>
+      <div class="desktopicon" id="trashg" tabindex="1"><img id="trashimage" src="images/recycle-bin.png"><p>trash</p></div>
+      <div class="movetab" id="scored"><div class="tabtop" id="score"><div id='scorer'>score</div><img class="close-button" style="width: 20px; height: 20px; margin: 0; margin-left: auto;" src="images/X.png" onmouseover="this.src='images/Xhover.png';" onmouseout="this.src='images/X.png';"></div>
+          <div id="gameContainer" style="width: 600px; height: 300px; margin-top: 23px;"></div></div>
       <div id="taskbar"><a href="index.html"><img src="images/start.png"></a>
-        <div id="opentab"><img style="width: 20px; height: 20px; padding-right: 4px;" src="images/about.png">about coolmay5</div>
         <div id="systemtray"><span id="time"></span></div>
       </div>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
   <script>
-  
-  const closeButtons = document.querySelectorAll('.close-button');
 
-  closeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const movetab = button.closest('.movetab');
-      if (movetab) {
-        movetab.style.opacity = '0';
-        if (movetab === document.getElementById('infor')) {
-          setTimeout(() =>{
-            movetab.style.top = '62.4px';
-            movetab.style.left = '7px';
-            setTimeout(() =>{
-              movetab.style.opacity = '1';
-            }, 150)
-          }, 150)
-        };
-        if (movetab === document.getElementById('infor2')) {
-          setTimeout(() =>{
-            movetab.style.top = '523.2px';
-            movetab.style.left = '7px';
-            setTimeout(() =>{
-              movetab.style.opacity = '1';
-            }, 150)
-          }, 150)
-        };
-      }
-    });
+/*code for the X button*/
+
+
+  document.addEventListener('click', (event) => {
+    const button = event.target.closest('.close-button');
+    if (!button) return;
+  
+    const movetab = button.closest('.movetab');
+    if (!movetab) return;
+  
+    movetab.style.opacity = '0';
+  
+    if (movetab.id === 'infor') {
+      setTimeout(() => {
+        movetab.style.top = '62.4px';
+        movetab.style.left = '7px';
+        setTimeout(() => {
+          movetab.style.opacity = '1';
+        }, 150);
+      }, 150);
+    }
+  
+    if (movetab.id === 'infor2') {
+      setTimeout(() => {
+        movetab.style.top = '523.2px';
+        movetab.style.left = '7px';
+        setTimeout(() => {
+          movetab.style.opacity = '1';
+          document.getElementById("info2").innerText =
+            '* ' + randomQuotes[Math.floor(Math.random() * randomQuotes.length)];
+        }, 150);
+      }, 150);
+    }
+  
+    if (movetab.id === 'scored') {
+      gameOver = true;
+      renderer.domElement.remove();
+      document.getElementById('scored').style.left = '5000px';
+    }
   });
   
+  
+/*moveable icons code */
+  
+  
+  document.querySelectorAll('.desktopicon').forEach(icon => {
+    icon.addEventListener('mousedown', function (e) {
+      const shiftX = e.clientX - icon.getBoundingClientRect().left;
+      const shiftY = e.clientY - icon.getBoundingClientRect().top;
+  
+      const container = document.querySelector('.main-content');
+      const containerRect = container.getBoundingClientRect();
+  
+      function moveAt(pageX, pageY) {
+        let newLeft = pageX - shiftX;
+        let newTop = pageY - shiftY;
+      
+        newLeft = Math.max(container.offsetLeft, Math.min(newLeft, container.offsetLeft + container.clientWidth - icon.offsetWidth));
+        newTop = Math.max(container.offsetTop, Math.min(newTop, container.offsetTop + container.clientHeight - icon.offsetHeight));
+      
+        icon.style.left = newLeft - container.offsetLeft + 'px';
+        icon.style.top = newTop - container.offsetTop + 'px';
+      }
+  
+      function onMouseMove(e) {
+        moveAt(e.pageX, e.pageY);
+      }
+  
+      document.addEventListener('mousemove', onMouseMove);
+  
+      function onMouseUp() {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        
+        if (icon === trashg) return
+        
+        const iconRect = icon.getBoundingClientRect();
+        const trashRect = trashg.getBoundingClientRect();
+        const trash = document.getElementById('trashimage')
+  
+        if (
+          iconRect.top < trashRect.bottom &&
+          iconRect.bottom > trashRect.top &&
+          iconRect.left < trashRect.right &&
+          iconRect.right > trashRect.left
+        ) {
+          icon.style.display = 'none';
+          trash.src = 'images/recycle-bin-full.png'
+        }
+      }
+  
+      document.addEventListener('mouseup', onMouseUp);
+      
+    });
+
+    icon.ondragstart = () => false;
+  });
+
+
+/*moveable tabs code */
+
+
   const moveablepart = document.querySelectorAll('.tabtop')
   const wholetab = document.querySelectorAll('.movetab')
   
   moveablepart.forEach(part => {
-  const tab = part.closest('.movetab');
-  
-  part.addEventListener('mousedown', function (e) {
-    const shiftX = e.clientX - tab.getBoundingClientRect().left;
-    const shiftY = e.clientY - tab.getBoundingClientRect().top;
-
-    function moveAt(pageX, pageY) {
-      let newLeft = pageX - shiftX;
-      let newTop = pageY - shiftY;
-
-      newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - tab.offsetWidth));
-      newTop = Math.max(0, Math.min(newTop, window.innerHeight - tab.offsetHeight));
-        
-      tab.style.left = newLeft + 'px';
-      tab.style.top = newTop + 'px';
-      
-    };
-
-    function onMouseMove(e) {
-      moveAt(e.pageX, e.pageY);
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-
-    function onMouseUp() {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-
-    document.addEventListener('mouseup', onMouseUp);
+    const tab = part.closest('.movetab');
     
+    part.addEventListener('mousedown', function (e) {
+      const shiftX = e.clientX - tab.getBoundingClientRect().left;
+      const shiftY = e.clientY - tab.getBoundingClientRect().top;
+  
+      const container = document.querySelector('.main-content');
+      const containerRect = container.getBoundingClientRect();
+  
+      function moveAt(pageX, pageY) {
+        let newLeft = pageX - shiftX;
+        let newTop = pageY - shiftY;
+        
+        if (tab == infor || tab == infor2){
+          newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - tab.offsetWidth));
+          newTop = Math.max(0, Math.min(newTop, window.innerHeight - tab.offsetHeight));
+          
+          tab.style.left = newLeft + 'px';
+          tab.style.top = newTop + 'px';
+        }
+        
+        else {
+          newLeft = Math.max(container.offsetLeft, Math.min(newLeft, container.offsetLeft + container.clientWidth - tab.offsetWidth));
+          newTop = Math.max(container.offsetTop, Math.min(newTop, container.offsetTop + container.clientHeight - tab.offsetHeight));
+          
+          tab.style.left = newLeft - container.offsetLeft + 'px';
+          tab.style.top = newTop - container.offsetTop + 'px';
+        };
+        
+      };
+  
+      function onMouseMove(e) {
+        moveAt(e.pageX, e.pageY);
+      };
+  
+      document.addEventListener('mousemove', onMouseMove);
+  
+      function onMouseUp() {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        
+        const tabRect = tab.getBoundingClientRect();
+        const trashRect = trashg.getBoundingClientRect();
+        const trash = document.getElementById('trashimage')
+  
+        if (
+          tabRect.top < trashRect.bottom &&
+          tabRect.bottom > trashRect.top &&
+          tabRect.left < trashRect.right &&
+          tabRect.right > trashRect.left
+        ) {
+          if (tab.id ='scored') {gameOver = true; renderer.domElement.remove(); document.getElementById('scored').style.left = '5000px';}
+          tab.style.display = 'none';
+          trash.src = 'images/recycle-bin-full.png'
+        }
+      };
+  
+      document.addEventListener('mouseup', onMouseUp);
+      
+      });
+  
+      tab.ondragstart = () => false;
     });
 
-    tab.ondragstart = () => false;
-  });
-  
-  const funfactlist = [
-    "dolphins are incredibly evil",
-    "we don't know how many people there are",
-    "seahorses are mpreg",
-    "blue whale's have a tongue",
-    "the eiffel tower grows",
-    "Australia is wider than the moon",
-    "teeth are the least cool bones",
-    "pluto is a big rock in space. as far as i'm aware that makes it a planet",
-    "my birthday is May 1st. the reason for this is that i am the 1st President",
-    "my favorite album is Constant Companions (Deluxe Edition) by Jamie Paige",
-    "Vinny 'Melpert' Vinesauce is the lead singer in Red Vox",
-    "most facts are not true",
-    "everything i say is true always",
-    "Jeremy 'Jerma' 985 is older",
-    "if you restart the page, you'll get a different fact!",
-    "g is the funniest letter of the alphabet",
-    "Scott 'The' Woz is not his real name",
-    "deltarune comes out TOMORROW!!",
-    "silksong comes out TOMORROW!!",
-    "i was born gagaga ago",
-    "50% of the website's layout was stolen from my friend Gorillamonday. go check out his website at <a href='https://gorillamonday.neocities.org/'>gorillamonday.neocities.org!!</a>",
-    "you can move the icons in the main screen!!",
-    "you can drag most tabs around!!",
-    "Math.random() is my favorite thing. i have used it in every page at least Twice so far",
-    ]
-    
-  const funfact = funfactlist[Math.floor(Math.random() * funfactlist.length)];
 
-  window.addEventListener('DOMContentLoaded', () => {
-    document.querySelector('.funfact').innerHTML += funfactR;
-  });
-  
-  const birthDate = new Date("2008-05-01T00:00:00").getTime();
-  
-  const now = new Date();
-  const factDate = now - birthDate;
-  const seconds = Math.floor(factDate / 1000);
-  
-  const funfactR = funfact.includes("gagaga")
-  ? funfact.replace("gagaga", seconds)
-  : funfact;
-  
-  function updateClock() {
+/*clock*/
+
+
+    function updateClock() {
       const topElement = document.getElementById("time");
       const now = new Date();
 
@@ -512,6 +572,12 @@ updateClock();
 
 setInterval(updateClock, 10000);
 
+    document.querySelectorAll('img').forEach(img => {
+      img.onerror = () => {
+        img.src = 'images/tree.png';
+      };
+    });
+    
     let startTypingIntervals = {};
     
     function startTyping4(element, text, speed = 20, key) {
@@ -532,87 +598,584 @@ setInterval(updateClock, 10000);
 
   startTypingIntervals[key] = interval;
 }
+    
+    const randomQuotes = [
+      "don't forget, i'm with you in the dark",
+      "i forgot",
+      "sponsored by the Pharaoh",
+      "oh to be your Constant Companion!",
+      "if you ever frame your mind and see it all, in Another Light",
+      "gone too far, with your Visions and Afterthoughts",
+      "oh, won't you stay for the ride?",
+      "shoutout Gorillamonday",
+      "this is the rarest message (lie)",
+      "why didn't Isaac just get out of the chest? is he stupid?",
+      "I'm So Fucking Scared",
+      "I LOVE YOU KASANE TETO",
+      "I LOVE YOU HATSUNE MIKU",
+      "shoutout Akita Neru",
+      "don't tap the glass",
+      "é primavera todo ano!",
+      "shoutout neocities",
+      "oh, queen of venus, hear my plea!",
+      "i was misled, by your sweet ways that i just misread",
+      "now's your chance to be a BIG SHOT!!",
+      "Dance Delightful the whole damn night!!!",
+      "zero, cross the great divide...",
+      "can we wander for a spell, and live in parallel?",
+      "じゃ~~!",
+      "i am the disaster of passion!!!",
+      "oh we can fuck until the sun burns out, we can Rot for Clout!!",
+      "and when i Water the Roses, i can't trust you to stay",
+      "our 炜ward romance dyes the town loud, spellbound just for you and me!",
+      "grab a plate, have a taste, 這口味讓我陶醉, i'm still preying on a butcher's vein",
+      "didn't you see the news today? i heard they said it looked like rain",
+      "stupid cupid, you're a real mean guy!",
+      "roll the Katamari!",
+      "push ur t3mprr!!",
+      "cuz this is MY United States of Whatever!!!",
+      "i could douse fires, pluck at strings, simmer black salt with blazing heat, yet here i sing... about nothing",
+      "oh when i saw your face, felt my heart feel that spark once again",
+      "you gotta learn to Forgive and Forget",
+      "there she goes in the morning!!!!",
+      "site's haunted",
+      "☹︎☜︎💧︎👌︎✋︎✌︎☠︎💧︎ ☟︎💣︎🕆",
+      "is it really true? that a bird like me could never think like you",
+      "do you have a clue? how desperately i love -- when spring comes!",
+      "baby, do you know what you wanna hear? 'cause you can say the word, make it oh so clear",
+      "a BIRDBRAIN, baby, i don't know when i'm supposed to stop",
+      "there's over 50 of these btw. keep resetting that page",
+      "all couples are fake and don't actually love eachother and are made by the government to ragebait me",
+      "i never learned the alphabet. i couldn't get past P because it was too funny",
+      "i like when animals are named after the thing they do like flies and horse",
+      "'let's match pfps' 'let's match bios' let's match last names",
+      "panic! in static! out-manic! don't you find it all romantic, the way things used to be?",
+      "i am a girlboss i am a warcriminal i am a lunatic. i am the next virgin mary & i am never going to die",
+      "hitting on my cute debate opponent with the 'you're appealing to me' fallacy",
+      "cupid hit me and missed you (seeing roses wherever) need you here, want you near (loving you from a distance)",
+      "i didn't miss the cold weather, i just missed you. i didn't miss the sweater weather, i just missed you",
+      "'but that’s neither here nor there' is a terrifying thing to say. where is it",
+      "maybe you could stay here just a little longer, make the time pass slower",
+      "maybe you could make this last forever, and you could be my lover",
+      "feel the warmth and the breeze on your face, ain't it a sweet sensation?",
+      "oh, it's a great big grand restoration, all love and adoration",
+      "i hope you know that i'll keep writing songs about you 'till the day you see the things i'm feeling for you",
+      "everyone you see passing on the streets plays a part in a tragedy",
+      "thoughts on women? yeah always",
+      "i've got insomnia, my bloodshot eyes have you to thank. you're in my thoughts all day and, still, at night you're in my head",
+      "the universe is yours!!! eat it!!",
+      "world is a vampire",
+      "the People Posture, Play Pretend",
+      "you're the Object of Affection, hold me tight",
+      "it's this Newly Human Feeling, oh, i wanna share it with you!",
+      "the first and only girlsuccess",
+      "the first and only girldisaster",
+      "perfect little packages, wrapped up in contradiction",
+      "do you feel the things i feel? i am definite and real!",
+      "all the revolutionaries!! all the jihadis too!!",
+      "round' the world, i'm holy! (holy, holy, holy!, holy!)",
+      "a billion stars out there, somehow, we both wound up on this one!",
+      "queen of the night, you drag me away with your gloom!",
+      "they should invent a day where it all makes sense",
+      "is brain development at 25 worth the wait",
+      "you fell for obvious laughbait bro. i love you",
+      "pov u are nice to me and we are haivng fun and we are friends if thats ok",
+      "they had to call animal control on me",
+      "the stars are calling",
+      "love the website? tell me at coolmay5 on Discord",
+      "hate the website? yell me at coolmay5 on Discord",
+      "any opinion on the website? tell me at coolmay5 on Discord",
+      "have any Girls' Love novels to recommend? tell me at coolmay5 on Discord",
+      "have any Boys' Love novels to recommend? do not tell me at coolmay5 on Discord",
+      "pans out camera to a larger coin jar labeled 'Hawk Tuah Jar'. it is filled to the brim",
+      "am i a homosexual? who knows!!",
+      "shoutout Sappho",
+      "🌹what'",
+      "It's Good To Know How Afraid You Are Of Me",
+      "🐙🐚🤍🦑🔮 look at these",
+      "press U for UFOs!!",
+      "'can a quote be “ fuck you”, would be really funny' — Nuke Krabulon",
+      "i will die alone for the ethical reasons",
+      "Do horses know they’re Vehicle",
+      "when the clock hits 12 all my friends turn into various fruits and vegetabels",
+      '"I’m just glad the world includes you, dude."'
+      ]
+  
+  
+/*startTyping for the info tab*/
+  
+  
+  let isTyping = false;
+  let typingIndex = 0;
+  let typingTimeout = null;
+  let scheduledMessageTimeout = null;
+  let typingTimeouts = [];
+  
+  function startTyping(htmlString, containerId = "info", speed = 50) {
+    if (isTyping) return;
+  
+    isTyping = true;
+    const container = document.getElementById(containerId);
+    const ggrg = document.getElementById("infor");
+    ggrg.style.display = "block";
+    setTimeout(() => {
+      ggrg.style.width = "410px";
+    }, 50);
+    typingTimeouts.forEach(clearTimeout);
+    typingTimeouts = [];
+    container.innerHTML = "* ";
+  
+    const temp = document.createElement("div");
+    temp.innerHTML = htmlString;
+  
+    const nodes = [];
+  
+    function extractNodes(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        nodes.push({ type: "text", content: node.textContent });
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        if (node.tagName === "IMG") {
+          nodes.push({ type: "element", content: node.outerHTML });
+        } else {
+          for (const child of node.childNodes) {
+            extractNodes(child);
+          }
+        }
+      }
+    }
+  
+    for (const child of temp.childNodes) {
+      extractNodes(child);
+    }
+  
+    let i = 0;
+  
+    function typeNext() {
+      if (i >= nodes.length) {
+        isTyping = false;
+        return;
+      }
+  
+      const { type, content } = nodes[i];
+  
+      if (type === "text") {
+        let charIndex = 0;
+  
+        function typeChar() {
+          if (charIndex >= content.length) {
+            i++;
+            typeNext();
+            return;
+          }
+  
+          container.innerHTML += content[charIndex];
+  
+          charIndex++;
+          const timeout = setTimeout(typeChar, speed);
+          typingTimeouts.push(timeout);
+        }
+  
+        typeChar();
+      } else if (type === "element") {
+        container.innerHTML += content;
+        i++;
+        typeNext();
+      }
+    }
+  
+    typeNext();
+  }
 
-    let isTyping = false;
-    let typingIndex = 0;
-    let typingTimeout = null;
-    let scheduledMessageTimeout = null;
-    let typingTimeouts = [];
+  let charIndex2 = 0;
+  let isTyping2 = false;
 
-function startTyping(htmlString, containerId = "info", speed = 50) {
-  if (isTyping) return;
 
-  isTyping = true;
-  const container = document.getElementById(containerId);
-  typingTimeouts.forEach(clearTimeout);
-  typingTimeouts = [];
-  container.innerHTML = "* ";
+/*startTyping for the qotn tab*/
 
-  const temp = document.createElement("div");
-  temp.innerHTML = htmlString;
 
-  const nodes = [];
-
-  function extractNodes(node) {
-    if (node.nodeType === Node.TEXT_NODE) {
-      nodes.push({ type: "text", content: node.textContent });
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      if (node.tagName === "IMG") {
-        nodes.push({ type: "element", content: node.outerHTML });
+  function startTyping2(htmlString2, containerId2 = "info2") {
+    const container2 = document.getElementById(containerId2);
+    const ggrgr = document.getElementById("infor2");
+    const window3 = document.getElementById("window2");
+    ggrgr.style.display = "block";
+    window3.style.display = "flex";
+    container2.innerHTML = "* ";
+    setTimeout(() => {
+      ggrgr.style.width = "410px";
+    }, 50);
+  
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlString2;
+  
+    let nodes = Array.from(tempDiv.childNodes);
+    let nodeIndex = 0;
+  
+    function typeNode() {
+      if (nodeIndex >= nodes.length) return;
+  
+      const node = nodes[nodeIndex];
+      if (node.nodeType === Node.TEXT_NODE) {
+        let text = node.textContent;
+        let charIndex = 0;
+  
+        function typeChar() {
+          if (charIndex < text.length) {
+            container2.innerHTML += text.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeChar, 50);
+          } else {
+            nodeIndex++;
+            typeNode();
+          }
+        }
+  
+        typeChar();
       } else {
-        for (const child of node.childNodes) {
-          extractNodes(child);
-        }
+        container2.appendChild(node.cloneNode(true));
+        nodeIndex++;
+        setTimeout(typeNode, 50);
       }
     }
+  
+    typeNode();
   }
+  
+  const quote = randomQuotes[Math.floor(Math.random() * randomQuotes.length)];
 
-  for (const child of temp.childNodes) {
-    extractNodes(child);
+
+/*code for icon double clicks*/
+
+
+  const animeg = document.getElementById('animeg');
+  animeg.addEventListener('dblclick', () => {
+      window.open("nerd-corner.html","_self");
+    });
+    
+  const aboutg = document.getElementById('aboutg');
+  aboutg.addEventListener('dblclick', () => {
+      window.open("about-coolmay.html","_self");
+    });
+    
+  const carg = document.getElementById('carg');
+  carg.addEventListener('dblclick', () => {
+      if (document.querySelector('canvas')) {return;}
+      setTimeout(() => {
+        startGame();
+        const scored = document.getElementById('scored');
+        scored.style.opacity = '1';
+        scored.style.left = '233.6px';
+        scored.style.top = '204px';
+        scored.style.display = 'flex';
+      }, 50);
+    });
+    
+  const crazyg = document.getElementById('crazyg');
+  crazyg.addEventListener('dblclick', () => {
+      window.open("https://www.shutterstock.com/shutterstock/videos/26414675/preview/stock-footage-close-up-of-worms-moving-over-dirt.webm","_self");
+    });
+  
+  const trashg = document.getElementById('trashg');
+  trashg.addEventListener('dblclick', () => {
+      window.open("the-trash.html","_self");
+    });
+    
+  const sidebar = document.querySelector('.sidebar');
+
+
+/*ufo code*/
+
+
+  function callUFO(){
+    const uwon = document.createElement("img");
+    uwon.src = 'https://static.vecteezy.com/system/resources/previews/048/759/365/non_2x/ufo-alien-ship-free-png.png';
+    randomSize = Math.floor(Math.random()* 32);
+    uwon.id = 'ufo';
+    uwon.setAttribute('draggable', false);
+    uwon.style.position = 'absolute';
+    uwon.style.top = Math.floor(Math.random() * 40) + 'vh';
+    uwon.style.left = '100vw';
+    uwon.style.transition = 'all 6s linear';
+    uwon.style.height = randomSize + 48 + 'px';
+    uwon.style.width = randomSize + 48 + 'px';
+    uwon.style.padding = '8px';
+    
+    document.querySelector('.main-content').appendChild(uwon);
+    
+    function uwonDestroy() {
+      uwon.src = 'https://media.tenor.com/-pMfQcryj3cAAAAi/explosion-boom.gif';
+      uwon.id = 'nolongerufo';
+      uwon.style.left = uwon.getBoundingClientRect().left + 'px';
+      uwon.style.position = 'fixed';
+      uwon.style.transition = 'all 0s linear';
+      uwon.style.height = randomSize + 64 + 'px';
+      uwon.style.width = randomSize + 64 + 'px';
+      setTimeout(() =>{uwon.remove()}, 560);
+      const boom = new Audio('https://www.myinstants.com/media/sounds/deltarune-explosion.mp3');
+      boom.playbackRate = 0.7 + (Math.abs(randomSize - 33))/32;
+      boom.volume = 0.2;
+      boom.play();
+    }
+    
+    uwon.addEventListener('click', () =>{
+      uwonDestroy();
+    })
+    
+    setTimeout(() => {
+      uwon.style.left = '-10vw';
+      uwon.style.top = Math.floor(Math.random() * 40) + 'vh';
+      setTimeout(() => {
+        uwon.remove();
+      }, 6050);
+    }, 50);
+    
+    function checkCollision() {
+      const uwonRect = uwon.getBoundingClientRect();
+      const trashRect = trashg.getBoundingClientRect();
+    
+      const isOverlapping =
+        uwonRect.top < trashRect.bottom &&
+        uwonRect.bottom > trashRect.top &&
+        uwonRect.left < trashRect.right &&
+        uwonRect.right > trashRect.left;
+    
+      if (isOverlapping) {
+        uwon.remove();
+        document.getElementById('trashimage').src = 'images/recycle-bin-full.png';
+        return;
+      }
+    
+      requestAnimationFrame(checkCollision);
+    }
+    
+    requestAnimationFrame(checkCollision);
   }
+  
+  window.addEventListener('keypress', (key) => {
+    if (key.key == 'u'){
+      callUFO();  
+    }  
+  })
+  
+  randomTimer = Math.floor((Math.random() * 30) + 1)
+  
+  setTimeout(() => {
+    setInterval(() => {
+      callUFO();
+    }, randomTimer * 10000);
+  }, 20000); // after 20 seconds, one ufo every 10-300 seconds .hopefully
 
-  let i = 0;
 
-  function typeNext() {
-    if (i >= nodes.length) {
-      isTyping = false;
-      return;
+/*typing and window animations*/
+
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      sidebar.style.height = "100vh";
+      setTimeout(() => {
+          sidebar.style.top = "0";
+          sidebar.style.height = "calc(100vh - 40px)"
+      }, 600);
+    }, 50);
+    setTimeout(() => {
+      startTyping("welcome to my self indulgent little corner");
+    }, 800);
+    scheduledMessageTimeout = setTimeout(() => {
+      startTyping2(quote, "info2");;
+    }, 5700);
+  });
+
+
+/*car game code below*/
+
+
+  const renderer = new THREE.WebGLRenderer();
+  function startGame() {
+    if (document.getElementById('points')) {document.getElementById('points').remove();}
+    const container = document.getElementById("gameContainer");
+    if (!container) return;
+    
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0x2465ec );
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      container.clientWidth / container.clientHeight,
+      0.1,
+      1000
+    );
+    
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(0, 1, 1).normalize();
+    scene.add(light);
+    
+    const groundGeometry = new THREE.PlaneGeometry(500, 100);
+    const groundMaterial = new THREE.MeshBasicMaterial({ color: 0xffe600 });
+    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.z = -50;
+    ground.position.y = -1;
+    scene.add(ground);
+    
+    const roadGeometry = new THREE.PlaneGeometry(10, 100);
+    const roadMaterial = new THREE.MeshBasicMaterial({ color: 0x444444 });
+    const road = new THREE.Mesh(roadGeometry, roadMaterial);
+    road.rotation.x = -Math.PI / 2;
+    road.position.z = -50;
+    scene.add(road);
+    
+    const roadLineGeometry = new THREE.PlaneGeometry(0.2, 2);
+    const roadLineMaterial = new THREE.MeshBasicMaterial({ color: 0xfcfc00 });
+    const roadLine = new THREE.Mesh(roadLineGeometry, roadLineMaterial);
+    roadLine.rotation.x = -Math.PI / 2;
+    roadLine.position.y = 0.01;
+    
+    const cactusGeometry = new THREE.PlaneGeometry(1, 3);
+    const cactusMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const cactus = new THREE.Mesh(cactusGeometry, cactusMaterial);
+    cactus.position.x = 8;
+    cactus.position.y = 0.01;
+
+    const obstacles = [];
+    const obstacleGeometry = new THREE.BoxGeometry(1, 1, 2);
+    const obstacleMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+
+    function createObstacle() {
+      const ob = new THREE.Mesh(obstacleGeometry, obstacleMaterial);
+      ob.position.set((Math.floor(Math.random()*7))-3, 0.5, -100);
+      scene.add(ob);
+      obstacles.push(ob);
     }
 
-    const { type, content } = nodes[i];
+    camera.position.y = 1.5;
+    camera.position.z = 0;
+    
+    let score = 0;
+    let gameOver = false;
 
-    if (type === "text") {
-      let charIndex = 0;
+    function animate() {
+        if (gameOver) return;
 
-      function typeChar() {
-        if (charIndex >= content.length) {
-          i++;
-          typeNext();
-          return;
+        requestAnimationFrame(animate);
+        score++;
+        document.getElementById("scorer").innerText = "SCORE: " + Math.floor(score/100)*100;
+
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+            const ob = obstacles[i];
+            ob.position.z += 0.5 + Math.floor(score / 100) / 100 + test / 5;
+
+            if (ob.position.z > 0 && Math.abs(ob.position.x - camera.position.x) < 1) {
+              gameOver = true;
+              startTyping('you got a score of ' + Math.floor(score / 100) * 100 + '!!!!!');
+              renderer.domElement.remove();
+              container.innerHTML = `<h1 id='points'>you got a score of ${Math.floor(score / 100) * 100}!!!!!</h1>`
+            }
+
+            if (ob.position.z > 0) {
+              scene.remove(ob);
+              obstacles.splice(i, 1);
+            }
+            
         }
 
-        container.innerHTML += content[charIndex];
-
-        charIndex++;
-        const timeout = setTimeout(typeChar, speed);
-        typingTimeouts.push(timeout);
-      }
-
-      typeChar();
-    } else if (type === "element") {
-      container.innerHTML += content;
-      i++;
-      typeNext();
+        renderer.render(scene, camera);
     }
-  }
 
-  typeNext();
-}
-
-setTimeout(() => {
-    startTyping("coolmay5! that's me!");
-  }, 50);
-
+    function spawnLoop() {
+      if (!gameOver) {
+        createObstacle();
+        setTimeout(spawnLoop, Math.max(200, 1500 - Math.floor(score / 50) * (Math.floor(Math.random() * 10) + 1) - test * 300));
+      }
+    };
+    
+    function roadLineLoop() {
+      if (gameOver) return;
+    
+      const line = roadLine.clone();
+      line.position.z = -100;
+      scene.add(line);
+    
+      const moveLine = () => {
+        if (line.position.z <= 0) {
+          line.position.z += 0.7 + Math.floor(score / 100) / 100 + test / 5;
+          requestAnimationFrame(moveLine);
+        } else {
+          scene.remove(line);
+        }
+      };
+    
+      moveLine();
+    
+      setTimeout(roadLineLoop, 200 - test * 30);
+    }
+    
+    function cactusLoop() {
+      if (gameOver) return;
+    
+      const cac = cactus.clone();
+      cac.position.z = -100;
+      scene.add(cac);
+      cac.position.x = Math.floor(Math.random() * 50 - 25)
+      if ([-3, -2, -1, 0, 1, 2, 3].includes(cac.position.x)) {scene.remove(cac)}
+    
+      const moveCac = () => {
+        if (cac.position.z <= 0) {
+          cac.position.z += 0.7 + Math.floor(score / 100) / 100 + test / 5;
+          requestAnimationFrame(moveCac);
+        } else {
+          scene.remove(cac);
+        }
+      };
+    
+      moveCac();
+    
+      setTimeout(cactusLoop, Math.floor(Math.random() * 20) * 500 - test * 30);
+    }
+  
+    const keys = {
+      ArrowLeft: false,
+      ArrowRight: false,
+      ArrowUp: false
+    };
+    
+    document.addEventListener('keydown', e => {
+        if (e.key in keys) keys[e.key] = true;
+    });
+    
+    document.addEventListener('keyup', e => {
+        if (e.key in keys) keys[e.key] = false;
+    });
+    
+    let lastMoveTime = 0;
+    let test = 0;
+    function update(timestamp) {
+      if (timestamp - lastMoveTime > 50) {
+          
+        if (keys.ArrowLeft) {
+          if (camera.position.x > -3) {camera.position.x -= 1};
+        }
+          
+        if (keys.ArrowRight) {
+          if (camera.position.x < 3) {camera.position.x += 1};
+        }
+        
+        if (keys.ArrowUp) {test = 2; score += 2;} else {test = 0};
+          
+        lastMoveTime = timestamp;
+      }
+      
+      requestAnimationFrame(update);
+    }
+      
+    requestAnimationFrame(update);
+    
+    update();
+    animate();
+    spawnLoop();
+    roadLineLoop();
+    cactusLoop();
+  };
+  
   </script>
 </body>
 </html>
