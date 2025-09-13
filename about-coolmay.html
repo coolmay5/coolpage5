@@ -63,6 +63,7 @@
         width: 430px;
         height: 30px;
         z-index: 10;
+        user-select: none;
       }  
 
       #infor{
@@ -87,7 +88,7 @@
         z-index: 3;
       }
 
-      #window1, #window2 {
+      #window1 {
         position: absolute;
         top: -5px;
         left: -2px;
@@ -104,49 +105,61 @@
         z-index: 50000;
         display:flex;
         align-items: center;
+        user-select: none;
       }
       
       #taskbar {
+        display: flex;
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100vw;
         z-index: 9999;
-        display: flex;
-        padding: 0 10px;
-        background-image: url('images/taskbar1.png');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        font-family: 'Tahoma';
+        background: linear-gradient(#26439d 2%, #3984e3 4% 10%, #2157d5 20%, #245fdc 90%, #1941a5 98% 100%);
+        font-family: 'Trebuchet MS';
         font-size: 1.2em;
         white-space: nowrap;
         transition: height 0.3s ease;
         height: 40px;
         align-items: center;
+        user-select: none;
       }
       
       #taskbar img {
-        position: absolute;
         height: 100%;
         width: auto;
       }
       
-      #time {
-        position: absolute;
-        font-size: 0.9em;
+      #systemtray {
+        position: fixed;
+        display: flex;
         right: 0;
-        padding: 6px;
-        padding-right: 24px;
-        z-index: 100;
+        justify-content: flex-end;
+        align-items: center;
+        font-size: 0.9em;
+        background: linear-gradient(#0d69c4 2%, #15a9ee 4% 10%, #0e8ee9 20%, #0e9ff0 96%, #0d74d5 98% 100%);
+        border-left: solid #16b5fd;
+        width: 200px;
+        height: 40px;
       }
       
-      #window h2, #window p {
-        margin: 0;
-        padding: 0;
-        line-height: 1;
+      #opentab {
+        position: fixed;
         display: flex;
+        justify-content: center;
         align-items: center;
+        font-size: 0.9em;
+        background: #114ec1;  
+        margin-left: 140px;
+        margin-bottom: 2px;
+        border: 2px solid #0141ab;
+        border-radius: 3px;
+        width: 180px;
+        height: 26px;
+      }
+      
+      #time {
+        padding-right: 6px;  
       }
       
       .main-content {
@@ -159,7 +172,7 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        background-image: url('images/defaultbg.png');
+        background-image: url('images/clouds.png');
         overflow-y: auto;
       }
       
@@ -179,7 +192,7 @@
         height: auto;
         padding: 20px;
         margin: 10px 60px 10px 60px;
-        background-color: #f0f0f0;
+        background-color: rgb(240 240 240 / 90%);
         border-image: linear-gradient(#39a8f7, #0059fb 33%); 
         border-image-slice: 1;
       }
@@ -294,66 +307,65 @@
         <li>remembering</li>
         </ul></div>
         <br>
-        <p class="funfact" id="textleft">fun fact: </p>
+        <div style="display:flex; justify-content:flex-start;"><p class="funfact" id="textleft">fun fact:&nbsp;</p></div>
         <br>
-        <div style="display:flex; justify-content: flex-end;"><p style="text-align:right;">my cool awesome stamp B) &gt;&gt;</p><a href="https://coolmay5.neocities.org/"><img src="images/coolpage5blinky.gif"></a></div>
+        <div style="display:flex; justify-content: space-between"><div style="justify-content: flex-start;"><a href="https://coolmay5.neocities.org/"><img src="images/coolpage5blinky.gif"></a></div></div>
       </div>
       <div class="content-container">
       <p style="font-size: 3em; padding: 5px 0 5px 0; color: white; text-shadow: 1px 1px 2px black; background-image: linear-gradient(#39a8f7, #0059fb 33%); border-radius: 20px;">Hall Of things i like</p>
       <p style="font-size: 1.5em;">all the best things in the whole wide world's world wide web</p>
       <p id="textleft">this section is less specific than /nerd-corner.html and i'll also write less here than there. i wanted an excuse to write about These things and This is my excuse. these are also going to be like mostly bands and artists i like Lol</p>
       <br>
-      <div id="divisive"><img src="images/glassbeach.png">
+      <div id="divisive"><a href="https://open.spotify.com/artist/4gHs8pWsgZpndQZKs6QVRH?si=cb4109a70254410a"><img src="images/glassbeach.png"></a>
         <div style="display: block;">
           <p style="font-size: 1.5em;">glass beach</p>
-          <p id="textleft">one of the first bands i remember listening to, and i still listen to their music to this day. glass beach was the key to my Pandora's Box of listening to music. shoutout carlmarks and conar<br>favorite songs:</p><ul id="textleft"><li>cold weather</li><li>bedroom community</li></ul>
+          <p id="textleft">'i didn't miss the sweater weather, i just missed you' — sweater weather (glass beach)<br>one of the first bands i remember listening to, and i still listen to their music to this day. glass beach was the key to my Pandora's Box of listening to music. shoutout carlmarks and conar<br>favorite songs:</p><ul id="textleft"><li>cold weather</li><li>bedroom community</li></ul>
         </div>
       </div>
       <br>
-      <div id="divisive"><img src="images/redvox.png">
+      <div id="divisive"><a href="https://open.spotify.com/artist/3Zy9Sz7WPIetWqQbYq4UoK?si=fe77c088c25f48e0"><img src="images/redvox.png"></a>
         <div style="display: block;">
           <p style="font-size: 1.5em;">Red Vox</p>
-          <p id="textleft">one of my favorite bands ever. to be fully honest they don't have a single miss, all their songs are So Good. shoutout ianfishooks<br>favorite songs:</p><ul id="textleft"><li>all of Another Light</li><li>all of What Could Go Wrong</li><li>all of Visions</li><li>all of Afterthoughts</li></ul>
+          <p id="textleft">'most of red vox's music comes off as, and this is gonna sound kinda disrespectful, but it comes off as kill yourself music' — IanFishooks<br>one of my favorite bands ever. to be fully honest they don't have a single miss, all their songs are So Good. shoutout ianfishooks<br>favorite songs:</p><ul id="textleft"><li>all of Another Light</li><li>all of What Could Go Wrong</li><li>all of Visions</li><li>all of Afterthoughts</li></ul>
         </div>
       </div>
       <br>
-      <div id="divisive"><img src="images/yunglixo.png">
+      <div id="divisive"><a href="https://open.spotify.com/artist/6ab8tnQvr8sXXIpSZCrbQs?si=d482980116c74d95"><img src="images/yunglixo.png"></a>
         <div style="display: block;">
           <p style="font-size: 1.5em;">Yung Lixo</p>
-          <p id="textleft">Yung Lixo is one of the only portuguese speaking artists i listen to and — for reasons unbeknownst to me — i'm a portuguese speaking!! shoutout brazil<br>favorite songs:</p><ul id="textleft"><li>Prefiro Morrer</li><li>Oldschool</li><li>The Story</li></ul>
+          <p id="textleft">'se esse é o novo normal que bom que eu to morto, namoral' — Prefiro Morrer (Yung Lixo)<br>Yung Lixo is one of the only portuguese speaking artists i listen to and — for reasons unbeknownst to me — i'm portuguese speaking!! shoutout brazil<br>favorite songs:</p><ul id="textleft"><li>Prefiro Morrer</li><li>Oldschool</li><li>The Story</li></ul>
         </div>
       </div>
       <br>
-      <div id="divisive"><img src="images/jomm.png">
+      <div id="divisive"><a href="https://open.spotify.com/artist/2izgD6xMmNboivbb1A6PHE?si=9f5f127e706c47fc"><img src="images/jomm.png"></a>
         <div style="display: block;">
           <p style="font-size: 1.5em;">jomm</p>
-          <p id="textleft">first found one of their songs (Radio Silent) through Spotify recommended. that is the only time Spotify has ever been helpful. Ever. shoutout NO ONE ELSE I KNOW LIKES JOMM IT'S THE WORST<br>favorite songs:</p><ul id="textleft"><li>Misled</li><li>i started listing songs here and</li><li>realized i like all the other ones a similar amou</li><li>nt (they're all reeeeally good)</li></ul>
+          <p id="textleft">'cuz when i saw your face, felt my heart feel that spark once again' — Radio Silent (jomm)<br>first found one of their songs (Radio Silent) through Spotify recommended. that is the only time Spotify has ever been helpful. Ever. lovely music about being lovesick, not a single miss in their entire discography. shoutout NO ONE ELSE I KNOW LIKES JOMM IT'S THE WORST<br>favorite songs:</p><ul id="textleft"><li>Misled</li><li>i started listing songs here and</li><li>realized i like all the other ones a similar amou</li><li>nt (they're all reeeeally good)</li></ul>
         </div>
       </div>
       <br>
-      <div id="divisive"><img src="images/kasaneteto.png">
+      <div id="divisive"><a href="https://www.google.com/search?q=Kasane-Teto"><img src="images/kasaneteto.png"></a>
         <div style="display: block;">
           <p style="font-size: 1.5em;">重音テト (Kasane Teto)</p>
-          <p id="textleft">my diva. my idol. my oshi. created as an april fools joke and rising to stardom. this fictional character means so much to me i could never put it into the few words i am limiting myself to. shoutout Hatsune Miku<br>favorite songs:</p><ul id="textleft"><li>this is like asking "what's your favorite Bass song"</li><li>the answer is all of them</li><li>mostly Machine Love though</li><li>(foreshadowing)</li></ul>
+          <p id="textleft">'can you teach me to be real?' — Machine Love (JamieP)<br>my diva. my idol. my oshi. created as an april fools joke and rising to stardom. this fictional character means so much to me i could never put it into the few words i am limiting myself to. shoutout Hatsune Miku<br>favorite songs:</p><ul id="textleft"><li>this is like asking "what's your favorite Bass song"</li><li>the answer is all of them</li><li>mostly Machine Love though</li><li>(foreshadowing)</li></ul>
         </div>
       </div>
-      <p id="textleft">first non artist of the Hall ^^^^^</p>
       <br>
-      <div id="divisive"><img src="images/flavorfoley.png">
+      <div id="divisive"><a href="https://open.spotify.com/artist/2f5AcZbndYPEd7W5EfsZjY?si=36ab8eea4d314ac5"><img src="images/flavorfoley.png"></a>
         <div style="display: block;">
           <p style="font-size: 1.5em;">Flavor Foley</p>
-          <p id="textleft">vocaloid music group consisting of JamieP, Vane Lily, and ricedeity. Butcher Vanity was one of the first vocaloid songs i Actually listened to and it's sooooooo good. all of Cardiac Contrepoint is great With The Exception Of One Song. I Hate That Song So Much. shoutout JamieP<br>favorite songs:</p><ul id="textleft"><li>BUTCHER VANITY</li><li>炜WARD ROMANCE</li><li>Queen of Venus</li></ul>
+          <p id="textleft">'and when I water the roses, i can't trust you to stay' — Water the Roses (Flavor Foley)<br>vocaloid music group consisting of JamieP, Vane Lily, and ricedeity. Butcher Vanity was one of the first vocaloid songs i Actually listened to and it's sooooooo good. all of Cardiac Contrepoint is great With The Exception Of One Song. I Hate That Song So Much. shoutout JamieP<br>favorite songs:</p><ul id="textleft"><li>BUTCHER VANITY</li><li>炜WARD ROMANCE</li><li>Queen of Venus</li></ul>
         </div>
       </div>
       <br>
-      <div id="divisive"><img src="images/jamiep.png">
+      <div id="divisive"><a href="https://open.spotify.com/artist/790JtoMXsEVQqzkerV3xuf?si=e8ac76a8022447f6"><img src="images/jamiep.png"></a>
         <div style="display: block;">
           <p style="font-size: 1.5em;">JamieP</p>
-          <p id="textleft">the One. the Only. the Best. the GOAT. the P stands for PAbsurdly Good Music. Machine Love is maybe my favorite song of all time, Constant Companions is my favorite album of all time, every single song made by or made with the participation of JamieP are my favorites of all time. shoutout Kasane Teto<br>favorite songs:</p><ul id="textleft"><li>Machine Love</li><li>Dyad</li><li>all of Constant Companions really but those two are one step above for me</li><li>all of Bittersweet</li><li>all of everything JamieP has made</li></ul>
+          <p id="textleft">'baby, do you know what you wanna hear?' — Dyad (JamieP)<br>the One. the Only. the Best. the GOAT. the P stands for PAbsurdly Good Music. Machine Love is maybe my favorite song of all time, Constant Companions is my favorite album of all time, every single song made by or made with the participation of JamieP are my favorites of all time. shoutout Kasane Teto<br>favorite songs:</p><ul id="textleft"><li>Machine Love</li><li>Dyad</li><li>all of Constant Companions really but those two are one step above for me</li><li>all of Bittersweet</li><li>all of everything JamieP has made</li></ul>
         </div>
       </div>
       <br>
-      <div id="divisive"><img src="images/carseatheadrest.png">
+      <div id="divisive"><a href="https://open.spotify.com/artist/5PbpKlxQE0Ktl5lcNABoFf?si=b21be3f0715d4d37"><img src="images/carseatheadrest.png"></a>
         <div style="display: block;">
           <p style="font-size: 1.5em;">Car Seat Headrest</p>
           <p id="textleft">'you must be a gay furry loser? nice pick.' — Gorillamonday<br>this album is AWESOME!! Bodys was my favorite song for some period of time and it's still high up there in my favorites. shoutout carlmarks<br>favorite songs:</p><ul id="textleft"><li>Bodys</li><li>Beach Life-In-Death</li><li>Famous Prophets (Stars)</li></ul>
@@ -361,7 +373,10 @@
       </div>
       <br>
       </div>
-      <div id="taskbar"><a href="index.html"><img style="left: 0; top: 0;" src="images/start.png"></a><img style="justify-content: flex-end; right: 0;" src="images/systemtray.png"><span id="time"></span></div>
+      <div id="taskbar"><a href="index.html"><img src="images/start.png"></a>
+        <div id="opentab"><img style="width: 20px; height: 20px; padding-right: 4px;" src="images/about.png">about coolmay5</div>
+        <div id="systemtray"><span id="time"></span></div>
+      </div>
     </div>
   </div>
 
@@ -447,7 +462,7 @@
     "pluto is a big rock in space. as far as i'm aware that makes it a planet",
     "my birthday is May 1st. the reason for this is that i am the 1st President",
     "my favorite album is Constant Companions (Deluxe Edition) by Jamie Paige",
-    "Vinny 'Melpert' Vinesauce is part of a band called Red Vox and they're one of my favorite bands ever",
+    "Vinny 'Melpert' Vinesauce is the lead singer in Red Vox",
     "most facts are not true",
     "everything i say is true always",
     "Jeremy 'Jerma' 985 is older",
@@ -457,16 +472,16 @@
     "deltarune comes out TOMORROW!!",
     "silksong comes out TOMORROW!!",
     "i was born gagaga ago",
-    "50% of the website's layout was stolen from my friend Gorillamonday. go check out his website at gorillamonday.neocities.org",
-    "you can move the icons in the main screen",
-    "you can drag the INFO tab around",
+    "50% of the website's layout was stolen from my friend Gorillamonday. go check out his website at <a href='https://gorillamonday.neocities.org/'>gorillamonday.neocities.org!!</a>",
+    "you can move the icons in the main screen!!",
+    "you can drag most tabs around!!",
+    "Math.random() is my favorite thing. i have used it in every page at least Twice so far",
     ]
     
   const funfact = funfactlist[Math.floor(Math.random() * funfactlist.length)];
-  const placewherefunfactgoes = document.querySelector('.funfact');
-  
+
   window.addEventListener('DOMContentLoaded', () => {
-    placewherefunfactgoes.textContent += funfactR;
+    document.querySelector('.funfact').innerHTML += funfactR;
   });
   
   const birthDate = new Date("2008-05-01T00:00:00").getTime();
