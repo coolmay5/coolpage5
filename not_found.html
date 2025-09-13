@@ -3,11 +3,126 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Not Found</title>
-    <link href="/style.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <title>FATAL ERROR</title>
   </head>
   <body>
-    <h1>this page does not exist!!</h1>
-    <p>silly</p>
+  <style>
+  body {
+    background-color: #0078d7;
+    color: white;
+    font-family: 'Segoe UI';
+    font-weight: normal;
+    user-select: none;
+  }
+  
+  #frown, #text {
+    margin-top: 5vh;
+    margin-left: 7vw;  
+    margin-bottom: 0;
+  }
+  
+  #frown {
+    font-size: 12em;
+    
+  }
+  
+  #text {
+    font-size: 1.5em;
+    width: 50vw;
+    margin-top: 0;
+  }
+  
+  img {
+    height: 120px;  
+  }
+  
+  #qr {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 5vh;
+    margin-left: 7vw;  
+  }
+  
+  #qrimg {
+    display: flex;
+    padding: 4px;
+    background: white;
+    width: 120px;  
+  }
+  
+  #percent {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  #loldiv {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 41%;
+    left: 50%;
+  }
+  
+  #loldiv img{
+    position: absolute;
+    transform: scale(6);
+  }
+  
+  </style>
+    <p id="frown" onclick="randomFace()">:(</p>
+    <p id="text">This webpage ran into a problem and needs to be reopened. If the error was your mistake, simply return to <a style='color: #88bbff;' href='index.html'>index.html</a>. Otherwise, I will not take any responsibility over any code I might've broken.<br><br><span id="percent" onclick="addPercent()">Report error?</span></p>
+    <div id="qr"><div id="qrimg"><img src='images/qrcode1.png'></div><span style="margin-left: 1vw;">For more information about this issue and possible fixes, astral project your troubles to coolmay5.<br><br><br>If you call a support person, give them this info:<br><br>CODE_BROKE_:(</span></div>
+    <audio id="lolsound" src="https://www.myinstants.com/media/sounds/fnaf-foxy-scream-sfx.mp3"></audio>
+    <script>
+    function addPercent() {
+      let percent = -1;
+      document.getElementById('percent').style.cursor = 'auto';
+      document.getElementById('percent').style.textDecoration = 'none';
+      function update() {
+        if (percent < 100) {
+          percent++;
+          let random = Math.floor((Math.random() * 30) + 1)*20
+          document.getElementById('percent').innerText = `${percent}% complete`;
+          setTimeout(update, random);
+        } else {
+          document.getElementById('percent').innerText = `i lied sorry`;
+          const foxy = document.createElement('img')
+          foxy.src = 'images/foxy.gif'
+          foxy.id = 'lol'
+          document.querySelector('#loldiv').appendChild(foxy);
+          const audio = document.getElementById('lolsound');
+          audio.play();
+        }
+      }
+      update();
+    }
+    
+    const faceList = [
+      ':P',
+      ':O',
+      ':)',
+      ': (',
+      'B(',
+      ':V',
+      ';(',
+      '::(',
+      'ç',
+      'lol',
+    ];
+    
+    function randomFace() {
+        if (Math.floor(Math.random() * 10) > 5) {
+            document.getElementById('frown').innerText = faceList[Math.floor(Math.random() * faceList.length)];
+        } else {document.getElementById('frown').innerText = ':('};
+    };
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const div = document.createElement('div');
+      document.querySelector('body').appendChild(div);
+      div.id = 'loldiv';
+    });
+    
+    </script>
   </body>
 </html>
